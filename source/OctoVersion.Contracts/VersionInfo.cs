@@ -4,20 +4,16 @@ namespace OctoVersion.Contracts
 {
     public class VersionInfo : IComparable
     {
-        public VersionInfo(int major, int minor, int revision, string preReleaseTag = "", string buildMetadata = "")
+        public VersionInfo(int major, int minor, int revision)
         {
             Major = major;
             Minor = minor;
             Revision = revision;
-            PreReleaseTag = preReleaseTag;
-            BuildMetadata = buildMetadata;
         }
 
         public int Major { get; }
         public int Minor { get; }
         public int Revision { get; }
-        public string PreReleaseTag { get; }
-        public string BuildMetadata { get; }
 
         public int CompareTo(object obj)
         {
@@ -30,9 +26,7 @@ namespace OctoVersion.Contracts
 
         public override string ToString()
         {
-            var preReleaseToken = string.IsNullOrWhiteSpace(PreReleaseTag) ? string.Empty : $"-{PreReleaseTag}";
-            var buildMetadataToken = string.IsNullOrWhiteSpace(BuildMetadata) ? string.Empty : $"+{BuildMetadata}";
-            return $"{Major}.{Minor}.{Revision}{preReleaseToken}{buildMetadataToken}";
+            return $"{Major}.{Minor}.{Revision}";
         }
 
         public static VersionInfo? TryParse(string versionString)

@@ -10,9 +10,7 @@ namespace OctoVersion.Contracts
             try
             {
                 var (major, minor, revision) = ExtractVersionNumbers(versionString);
-                var preReleaseToken = ExtractPreReleaseToken(versionString);
-                var buildMetadataToken = ExtractBuildMetadataToken(versionString);
-                return new VersionInfo(major, minor, revision, preReleaseToken, buildMetadataToken);
+                return new VersionInfo(major, minor, revision);
             }
             catch (Exception)
             {
@@ -23,8 +21,16 @@ namespace OctoVersion.Contracts
 
         private static (int, int, int) ExtractVersionNumbers(string versionString)
         {
-            var versionNumberToken = versionString.Split(new[] {"-"}, StringSplitOptions.RemoveEmptyEntries).First();
+            var versionNumberToken = versionString;
+
+            // Strip out build metadata first. If that contains a hyphen, it's fine - it's safe to ignore.
             versionNumberToken = versionNumberToken.Split(new[] {"+"}, StringSplitOptions.RemoveEmptyEntries).First();
+
+            // We've stripped out build metadata, so if there's a remaining hyphen then it's a prerelease package, which is not supported.
+            if (versionNumberToken.Contains("-")) throw new Exception("Prelease versions are not supported");
+
+            versionNumberToken = versionNumberToken.Split(new[] {"-"}, StringSplitOptions.RemoveEmptyEntries).First();
+
             var tokens = versionNumberToken.Split(new[] {"."}, StringSplitOptions.RemoveEmptyEntries);
             var majorToken = tokens.FirstOrDefault();
             var minorToken = tokens.Skip(1).FirstOrDefault();
@@ -35,32 +41,6 @@ namespace OctoVersion.Contracts
             var revision = revisionToken != null ? int.Parse(revisionToken) : 0;
 
             return (major, minor, revision);
-        }
-
-        private static string ExtractPreReleaseToken(string versionString)
-        {
-            string preReleaseToken = string.Empty;
-
-            var hyphenIndex = versionString.IndexOf('-');
-            if (hyphenIndex >= 0)
-            {
-                preReleaseToken = versionString.Substring(hyphenIndex);
-
-                var plusIndex = preReleaseToken.IndexOf('+');
-                if (plusIndex >= 0) preReleaseToken = preReleaseToken.Substring(0, plusIndex);
-            }
-
-            return preReleaseToken;
-        }
-
-        private static string ExtractBuildMetadataToken(string versionString)
-        {
-            string buildMetadataToken = string.Empty;
-
-            var hyphenIndex = versionString.IndexOf('+');
-            if (hyphenIndex >= 0) buildMetadataToken = versionString.Substring(hyphenIndex);
-
-            return buildMetadataToken;
         }
     }
 }

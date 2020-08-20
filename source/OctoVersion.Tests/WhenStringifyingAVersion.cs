@@ -18,9 +18,6 @@ namespace OctoVersion.Tests
         {
             yield return new object[] {new VersionInfo(0, 0, 0), "0.0.0"};
             yield return new object[] {new VersionInfo(1, 2, 3), "1.2.3"};
-            yield return new object[] {new VersionInfo(1, 2, 3, "alpha"), "1.2.3-alpha"};
-            yield return new object[] {new VersionInfo(1, 2, 3, "alpha", "some-build-info"), "1.2.3-alpha+some-build-info"};
-            yield return new object[] {new VersionInfo(1, 2, 3, "", "some-build-info"), "1.2.3+some-build-info"};
         }
     }
 }
