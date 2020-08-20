@@ -1,0 +1,12 @@
+.vs
+*.tmp
+*.user
+*.suo
+*.vshost.*
+[Bb]in/
+[Dd]ebug/
+[Oo]bj/
+[Rr]elease/
+[Tt]humbs.db
+_UpgradeReport_Files
+_[Rr]e[Ss]harper.*/
