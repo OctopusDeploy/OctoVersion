@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30320.27
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OctoVersion.Core", "OctoVersion.Core\OctoVersion.Core.csproj", "{4C68CCB1-185D-4CA4-A9C7-7BB3E62743AC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OctoVersion.Tool", "OctoVersion.Tool\OctoVersion.Tool.csproj", "{186C4135-A3FF-48BA-9625-32DFFEDE6525}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4C68CCB1-185D-4CA4-A9C7-7BB3E62743AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C68CCB1-185D-4CA4-A9C7-7BB3E62743AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C68CCB1-185D-4CA4-A9C7-7BB3E62743AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C68CCB1-185D-4CA4-A9C7-7BB3E62743AC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{186C4135-A3FF-48BA-9625-32DFFEDE6525}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{186C4135-A3FF-48BA-9625-32DFFEDE6525}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{186C4135-A3FF-48BA-9625-32DFFEDE6525}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{186C4135-A3FF-48BA-9625-32DFFEDE6525}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A2B98862-9B8F-40E8-9214-7A3CF86CBEC8}
+	EndGlobalSection
+EndGlobal
