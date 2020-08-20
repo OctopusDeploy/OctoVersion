@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using LibGit2Sharp;
 using Serilog;
 
@@ -18,41 +19,57 @@ namespace OctoVersion.Core.VersionNumberCalculation
 
         public VersionCalculator Create()
         {
-            var allCommits = _repository.Commits.ToArray();
-            _logger.Debug("Analyzing {NumberOfCommits} commits", allCommits.Length);
+            Commit[] allCommits;
+            using (_logger.BeginTimedOperation("Loading commits"))
+            {
+                allCommits = _repository.Commits.ToArray();
+                _logger.Debug("Repository contains {NumberOfCommits} commits", allCommits.Length);
+            }
 
-            // Map all the commits into a useful collection
-            var commits = allCommits
-                .Select(SimpleCommit.FromCommit)
-                .ToDictionary(c => c.Hash, c => c);
+            Dictionary<string, SimpleCommit> commits;
+            using (_logger.BeginTimedOperation("Mapping commits into internal representation"))
+            {
+                commits = allCommits
+                    .Select(SimpleCommit.FromCommit)
+                    .ToDictionary(c => c.Hash, c => c);
+            }
 
             // Establish parent/child relationships
-            foreach (var commit in allCommits)
+            using (_logger.BeginTimedOperation("Establishing parent/child relationships"))
             {
-                if (!commit.Parents.Any()) continue;
-
-                var simpleCommit = commits[commit.Sha];
-                foreach (var parent in commit.Parents)
+                foreach (var commit in allCommits)
                 {
-                    var simpleParent = commits[parent.Sha];
-                    simpleCommit.AddParent(simpleParent);
+                    if (!commit.Parents.Any()) continue;
+
+                    var simpleCommit = commits[commit.Sha];
+                    foreach (var parent in commit.Parents)
+                    {
+                        var simpleParent = commits[parent.Sha];
+                        simpleCommit.AddParent(simpleParent);
+                    }
                 }
             }
 
-            // Apply all relevant version tags to each commit
-            var allTags = _repository.Tags.ToArray();
-            _logger.Debug("Analyzing {NumberOfTags} tags", allTags.Length);
-
-            foreach (var tag in allTags)
+            Tag[] allTags;
+            using (_logger.BeginTimedOperation("Loading tags"))
             {
-                var version = VersionInfo.TryParse(tag.FriendlyName);
-                if (version == null) continue;
+                allTags = _repository.Tags.ToArray();
+                _logger.Debug("Repository contains {NumberOfTags} tags", allTags.Length);
+            }
 
-                // tags can reference to commits which have been removed. In this case we don't care.
-                if (!commits.TryGetValue(tag.Target.Sha, out var commit)) continue;
+            using (_logger.BeginTimedOperation("Applying relevant version tags to each commit"))
+            {
+                foreach (var tag in allTags)
+                {
+                    var version = VersionInfo.TryParse(tag.FriendlyName);
+                    if (version == null) continue;
 
-                _logger.Verbose("{CommitHash} is tagged with {VersionTag}", commit.Hash, version);
-                commit.TagWith(version);
+                    // tags can reference to commits which have been removed. In this case we don't care.
+                    if (!commits.TryGetValue(tag.Target.Sha, out var commit)) continue;
+
+                    _logger.Verbose("{CommitHash} is tagged with {VersionTag}", commit.Hash, version);
+                    commit.TagWith(version);
+                }
             }
 
             var currentCommitHash = allCommits.First().Sha;

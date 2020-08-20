@@ -13,21 +13,51 @@ namespace OctoVersion.Core
         private readonly ILogger _logger = Log.ForContext<StructuredOutputFactory>();
         private readonly string[] _nonPreReleaseTags;
         private readonly string _nonPreReleaseTagsRegex;
+        private readonly int? _overriddenMajorVersion;
+        private readonly int? _overriddenMinorVersion;
+        private readonly int? _overriddenPatchVersion;
 
         public StructuredOutputFactory(string currentBranch, string[] nonPreReleaseTags, string nonPreReleaseTagsRegex,
-            string buildMetadata)
+            int? overriddenMajorVersion, int? overriddenMinorVersion, int? overriddenPatchVersion, string buildMetadata)
         {
             _currentBranch = currentBranch;
             _nonPreReleaseTags = nonPreReleaseTags;
             _nonPreReleaseTagsRegex = nonPreReleaseTagsRegex;
+            _overriddenMajorVersion = overriddenMajorVersion;
+            _overriddenMinorVersion = overriddenMinorVersion;
+            _overriddenPatchVersion = overriddenPatchVersion;
             _buildMetadata = buildMetadata;
         }
 
         public StructuredOutput Create(VersionInfo versionInfo)
         {
             var preReleaseTag = DerivePreReleaseTag();
-            var result = new StructuredOutput(versionInfo.Major, versionInfo.Minor, versionInfo.Revision, preReleaseTag,
-                _buildMetadata);
+
+            var major = versionInfo.Major;
+            if (_overriddenMajorVersion.HasValue)
+            {
+                _logger.Debug("Overriding derived major version {DerivedMajorVersion} with {OverriddenMajorVersion}",
+                    versionInfo.Major, _overriddenMajorVersion.Value);
+                major = _overriddenMajorVersion.Value;
+            }
+
+            var minor = versionInfo.Minor;
+            if (_overriddenMinorVersion.HasValue)
+            {
+                _logger.Debug("Overriding derived minor version {DerivedMinorVersion} with {OverriddenMinorVersion}",
+                    versionInfo.Minor, _overriddenMinorVersion.Value);
+                minor = _overriddenMinorVersion.Value;
+            }
+
+            var patch = versionInfo.Patch;
+            if (_overriddenPatchVersion.HasValue)
+            {
+                _logger.Debug("Overriding derived patch version {DerivedPatchVersion} with {OverriddenPatchVersion}",
+                    versionInfo.Patch, _overriddenPatchVersion.Value);
+                patch = _overriddenPatchVersion.Value;
+            }
+
+            var result = new StructuredOutput(major, minor, patch, preReleaseTag, _buildMetadata);
             return result;
         }
 

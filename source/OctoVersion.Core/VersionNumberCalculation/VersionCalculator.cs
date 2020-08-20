@@ -71,7 +71,7 @@ namespace OctoVersion.Core.VersionNumberCalculation
                 versionInfo = new VersionInfo(maxParentVersion.Major, maxParentVersion.Minor + 1, 0);
             else
                 versionInfo = new VersionInfo(maxParentVersion.Major, maxParentVersion.Minor,
-                    maxParentVersion.Revision + 1);
+                    maxParentVersion.Patch + 1);
             _calculatedVersions[commit] = versionInfo;
 
             return versionInfo;

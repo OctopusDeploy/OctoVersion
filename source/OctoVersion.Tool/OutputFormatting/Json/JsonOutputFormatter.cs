@@ -1,5 +1,4 @@
-﻿using System;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using OctoVersion.Core;
 using OctoVersion.Tool.Logging;
 using Serilog.Core;
@@ -18,7 +17,7 @@ namespace OctoVersion.Tool.OutputFormatting.Json
         public void Write(StructuredOutput structuredOutput)
         {
             var json = JsonConvert.SerializeObject(structuredOutput, Settings);
-            Console.WriteLine(json);
+            System.Console.WriteLine(json);
         }
     }
 }

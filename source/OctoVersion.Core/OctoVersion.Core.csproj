@@ -9,6 +9,7 @@
   <ItemGroup>
     <PackageReference Include="LibGit2Sharp" Version="0.26.2" />
     <PackageReference Include="Serilog" Version="2.8.0" />
+    <PackageReference Include="SerilogMetrics" Version="2.1.0" />
   </ItemGroup>
 
 </Project>

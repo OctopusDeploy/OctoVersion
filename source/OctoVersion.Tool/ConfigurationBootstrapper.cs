@@ -1,14 +1,17 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.IO;
 using Microsoft.Extensions.Configuration;
-using OctoVersion.Core;
 using OctoVersion.Core.ExtensionMethods;
+using OctoVersion.Tool.Configuration;
 
 namespace OctoVersion.Tool
 {
     public static class ConfigurationBootstrapper
     {
-        public static (T, IConfigurationRoot) Bootstrap<T>() where T : new()
+        // ReSharper disable once StringLiteralTypo
+        public const string EnvironmentVariablePrefix = "OCTOVERSION_";
+
+        public static (T, IConfigurationRoot) Bootstrap<T>(string[] args) where T : IAppSettings, new()
         {
             var configFilePath = BestEffortConfigFilePath();
 
@@ -17,11 +20,14 @@ namespace OctoVersion.Tool
                 {
                     if (configFilePath != null) configurationBuilder.AddJsonFile(configFilePath.FullName);
                 })
-                .AddEnvironmentVariables("OCTOVERSION_")
+                .AddEnvironmentVariables(EnvironmentVariablePrefix)
+                .AddCommandLine(args)
                 .Build();
 
             var appSettings = new T();
             configuration.Bind(appSettings);
+
+            appSettings.ApplyDefaultsIfRequired();
 
             var validationContext = new ValidationContext(appSettings);
             Validator.ValidateObject(appSettings, validationContext);

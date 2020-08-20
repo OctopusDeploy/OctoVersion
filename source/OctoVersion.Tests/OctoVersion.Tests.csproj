@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\OctoVersion.Core\OctoVersion.Core.csproj" />
+    <ProjectReference Include="..\OctoVersion.Tool\OctoVersion.Tool.csproj" />
   </ItemGroup>
 
 </Project>

@@ -15,7 +15,7 @@
 
         public override string ToString()
         {
-            var structuredOutput = new StructuredOutput(VersionInfo.Major, VersionInfo.Minor, VersionInfo.Revision,
+            var structuredOutput = new StructuredOutput(VersionInfo.Major, VersionInfo.Minor, VersionInfo.Patch,
                 PreReleaseTag, BuildMetadata);
             return structuredOutput.ToString();
         }

@@ -1,21 +1,34 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace OctoVersion.Tool.Configuration
 {
-    public class AppSettings
+    public interface IAppSettings
     {
-        [Required] public string CurrentBranch { get; set; } = "main";
+        void ApplyDefaultsIfRequired();
+    }
 
-        [Required] public string[] NonPreReleaseTags { get; set; } = {"main", "master"};
+    public class AppSettings : IAppSettings
+    {
+        [Required] public string CurrentBranch { get; set; }
+        [Required] public string[] NonPreReleaseTags { get; set; } = Array.Empty<string>();
+        public string NonPreReleaseTagsRegex { get; set; } = string.Empty;
 
-        public string NonPreReleaseTagsRegex { get; set; } = "^release/.*$";
+        public string RepositoryPath { get; set; } = string.Empty;
 
-        public int? OverrideMajorVersion { get; set; }
-        public int? OverrideMinorVersion { get; set; }
-        public int? OverrideRevision { get; set; }
-
+        public int? Major { get; set; }
+        public int? Minor { get; set; }
+        public int? Patch { get; set; }
+        public string PreReleaseTag { get; set; } = string.Empty;
         public string BuildMetadata { get; set; } = string.Empty;
 
-        public string[] OutputFormats { get; set; } = {"Console", "Json", "TeamCity"};
+        public string[] OutputFormats { get; set; } = Array.Empty<string>();
+
+        public void ApplyDefaultsIfRequired()
+        {
+            if (!NonPreReleaseTags.Any()) NonPreReleaseTags = new[] {"main", "master"};
+            if (!OutputFormats.Any()) OutputFormats = new[] {"Console"};
+        }
     }
 }

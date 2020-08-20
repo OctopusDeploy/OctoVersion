@@ -4,16 +4,16 @@ namespace OctoVersion.Core
 {
     public class VersionInfo : IComparable
     {
-        public VersionInfo(int major, int minor, int revision)
+        public VersionInfo(int major, int minor, int patch)
         {
             Major = major;
             Minor = minor;
-            Revision = revision;
+            Patch = patch;
         }
 
         public int Major { get; }
         public int Minor { get; }
-        public int Revision { get; }
+        public int Patch { get; }
 
         public int CompareTo(object obj)
         {
@@ -21,12 +21,12 @@ namespace OctoVersion.Core
 
             if (Major != other.Major) return Major.CompareTo(other.Major);
             if (Minor != other.Minor) return Minor.CompareTo(other.Minor);
-            return Revision.CompareTo(other.Revision);
+            return Patch.CompareTo(other.Patch);
         }
 
         public override string ToString()
         {
-            return $"{Major}.{Minor}.{Revision}";
+            return $"{Major}.{Minor}.{Patch}";
         }
 
         public static VersionInfo? TryParse(string versionString)
