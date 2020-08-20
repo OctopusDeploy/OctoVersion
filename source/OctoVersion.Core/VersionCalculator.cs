@@ -15,8 +15,6 @@ namespace OctoVersion.Core
         {
             _commits = commits;
             CurrentCommitHash = currentCommitHash;
-
-            EnsureCacheIsPrimed();
         }
 
         public string CurrentCommitHash { get; }
@@ -28,21 +26,35 @@ namespace OctoVersion.Core
             // Traverse up the commit history in roughly chronological order (oldest to newest)
             // so that we limit the recursion depth. It's marginally less efficient this way but
             // it avoids stack overflows from recursing down 50,000 stack frames :)
-            foreach (var commit in _commits.OrderBy(c => c.Timestamp)) GetVersion(commit.Hash);
+            foreach (var commit in _commits.OrderBy(c => c.Timestamp)) GetVersionInternal(commit);
 
             _cacheIsPrimed = true;
         }
 
+        public VersionInfo GetVersion()
+        {
+            EnsureCacheIsPrimed();
+
+            return GetVersion(CurrentCommitHash);
+        }
+
         public VersionInfo GetVersion(string commitHash)
         {
+            EnsureCacheIsPrimed();
+
             var commit = _commits.Single(c => c.Hash == commitHash);
             return GetVersion(commit);
         }
 
-        private VersionInfo GetVersion(SimpleCommit commit)
+        internal VersionInfo GetVersion(SimpleCommit commit)
         {
             EnsureCacheIsPrimed();
 
+            return GetVersionInternal(commit);
+        }
+
+        private VersionInfo GetVersionInternal(SimpleCommit commit)
+        {
             // We do this to avoid recursing too many stack frames
             if (_calculatedVersions.TryGetValue(commit, out var alreadyCalculatedVersion))
                 return alreadyCalculatedVersion;
@@ -54,10 +66,9 @@ namespace OctoVersion.Core
 
             if (taggedVersion != null) return taggedVersion;
 
-
             var maxParentVersion = commit.Parents
                                        .SelectMany(c => c.Parents)
-                                       .Select(GetVersion)
+                                       .Select(GetVersionInternal)
                                        .OrderByDescending(v => v)
                                        .FirstOrDefault()
                                    ?? new VersionInfo(0, 0, 0);

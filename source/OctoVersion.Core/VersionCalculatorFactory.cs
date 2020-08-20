@@ -9,7 +9,8 @@ namespace OctoVersion.Core
 
         public VersionCalculatorFactory(string repositoryPath)
         {
-            _repository = new Repository(repositoryPath);
+            var actualRepositoryPath = Repository.Discover(repositoryPath);
+            _repository = new Repository(actualRepositoryPath);
         }
 
         public VersionCalculator Create()
