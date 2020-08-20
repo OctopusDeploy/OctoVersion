@@ -8,5 +8,11 @@ namespace OctoVersion.Core
         {
             return func(target);
         }
+
+        public static TInput Apply<TInput>(this TInput target, Action<TInput> action)
+        {
+            action(target);
+            return target;
+        }
     }
 }

@@ -3,9 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30320.27
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OctoVersion.Core", "OctoVersion.Core\OctoVersion.Core.csproj", "{4C68CCB1-185D-4CA4-A9C7-7BB3E62743AC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OctoVersion.Core", "OctoVersion.Core\OctoVersion.Core.csproj", "{4C68CCB1-185D-4CA4-A9C7-7BB3E62743AC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OctoVersion.Tool", "OctoVersion.Tool\OctoVersion.Tool.csproj", "{186C4135-A3FF-48BA-9625-32DFFEDE6525}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OctoVersion.Tool", "OctoVersion.Tool\OctoVersion.Tool.csproj", "{186C4135-A3FF-48BA-9625-32DFFEDE6525}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OctoVersion.BuildServers.TeamCity", "OctoVersion.BuildServers.TeamCity\OctoVersion.BuildServers.TeamCity.csproj", "{BEFFBFED-629F-4028-A04E-6D1500F8CD42}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OctoVersion.Contracts", "OctoVersion.Contracts\OctoVersion.Contracts.csproj", "{7B8B27A0-F95D-4170-8A88-BA4590AFE0FE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,14 @@ Global
 		{186C4135-A3FF-48BA-9625-32DFFEDE6525}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{186C4135-A3FF-48BA-9625-32DFFEDE6525}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{186C4135-A3FF-48BA-9625-32DFFEDE6525}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BEFFBFED-629F-4028-A04E-6D1500F8CD42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BEFFBFED-629F-4028-A04E-6D1500F8CD42}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BEFFBFED-629F-4028-A04E-6D1500F8CD42}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BEFFBFED-629F-4028-A04E-6D1500F8CD42}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B8B27A0-F95D-4170-8A88-BA4590AFE0FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B8B27A0-F95D-4170-8A88-BA4590AFE0FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B8B27A0-F95D-4170-8A88-BA4590AFE0FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B8B27A0-F95D-4170-8A88-BA4590AFE0FE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OctoVersion.Core
+namespace OctoVersion.Contracts
 {
     public class VersionInfo : IComparable
     {

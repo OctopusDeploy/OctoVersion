@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using LibGit2Sharp;
+using OctoVersion.Contracts;
 
 namespace OctoVersion.Core
 {
