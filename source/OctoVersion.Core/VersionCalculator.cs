@@ -11,7 +11,7 @@ namespace OctoVersion.Core
         private readonly SimpleCommit[] _commits;
         private bool _cacheIsPrimed;
 
-        public VersionCalculator(SimpleCommit[] commits, string currentCommitHash)
+        internal VersionCalculator(SimpleCommit[] commits, string currentCommitHash)
         {
             _commits = commits;
             CurrentCommitHash = currentCommitHash;

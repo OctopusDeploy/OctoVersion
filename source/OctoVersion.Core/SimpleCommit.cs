@@ -4,7 +4,7 @@ using LibGit2Sharp;
 
 namespace OctoVersion.Core
 {
-    public class SimpleCommit
+    internal class SimpleCommit
     {
         public SimpleCommit(string hash, string message, DateTimeOffset timestamp, bool bumpsMajorVersion,
             bool bumpsMinorVersion)

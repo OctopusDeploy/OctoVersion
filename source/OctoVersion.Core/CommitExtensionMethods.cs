@@ -2,7 +2,7 @@
 
 namespace OctoVersion.Core
 {
-    public static class CommitExtensionMethods
+    internal static class CommitExtensionMethods
     {
         public static bool BumpsMajorVersion(this Commit commit)
         {

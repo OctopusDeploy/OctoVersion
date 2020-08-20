@@ -3,7 +3,6 @@
 namespace OctoVersion.Core
 {
     public class VersionInfo : IComparable
-
     {
         public VersionInfo(int major, int minor, int revision)
         {
