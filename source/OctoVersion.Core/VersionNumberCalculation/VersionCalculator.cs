@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using OctoVersion.Contracts;
 
-namespace OctoVersion.Core
+namespace OctoVersion.Core.VersionNumberCalculation
 {
     public class VersionCalculator
     {
@@ -34,20 +33,11 @@ namespace OctoVersion.Core
 
         public VersionInfo GetVersion()
         {
-            EnsureCacheIsPrimed();
-
-            return GetVersion(CurrentCommitHash);
-        }
-
-        public VersionInfo GetVersion(string commitHash)
-        {
-            EnsureCacheIsPrimed();
-
-            var commit = _commits.Single(c => c.Hash == commitHash);
+            var commit = _commits.Single(c => c.Hash == CurrentCommitHash);
             return GetVersion(commit);
         }
 
-        internal VersionInfo GetVersion(SimpleCommit commit)
+        private VersionInfo GetVersion(SimpleCommit commit)
         {
             EnsureCacheIsPrimed();
 

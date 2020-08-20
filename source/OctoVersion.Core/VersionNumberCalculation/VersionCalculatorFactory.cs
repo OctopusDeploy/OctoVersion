@@ -1,19 +1,16 @@
 ﻿using System.Linq;
 using LibGit2Sharp;
-using OctoVersion.Contracts;
 using Serilog;
 
-namespace OctoVersion.Core
+namespace OctoVersion.Core.VersionNumberCalculation
 {
     public class VersionCalculatorFactory
     {
-        private readonly ILogger _logger;
+        private readonly ILogger _logger = Log.ForContext<VersionCalculatorFactory>();
         private readonly Repository _repository;
 
-        public VersionCalculatorFactory(string repositorySearchPath, ILogger logger)
+        public VersionCalculatorFactory(string repositorySearchPath)
         {
-            _logger = logger;
-
             var gitRepositoryPath = Repository.Discover(repositorySearchPath);
             _logger.Debug("Located Git repository in {GitRepositoryPath}", gitRepositoryPath);
             _repository = new Repository(gitRepositoryPath);

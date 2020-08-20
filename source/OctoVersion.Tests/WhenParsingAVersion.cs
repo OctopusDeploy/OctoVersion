@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using OctoVersion.Contracts;
+using OctoVersion.Core;
 using Shouldly;
 using Xunit;
 

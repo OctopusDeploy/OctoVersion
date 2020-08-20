@@ -15,13 +15,13 @@
 	  <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.7" />
 	  <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="3.1.7" />
 	  <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.7" />
+	  <PackageReference Include="NewtonSoft.Json" Version="12.0.3" />
 	  <PackageReference Include="Serilog.Settings.Configuration" Version="3.1.0" />
 	  <PackageReference Include="Serilog.Sinks.Literate" Version="3.0.0" />
 	  <PackageReference Include="SerilogMetrics" Version="2.1.0" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\OctoVersion.BuildServers.TeamCity\OctoVersion.BuildServers.TeamCity.csproj" />
 	  <ProjectReference Include="..\OctoVersion.Core\OctoVersion.Core.csproj" />
 	</ItemGroup>
 

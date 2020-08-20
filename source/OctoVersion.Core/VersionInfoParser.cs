@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace OctoVersion.Contracts
+namespace OctoVersion.Core
 {
     internal static class VersionInfoParser
     {

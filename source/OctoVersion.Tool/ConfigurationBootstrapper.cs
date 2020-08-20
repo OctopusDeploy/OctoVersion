@@ -2,6 +2,7 @@
 using System.IO;
 using Microsoft.Extensions.Configuration;
 using OctoVersion.Core;
+using OctoVersion.Core.ExtensionMethods;
 
 namespace OctoVersion.Tool
 {

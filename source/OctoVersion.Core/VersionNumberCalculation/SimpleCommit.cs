@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using LibGit2Sharp;
-using OctoVersion.Contracts;
+using OctoVersion.Core.ExtensionMethods;
 
-namespace OctoVersion.Core
+namespace OctoVersion.Core.VersionNumberCalculation
 {
     internal class SimpleCommit
     {

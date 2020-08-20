@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OctoVersion.Core
+namespace OctoVersion.Core.ExtensionMethods
 {
     public static class ObjectExtensionMethods
     {

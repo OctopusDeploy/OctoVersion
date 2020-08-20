@@ -1,6 +1,6 @@
 ﻿using LibGit2Sharp;
 
-namespace OctoVersion.Core
+namespace OctoVersion.Core.ExtensionMethods
 {
     internal static class CommitExtensionMethods
     {

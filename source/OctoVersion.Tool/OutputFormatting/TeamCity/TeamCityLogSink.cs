@@ -2,7 +2,7 @@
 using Serilog.Core;
 using Serilog.Events;
 
-namespace OctoVersion.BuildServers.TeamCity
+namespace OctoVersion.Tool.OutputFormatting.TeamCity
 {
     public class TeamCityLogSink : ILogEventSink
     {
@@ -17,7 +17,7 @@ namespace OctoVersion.BuildServers.TeamCity
 
             var message =
                 $"##teamcity[message text='{Sanitize(messageText)}' errorDetails='{Sanitize(errorDetails)}' status='{Sanitize(status)}']";
-            Console.WriteLine(message);
+            System.Console.WriteLine(message);
         }
 
         private static string Sanitize(string input)

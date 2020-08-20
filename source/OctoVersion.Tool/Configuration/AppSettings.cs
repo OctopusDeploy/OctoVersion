@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using OctoVersion.BuildServers.TeamCity;
 
 namespace OctoVersion.Tool.Configuration
 {
@@ -17,6 +16,6 @@ namespace OctoVersion.Tool.Configuration
 
         public string BuildMetadata { get; set; } = string.Empty;
 
-        public string BuildServerOutputFormatter { get; set; } = TeamCityBuildServerOutputFormatter.BuildServerName;
+        public string[] OutputFormats { get; set; } = {"Console", "Json", "TeamCity"};
     }
 }
