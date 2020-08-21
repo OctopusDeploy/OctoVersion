@@ -30,10 +30,16 @@ namespace OctoVersion.Tool.OutputFormatting.TeamCity
                 .GetProperties(BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.Instance);
             foreach (var property in properties)
             {
-                var key = $"env.{prefix}{property.Name}";
+                var environmentVariableKey = $"env.{prefix}{property.Name}";
+                var configurationVariableKey = $"OctoVersion.{property.Name}";
+
                 var value = property.GetValue(structuredOutput)?.ToString() ?? string.Empty;
-                var message = $"##teamcity[setParameter name='{key}' value='{value}']";
-                System.Console.WriteLine(message);
+
+                var environmentVariableMessage = $"##teamcity[setParameter name='{environmentVariableKey}' value='{value}']";
+                System.Console.WriteLine(environmentVariableMessage);
+
+                var configurationVariableMessage = $"##teamcity[setParameter name='{configurationVariableKey}' value='{value}']";
+                System.Console.WriteLine(configurationVariableMessage);
             }
         }
     }
