@@ -19,13 +19,13 @@ namespace OctoVersion.Core
         private readonly int? _overriddenMinorVersion;
         private readonly int? _overriddenPatchVersion;
 
-        public StructuredOutputFactory(string currentBranch,
-            string[] nonPreReleaseTags,
+        public StructuredOutputFactory(string[] nonPreReleaseTags,
             string nonPreReleaseTagsRegex,
             int? overriddenMajorVersion,
             int? overriddenMinorVersion,
             int? overriddenPatchVersion,
-            string buildMetadata)
+            string currentBranch,
+            string? buildMetadata)
         {
             _currentBranch = currentBranch;
             _nonPreReleaseTags = nonPreReleaseTags;
@@ -33,7 +33,7 @@ namespace OctoVersion.Core
             _overriddenMajorVersion = overriddenMajorVersion;
             _overriddenMinorVersion = overriddenMinorVersion;
             _overriddenPatchVersion = overriddenPatchVersion;
-            _buildMetadata = buildMetadata;
+            _buildMetadata = buildMetadata ?? string.Empty;
         }
 
         public StructuredOutput Create(VersionInfo versionInfo)

@@ -14,7 +14,7 @@ namespace OctoVersion.Tool
         private static void Main(string[] args)
         {
             var (appSettings, configuration) = ConfigurationBootstrapper.Bootstrap<AppSettings>(args);
-            var outputFormatters = LoadBuildServerOutputFormatters(appSettings.OutputFormats);
+            var outputFormatters = new OutputFormattersProvider().GetFormatters(appSettings.OutputFormats);
             LogBootstrapper.Bootstrap(configuration, lc =>
             {
                 foreach (var outputFormatter in outputFormatters) lc.WriteTo.Sink(outputFormatter.LogSink);
@@ -33,12 +33,11 @@ namespace OctoVersion.Tool
             foreach (var outputFormatter in outputFormatters)
                 Log.Debug("Writing build output using {OutputFormatter}", outputFormatter.GetType().Name);
 
-            VersionInfo version;
-            if (appSettings.Major.HasValue && appSettings.Minor.HasValue && appSettings.Patch.HasValue)
+            StructuredOutput structuredOutput;
+            if (appSettings.Major.HasValue && appSettings.Minor.HasValue && appSettings.Patch.HasValue && appSettings.PreReleaseTag != null && appSettings.BuildMetadata != null)
             {
-                Log.Information(
-                    "Adopting previously-provided version information. Not calculating a new version number.");
-                version = new VersionInfo(appSettings.Major.Value, appSettings.Minor.Value, appSettings.Patch.Value);
+                Log.Information("Adopting previously-provided version information. Not calculating a new version number.");
+                structuredOutput = new StructuredOutput(appSettings.Major.Value, appSettings.Minor.Value, appSettings.Patch.Value, appSettings.PreReleaseTag, appSettings.BuildMetadata);
             }
             else
             {
@@ -46,14 +45,15 @@ namespace OctoVersion.Tool
                 {
                     var versionCalculatorFactory = new VersionCalculatorFactory(repositorySearchPath);
                     var calculator = versionCalculatorFactory.Create();
-                    version = calculator.GetVersion();
+                    var version = calculator.GetVersion();
+                    structuredOutput = new StructuredOutputFactory(appSettings.NonPreReleaseTags,
+                            appSettings.NonPreReleaseTagsRegex, appSettings.Major, appSettings.Minor,
+                            appSettings.Patch, appSettings.CurrentBranch,
+                            appSettings.BuildMetadata)
+                        .Create(version);
                 }
-            }
 
-            var structuredOutput = new StructuredOutputFactory(appSettings.CurrentBranch, appSettings.NonPreReleaseTags,
-                    appSettings.NonPreReleaseTagsRegex, appSettings.Major, appSettings.Minor,
-                    appSettings.Patch, appSettings.BuildMetadata)
-                .Create(version);
+            }
 
             Log.Information("Version is {FullSemVer}", structuredOutput.FullSemVer);
 
@@ -61,21 +61,5 @@ namespace OctoVersion.Tool
                 outputFormatter.Write(structuredOutput);
         }
 
-        private static IOutputFormatter[] LoadBuildServerOutputFormatters(string[] outputFormatterNames)
-        {
-            var allFormatters = typeof(Program).Assembly.DefinedTypes
-                .Where(t => typeof(IOutputFormatter).IsAssignableFrom(t))
-                .Where(t => !t.IsInterface)
-                .Where(t => !t.IsAbstract)
-                .Select(t => (IOutputFormatter) Activator.CreateInstance(t))
-                .ToArray();
-
-            var formatters = allFormatters
-                .Where(f => outputFormatterNames.Any(n =>
-                    f.GetType().Name.Equals($"{n}OutputFormatter", StringComparison.OrdinalIgnoreCase)))
-                .ToArray();
-
-            return formatters;
-        }
     }
 }
