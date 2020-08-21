@@ -7,17 +7,17 @@ namespace OctoVersion.Core
 {
     public class StructuredOutputFactory
     {
-        private readonly string _buildMetadata;
-        private readonly string _currentBranch;
+        readonly string _buildMetadata;
+        readonly string _currentBranch;
 
-        private readonly ILogger _logger = Log.ForContext<StructuredOutputFactory>();
-        private readonly FullyQualifiedBranchFlattener _branchFlattener = new FullyQualifiedBranchFlattener();
-        private readonly PreReleaseTagSanitizer _preReleaseTagSanitizer = new PreReleaseTagSanitizer();
-        private readonly string[] _nonPreReleaseTags;
-        private readonly string _nonPreReleaseTagsRegex;
-        private readonly int? _overriddenMajorVersion;
-        private readonly int? _overriddenMinorVersion;
-        private readonly int? _overriddenPatchVersion;
+        readonly ILogger _logger = Log.ForContext<StructuredOutputFactory>();
+        readonly FullyQualifiedBranchFlattener _branchFlattener = new FullyQualifiedBranchFlattener();
+        readonly PreReleaseTagSanitizer _preReleaseTagSanitizer = new PreReleaseTagSanitizer();
+        readonly string[] _nonPreReleaseTags;
+        readonly string _nonPreReleaseTagsRegex;
+        readonly int? _overriddenMajorVersion;
+        readonly int? _overriddenMinorVersion;
+        readonly int? _overriddenPatchVersion;
 
         public StructuredOutputFactory(string[] nonPreReleaseTags,
             string nonPreReleaseTagsRegex,
@@ -75,7 +75,7 @@ namespace OctoVersion.Core
             return result;
         }
 
-        private string DerivePreReleaseTag()
+        string DerivePreReleaseTag()
         {
             if (_nonPreReleaseTags.Any(t => t.Equals(_currentBranch, StringComparison.OrdinalIgnoreCase)))
             {

@@ -1,6 +1,5 @@
 ﻿using System;
 using Microsoft.Extensions.Configuration;
-using OctoVersion.Core;
 using OctoVersion.Core.ExtensionMethods;
 using Serilog;
 

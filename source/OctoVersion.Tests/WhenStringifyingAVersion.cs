@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using OctoVersion.Core;
 using Shouldly;
@@ -16,8 +17,8 @@ namespace OctoVersion.Tests
 
         public static IEnumerable<object[]> TestCases()
         {
-            yield return new object[] {new VersionInfo(0, 0, 0), "0.0.0"};
-            yield return new object[] {new VersionInfo(1, 2, 3), "1.2.3"};
+            yield return new object[] { new VersionInfo(0, 0, 0), "0.0.0" };
+            yield return new object[] { new VersionInfo(1, 2, 3), "1.2.3" };
         }
     }
 }

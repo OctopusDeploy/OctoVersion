@@ -1,8 +1,9 @@
-﻿using LibGit2Sharp;
+﻿using System;
+using LibGit2Sharp;
 
 namespace OctoVersion.Core.ExtensionMethods
 {
-    internal static class CommitExtensionMethods
+    static class CommitExtensionMethods
     {
         public static bool BumpsMajorVersion(this Commit commit)
         {

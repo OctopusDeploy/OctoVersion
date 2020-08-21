@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using Microsoft.Extensions.Configuration;
 using OctoVersion.Core.ExtensionMethods;
@@ -35,7 +36,7 @@ namespace OctoVersion.Tool
             return (appSettings, configuration);
         }
 
-        private static FileInfo BestEffortConfigFilePath()
+        static FileInfo BestEffortConfigFilePath()
         {
             var directory = new DirectoryInfo(Directory.GetCurrentDirectory());
             while (directory != null)

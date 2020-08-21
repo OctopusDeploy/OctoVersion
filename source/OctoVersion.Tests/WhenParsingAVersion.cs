@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using OctoVersion.Core;
 using Shouldly;
@@ -16,16 +17,16 @@ namespace OctoVersion.Tests
 
         public static IEnumerable<object[]> TestCases()
         {
-            yield return new object[] {"0.0.0", new VersionInfo(0, 0, 0)};
-            yield return new object[] {"0.0", new VersionInfo(0, 0, 0)};
-            yield return new object[] {"0", new VersionInfo(0, 0, 0)};
-            yield return new object[] {"1", new VersionInfo(1, 0, 0)};
-            yield return new object[] {"1.2", new VersionInfo(1, 2, 0)};
-            yield return new object[] {"1.2.3", new VersionInfo(1, 2, 3)};
-            yield return new object[] {"1.2.3-alpha", null};
-            yield return new object[] {"1+some-build-info", new VersionInfo(1, 0, 0)};
-            yield return new object[] {"1.2+some-build-info", new VersionInfo(1, 2, 0)};
-            yield return new object[] {"1.2.3+some-build-info", new VersionInfo(1, 2, 3)};
+            yield return new object[] { "0.0.0", new VersionInfo(0, 0, 0) };
+            yield return new object[] { "0.0", new VersionInfo(0, 0, 0) };
+            yield return new object[] { "0", new VersionInfo(0, 0, 0) };
+            yield return new object[] { "1", new VersionInfo(1, 0, 0) };
+            yield return new object[] { "1.2", new VersionInfo(1, 2, 0) };
+            yield return new object[] { "1.2.3", new VersionInfo(1, 2, 3) };
+            yield return new object[] { "1.2.3-alpha", null };
+            yield return new object[] { "1+some-build-info", new VersionInfo(1, 0, 0) };
+            yield return new object[] { "1.2+some-build-info", new VersionInfo(1, 2, 0) };
+            yield return new object[] { "1.2.3+some-build-info", new VersionInfo(1, 2, 3) };
         }
     }
 }

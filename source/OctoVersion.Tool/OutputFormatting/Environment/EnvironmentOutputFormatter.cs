@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using OctoVersion.Core;
 using OctoVersion.Tool.Logging;
 using Serilog.Core;

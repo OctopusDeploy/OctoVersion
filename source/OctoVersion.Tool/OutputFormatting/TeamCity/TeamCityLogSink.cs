@@ -21,7 +21,7 @@ namespace OctoVersion.Tool.OutputFormatting.TeamCity
             System.Console.WriteLine(message);
         }
 
-        private static string Sanitize(string input)
+        static string Sanitize(string input)
         {
             var output = input
                     .Replace("'", "|'")
@@ -33,7 +33,7 @@ namespace OctoVersion.Tool.OutputFormatting.TeamCity
             return output;
         }
 
-        private static string Status(LogEventLevel logEventLevel)
+        static string Status(LogEventLevel logEventLevel)
         {
             switch (logEventLevel)
             {

@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
 using OctoVersion.Core;
 using OctoVersion.Tool.Logging;
 using Serilog.Core;
@@ -7,7 +8,7 @@ namespace OctoVersion.Tool.OutputFormatting.Json
 {
     public class JsonOutputFormatter : IOutputFormatter
     {
-        private static readonly JsonSerializerSettings Settings = new JsonSerializerSettings
+        static readonly JsonSerializerSettings Settings = new JsonSerializerSettings
         {
             Formatting = Formatting.Indented
         };

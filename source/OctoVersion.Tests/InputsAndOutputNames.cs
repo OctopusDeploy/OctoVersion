@@ -1,4 +1,5 @@
-﻿using OctoVersion.Core;
+﻿using System;
+using OctoVersion.Core;
 using OctoVersion.Tool.Configuration;
 using Shouldly;
 using Xunit;

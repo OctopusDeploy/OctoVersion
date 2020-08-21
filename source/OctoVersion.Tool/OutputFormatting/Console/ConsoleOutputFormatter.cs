@@ -1,10 +1,11 @@
-﻿using OctoVersion.Core;
+﻿using System;
+using OctoVersion.Core;
 using OctoVersion.Tool.Logging;
 using Serilog.Core;
 
 namespace OctoVersion.Tool.OutputFormatting.Console
 {
-    internal class ConsoleOutputFormatter : IOutputFormatter
+    class ConsoleOutputFormatter : IOutputFormatter
     {
         public ILogEventSink LogSink { get; } = new NullSink();
 

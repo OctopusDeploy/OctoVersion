@@ -9,19 +9,20 @@ using Serilog;
 
 namespace OctoVersion.Tool
 {
-    internal class Program
+    class Program
     {
-        private static void Main(string[] args)
+        static void Main(string[] args)
         {
             var (appSettings, configuration) = ConfigurationBootstrapper.Bootstrap<AppSettings>(args);
             var outputFormatters = new OutputFormattersProvider().GetFormatters(appSettings.OutputFormats);
-            LogBootstrapper.Bootstrap(configuration, lc =>
-            {
-                foreach (var outputFormatter in outputFormatters) lc.WriteTo.Sink(outputFormatter.LogSink);
+            LogBootstrapper.Bootstrap(configuration,
+                lc =>
+                {
+                    foreach (var outputFormatter in outputFormatters) lc.WriteTo.Sink(outputFormatter.LogSink);
 
-                // Special case: if we're writing to the console then use LiterateConsole
-                if (outputFormatters.OfType<ConsoleOutputFormatter>().Any()) lc.WriteTo.LiterateConsole();
-            });
+                    // Special case: if we're writing to the console then use LiterateConsole
+                    if (outputFormatters.OfType<ConsoleOutputFormatter>().Any()) lc.WriteTo.LiterateConsole();
+                });
 
             var currentDirectory = Directory.GetCurrentDirectory();
             Log.Debug("Executing in {Directory}", currentDirectory);
@@ -37,7 +38,11 @@ namespace OctoVersion.Tool
             if (appSettings.Major.HasValue && appSettings.Minor.HasValue && appSettings.Patch.HasValue && appSettings.PreReleaseTag != null && appSettings.BuildMetadata != null)
             {
                 Log.Information("Adopting previously-provided version information. Not calculating a new version number.");
-                structuredOutput = new StructuredOutput(appSettings.Major.Value, appSettings.Minor.Value, appSettings.Patch.Value, appSettings.PreReleaseTag, appSettings.BuildMetadata);
+                structuredOutput = new StructuredOutput(appSettings.Major.Value,
+                    appSettings.Minor.Value,
+                    appSettings.Patch.Value,
+                    appSettings.PreReleaseTag,
+                    appSettings.BuildMetadata);
             }
             else
             {
@@ -47,12 +52,14 @@ namespace OctoVersion.Tool
                     var calculator = versionCalculatorFactory.Create();
                     var version = calculator.GetVersion();
                     structuredOutput = new StructuredOutputFactory(appSettings.NonPreReleaseTags,
-                            appSettings.NonPreReleaseTagsRegex, appSettings.Major, appSettings.Minor,
-                            appSettings.Patch, appSettings.CurrentBranch,
+                            appSettings.NonPreReleaseTagsRegex,
+                            appSettings.Major,
+                            appSettings.Minor,
+                            appSettings.Patch,
+                            appSettings.CurrentBranch,
                             appSettings.BuildMetadata)
                         .Create(version);
                 }
-
             }
 
             Log.Information("Version is {FullSemVer}", structuredOutput.FullSemVer);
@@ -60,6 +67,5 @@ namespace OctoVersion.Tool
             foreach (var outputFormatter in outputFormatters)
                 outputFormatter.Write(structuredOutput);
         }
-
     }
 }

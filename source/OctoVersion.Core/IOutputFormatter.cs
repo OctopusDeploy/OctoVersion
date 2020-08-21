@@ -1,4 +1,5 @@
-﻿using Serilog.Core;
+﻿using System;
+using Serilog.Core;
 
 namespace OctoVersion.Core
 {

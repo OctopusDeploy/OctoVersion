@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using LibGit2Sharp;
 using Serilog;
@@ -7,8 +8,8 @@ namespace OctoVersion.Core.VersionNumberCalculation
 {
     public class VersionCalculatorFactory
     {
-        private readonly ILogger _logger = Log.ForContext<VersionCalculatorFactory>();
-        private readonly Repository _repository;
+        readonly ILogger _logger = Log.ForContext<VersionCalculatorFactory>();
+        readonly Repository _repository;
 
         public VersionCalculatorFactory(string repositorySearchPath)
         {

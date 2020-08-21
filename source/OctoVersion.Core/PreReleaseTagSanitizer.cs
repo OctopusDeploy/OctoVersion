@@ -6,9 +6,9 @@ namespace OctoVersion.Core
 {
     public class PreReleaseTagSanitizer
     {
-        private static readonly Regex SafeCharactersRegex = new Regex("[\\w-.]", RegexOptions.Compiled);
-        private static readonly Regex DuplicateCharactersRegex = new Regex("-+", RegexOptions.Compiled);
-        private static readonly Regex MultipleDotsRegex = new Regex("\\.+", RegexOptions.Compiled);
+        static readonly Regex SafeCharactersRegex = new Regex("[\\w-.]", RegexOptions.Compiled);
+        static readonly Regex DuplicateCharactersRegex = new Regex("-+", RegexOptions.Compiled);
+        static readonly Regex MultipleDotsRegex = new Regex("\\.+", RegexOptions.Compiled);
 
         public string Sanitize(string input)
         {

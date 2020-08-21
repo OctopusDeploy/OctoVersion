@@ -1,15 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace OctoVersion.Core.VersionNumberCalculation
 {
     public class VersionCalculator
     {
-        private readonly Dictionary<SimpleCommit, VersionInfo> _calculatedVersions =
+        readonly Dictionary<SimpleCommit, VersionInfo> _calculatedVersions =
             new Dictionary<SimpleCommit, VersionInfo>();
 
-        private readonly SimpleCommit[] _commits;
-        private bool _cacheIsPrimed;
+        readonly SimpleCommit[] _commits;
+        bool _cacheIsPrimed;
 
         internal VersionCalculator(SimpleCommit[] commits, string currentCommitHash)
         {
@@ -19,7 +20,7 @@ namespace OctoVersion.Core.VersionNumberCalculation
 
         public string CurrentCommitHash { get; }
 
-        private void EnsureCacheIsPrimed()
+        void EnsureCacheIsPrimed()
         {
             if (_cacheIsPrimed) return;
 
@@ -37,14 +38,14 @@ namespace OctoVersion.Core.VersionNumberCalculation
             return GetVersion(commit);
         }
 
-        private VersionInfo GetVersion(SimpleCommit commit)
+        VersionInfo GetVersion(SimpleCommit commit)
         {
             EnsureCacheIsPrimed();
 
             return GetVersionInternal(commit);
         }
 
-        private VersionInfo GetVersionInternal(SimpleCommit commit)
+        VersionInfo GetVersionInternal(SimpleCommit commit)
         {
             // We do this to avoid recursing too many stack frames
             if (_calculatedVersions.TryGetValue(commit, out var alreadyCalculatedVersion))
@@ -58,11 +59,11 @@ namespace OctoVersion.Core.VersionNumberCalculation
             if (taggedVersion != null) return taggedVersion;
 
             var maxParentVersion = commit.Parents
-                                       .SelectMany(c => c.Parents)
-                                       .Select(GetVersionInternal)
-                                       .OrderByDescending(v => v)
-                                       .FirstOrDefault()
-                                   ?? new VersionInfo(0, 0, 0);
+                    .SelectMany(c => c.Parents)
+                    .Select(GetVersionInternal)
+                    .OrderByDescending(v => v)
+                    .FirstOrDefault()
+                ?? new VersionInfo(0, 0, 0);
 
             VersionInfo versionInfo;
             if (commit.BumpsMajorVersion)
@@ -70,7 +71,8 @@ namespace OctoVersion.Core.VersionNumberCalculation
             else if (commit.BumpsMinorVersion)
                 versionInfo = new VersionInfo(maxParentVersion.Major, maxParentVersion.Minor + 1, 0);
             else
-                versionInfo = new VersionInfo(maxParentVersion.Major, maxParentVersion.Minor,
+                versionInfo = new VersionInfo(maxParentVersion.Major,
+                    maxParentVersion.Minor,
                     maxParentVersion.Patch + 1);
             _calculatedVersions[commit] = versionInfo;
 

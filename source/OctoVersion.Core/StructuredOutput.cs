@@ -1,8 +1,14 @@
-﻿namespace OctoVersion.Core
+﻿using System;
+
+namespace OctoVersion.Core
 {
     public class StructuredOutput
     {
-        public StructuredOutput(int major, int minor, int patch, string preReleaseTag, string buildMetadata)
+        public StructuredOutput(int major,
+            int minor,
+            int patch,
+            string preReleaseTag,
+            string buildMetadata)
         {
             Major = major;
             Minor = minor;

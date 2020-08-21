@@ -5,9 +5,12 @@ using OctoVersion.Core.ExtensionMethods;
 
 namespace OctoVersion.Core.VersionNumberCalculation
 {
-    internal class SimpleCommit
+    class SimpleCommit
     {
-        public SimpleCommit(string hash, string message, DateTimeOffset timestamp, bool bumpsMajorVersion,
+        public SimpleCommit(string hash,
+            string message,
+            DateTimeOffset timestamp,
+            bool bumpsMajorVersion,
             bool bumpsMinorVersion)
         {
             Hash = hash;
@@ -37,7 +40,9 @@ namespace OctoVersion.Core.VersionNumberCalculation
 
         public static SimpleCommit FromCommit(Commit commit)
         {
-            var result = new SimpleCommit(commit.Sha, commit.MessageShort, commit.Committer.When,
+            var result = new SimpleCommit(commit.Sha,
+                commit.MessageShort,
+                commit.Committer.When,
                 commit.BumpsMajorVersion(),
                 commit.BumpsMinorVersion());
             return result;

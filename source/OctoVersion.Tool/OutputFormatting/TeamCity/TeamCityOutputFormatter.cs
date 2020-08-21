@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using OctoVersion.Core;
 using Serilog.Core;
 
@@ -14,14 +15,14 @@ namespace OctoVersion.Tool.OutputFormatting.TeamCity
             WriteEnvironmentVariables(structuredOutput);
         }
 
-        private static void WriteBuildNumber(StructuredOutput structuredOutput)
+        static void WriteBuildNumber(StructuredOutput structuredOutput)
         {
             //##teamcity[buildNumber '<new build number>']
             var message = $"##teamcity[buildNumber '{structuredOutput.FullSemVer}']";
             System.Console.WriteLine(message);
         }
 
-        private static void WriteEnvironmentVariables(StructuredOutput structuredOutput)
+        static void WriteEnvironmentVariables(StructuredOutput structuredOutput)
         {
             // ##teamcity[setParameter name='ddd' value='fff']
 

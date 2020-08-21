@@ -1,4 +1,6 @@
-﻿namespace OctoVersion.Core
+﻿using System;
+
+namespace OctoVersion.Core
 {
     public class FullyQualifiedVersionInfo
     {
@@ -15,8 +17,11 @@
 
         public override string ToString()
         {
-            var structuredOutput = new StructuredOutput(VersionInfo.Major, VersionInfo.Minor, VersionInfo.Patch,
-                PreReleaseTag, BuildMetadata);
+            var structuredOutput = new StructuredOutput(VersionInfo.Major,
+                VersionInfo.Minor,
+                VersionInfo.Patch,
+                PreReleaseTag,
+                BuildMetadata);
             return structuredOutput.ToString();
         }
     }
