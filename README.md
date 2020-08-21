@@ -12,7 +12,7 @@ Run it against a local Git repository:
 
 ```
 cd ~/code/my-app
-dotnet octoversion CurrentBranch=main
+octoversion CurrentBranch=main
 ```
 
 You should see output that looks something like this:
@@ -26,7 +26,7 @@ You should see output that looks something like this:
 ### TeamCity
 
 ```bash
-dotnet octoversion CurrentBranch=main OutputFormat:0=TeamCity
+octoversion CurrentBranch=main OutputFormat:0=TeamCity
 ```
 
 ```
@@ -45,7 +45,7 @@ dotnet octoversion CurrentBranch=main OutputFormat:0=TeamCity
 ### Environment variables
 
 ```bash
-dotnet octoversion CurrentBranch=main OutputFormat:0=Environment
+octoversion CurrentBranch=main OutputFormat:0=Environment
 ```
 
 ```
