@@ -12,7 +12,7 @@ Run it against a local Git repository:
 
 ```
 cd ~/code/my-app
-octoversion CurrentBranch=main
+octoversion --CurrentBranch=main
 ```
 
 You should see output that looks something like this:
@@ -26,26 +26,34 @@ You should see output that looks something like this:
 ### TeamCity
 
 ```bash
-octoversion CurrentBranch=main OutputFormat:0=TeamCity
+octoversion --CurrentBranch=main --OutputFormats:0=TeamCity
 ```
 
 ```
-##teamcity[buildNumber '0.0.5']
+##teamcity[buildNumber '0.0.12']
 ##teamcity[setParameter name='env.OCTOVERSION_Major' value='0']
+##teamcity[setParameter name='OctoVersion.Major' value='0']
 ##teamcity[setParameter name='env.OCTOVERSION_Minor' value='0']
-##teamcity[setParameter name='env.OCTOVERSION_Patch' value='5']
-##teamcity[setParameter name='env.OCTOVERSION_MajorMinorPatch' value='0.0.5']
+##teamcity[setParameter name='OctoVersion.Minor' value='0']
+##teamcity[setParameter name='env.OCTOVERSION_Patch' value='12']
+##teamcity[setParameter name='OctoVersion.Patch' value='12']
+##teamcity[setParameter name='env.OCTOVERSION_MajorMinorPatch' value='0.0.12']
+##teamcity[setParameter name='OctoVersion.MajorMinorPatch' value='0.0.12']
 ##teamcity[setParameter name='env.OCTOVERSION_PreReleaseTag' value='']
+##teamcity[setParameter name='OctoVersion.PreReleaseTag' value='']
 ##teamcity[setParameter name='env.OCTOVERSION_PreReleaseTagWithDash' value='']
+##teamcity[setParameter name='OctoVersion.PreReleaseTagWithDash' value='']
 ##teamcity[setParameter name='env.OCTOVERSION_BuildMetadata' value='']
+##teamcity[setParameter name='OctoVersion.BuildMetadata' value='']
 ##teamcity[setParameter name='env.OCTOVERSION_BuildMetadataWithPlus' value='']
-##teamcity[setParameter name='env.OCTOVERSION_FullSemVer' value='0.0.5']
-```
+##teamcity[setParameter name='OctoVersion.BuildMetadataWithPlus' value='']
+##teamcity[setParameter name='env.OCTOVERSION_FullSemVer' value='0.0.12']
+##teamcity[setParameter name='OctoVersion.FullSemVer' value='0.0.12']```
 
 ### Environment variables
 
 ```bash
-octoversion CurrentBranch=main OutputFormat:0=Environment
+octoversion --CurrentBranch=main --OutputFormats:0=Environment
 ```
 
 ```
@@ -63,7 +71,7 @@ OCTOVERSION_FullSemVer=0.0.5
 ### JSON
 
 ```bash
-octoversion CurrentBranch=main OutputFormat:0=Json
+octoversion --CurrentBranch=main --OutputFormats:0=Json
 ```
 
 ```
@@ -88,7 +96,12 @@ OctoVersion sources configuration from:
 1. Environment variables prefixed with the OCTOVERSION_ prefix.
 1. Command-line parameters.
 
-with the later sources overriding the earlier ones.
+with the later sources overriding the earlier ones. The configuration syntax for each is as per the standard [.NET Core standard configuration](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/configuration/) providers:
+
+- `octoversion.json` uses the [JSON Configuration Provider](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/configuration/?view=aspnetcore-3.1#file-configuration-provider) in the same way that `appsettings.json` files do.
+    - Yes, this means that you can hook in a customer Serilog sink using `octoversion.json` if you like :)
+- Environment variables use the [Environment Variables Configuration Provider](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/configuration/?view=aspnetcore-3.1#evcp).
+- Command-line variables use the [Command-line Configuration Provider](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/configuration/?view=aspnetcore-3.1#command-line).
 
 ## FAQ
 
@@ -103,5 +116,5 @@ Rather than attempting to guess (and sneakily getting the answer incorrect), Oct
 For local versioning, it's always possible to set up a `bash`/`zsh` alias along these lines:
 
 ```bash
-alias ov="octoversion CurrentBranch=`git branch --show-current` OutputFormat:0=Console"
+alias ov="octoversion --CurrentBranch=`git branch --show-current`"
 ```
