@@ -49,6 +49,7 @@ octoversion --CurrentBranch=main --OutputFormats:0=TeamCity
 ##teamcity[setParameter name='OctoVersion.BuildMetadataWithPlus' value='']
 ##teamcity[setParameter name='env.OCTOVERSION_FullSemVer' value='0.0.12']
 ##teamcity[setParameter name='OctoVersion.FullSemVer' value='0.0.12']```
+```
 
 ### Environment variables
 
