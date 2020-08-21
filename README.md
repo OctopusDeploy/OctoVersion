@@ -63,7 +63,7 @@ OCTOVERSION_FullSemVer=0.0.5
 ### JSON
 
 ```bash
-dotnet octoversion CurrentBranch=main OutputFormat:0=Json
+octoversion CurrentBranch=main OutputFormat:0=Json
 ```
 
 ```
@@ -84,7 +84,7 @@ dotnet octoversion CurrentBranch=main OutputFormat:0=Json
 
 OctoVersion sources configuration from:
 
-1. Any `octoversion.json` file (lower case!) it finds in the current or any parent directory.
+1. The first, if any, `octoversion.json` file (lower case!) it finds walking up from the current directory.
 1. Environment variables prefixed with the OCTOVERSION_ prefix.
 1. Command-line parameters.
 
@@ -103,5 +103,5 @@ Rather than attempting to guess (and sneakily getting the answer incorrect), Oct
 For local versioning, it's always possible to set up a `bash`/`zsh` alias along these lines:
 
 ```bash
-alias octoversion="dotnet octoversion CurrentBranch=`git branch --show-current` OutputFormat:0=Console
+alias ov="octoversion CurrentBranch=`git branch --show-current` OutputFormat:0=Console"
 ```
