@@ -11,6 +11,7 @@ namespace OctoVersion.Core
         private readonly string _currentBranch;
 
         private readonly ILogger _logger = Log.ForContext<StructuredOutputFactory>();
+        private readonly FullyQualifiedBranchFlattener _branchFlattener = new FullyQualifiedBranchFlattener();
         private readonly PreReleaseTagSanitizer _preReleaseTagSanitizer = new PreReleaseTagSanitizer();
         private readonly string[] _nonPreReleaseTags;
         private readonly string _nonPreReleaseTagsRegex;
@@ -18,8 +19,13 @@ namespace OctoVersion.Core
         private readonly int? _overriddenMinorVersion;
         private readonly int? _overriddenPatchVersion;
 
-        public StructuredOutputFactory(string currentBranch, string[] nonPreReleaseTags, string nonPreReleaseTagsRegex,
-            int? overriddenMajorVersion, int? overriddenMinorVersion, int? overriddenPatchVersion, string buildMetadata)
+        public StructuredOutputFactory(string currentBranch,
+            string[] nonPreReleaseTags,
+            string nonPreReleaseTagsRegex,
+            int? overriddenMajorVersion,
+            int? overriddenMinorVersion,
+            int? overriddenPatchVersion,
+            string buildMetadata)
         {
             _currentBranch = currentBranch;
             _nonPreReleaseTags = nonPreReleaseTags;
@@ -38,7 +44,8 @@ namespace OctoVersion.Core
             if (_overriddenMajorVersion.HasValue)
             {
                 _logger.Debug("Overriding derived major version {DerivedMajorVersion} with {OverriddenMajorVersion}",
-                    versionInfo.Major, _overriddenMajorVersion.Value);
+                    versionInfo.Major,
+                    _overriddenMajorVersion.Value);
                 major = _overriddenMajorVersion.Value;
             }
 
@@ -46,7 +53,8 @@ namespace OctoVersion.Core
             if (_overriddenMinorVersion.HasValue)
             {
                 _logger.Debug("Overriding derived minor version {DerivedMinorVersion} with {OverriddenMinorVersion}",
-                    versionInfo.Minor, _overriddenMinorVersion.Value);
+                    versionInfo.Minor,
+                    _overriddenMinorVersion.Value);
                 minor = _overriddenMinorVersion.Value;
             }
 
@@ -54,11 +62,16 @@ namespace OctoVersion.Core
             if (_overriddenPatchVersion.HasValue)
             {
                 _logger.Debug("Overriding derived patch version {DerivedPatchVersion} with {OverriddenPatchVersion}",
-                    versionInfo.Patch, _overriddenPatchVersion.Value);
+                    versionInfo.Patch,
+                    _overriddenPatchVersion.Value);
                 patch = _overriddenPatchVersion.Value;
             }
 
-            var result = new StructuredOutput(major, minor, patch, preReleaseTag, _buildMetadata);
+            var result = new StructuredOutput(major,
+                minor,
+                patch,
+                preReleaseTag,
+                _buildMetadata);
             return result;
         }
 
@@ -68,7 +81,8 @@ namespace OctoVersion.Core
             {
                 _logger.Debug(
                     "{CurrentBranch} is contained within the set of non-pre-release branches {@NonPreReleaseBranches}. No pre-release tag is being added.",
-                    _currentBranch, _nonPreReleaseTags);
+                    _currentBranch,
+                    _nonPreReleaseTags);
                 return string.Empty;
             }
 
@@ -80,12 +94,14 @@ namespace OctoVersion.Core
                 {
                     _logger.Debug(
                         "{CurrentBranch} matches the non-pre-release regular expression {NonPreReleaseTagsRegularExpression}. No pre-release tag is being added.",
-                        _currentBranch, _nonPreReleaseTagsRegex);
+                        _currentBranch,
+                        _nonPreReleaseTagsRegex);
                     return string.Empty;
                 }
             }
 
-            var preReleaseTag = _preReleaseTagSanitizer.Sanitize(_currentBranch);
+            var flattenedBranchName = _branchFlattener.Flatten(_currentBranch);
+            var preReleaseTag = _preReleaseTagSanitizer.Sanitize(flattenedBranchName);
 
             _logger.Debug("Using pre-release tag {PreReleaseTag}", preReleaseTag);
             return preReleaseTag;
