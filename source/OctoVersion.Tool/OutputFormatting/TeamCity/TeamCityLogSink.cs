@@ -10,6 +10,7 @@ namespace OctoVersion.Tool.OutputFormatting.TeamCity
         {
             // We need to generate messages that look like this:
             // ##teamcity[message text='<message text>' errorDetails='<error details>' status='<status value>']
+            // ##teamcity[message text='Running OctoVersion with AppSettings { CurrentBranch: "refs/heads/master", NonPreReleaseTags: ["main", "master"]
 
             var messageText = logEvent.MessageTemplate.Render(logEvent.Properties);
             var status = Status(logEvent.Level);
@@ -22,7 +23,13 @@ namespace OctoVersion.Tool.OutputFormatting.TeamCity
 
         private static string Sanitize(string input)
         {
-            var output = input.Replace("'", string.Empty);
+            var output = input
+                    .Replace("'", "|'")
+                    .Replace("[", "|[")
+                    .Replace("]", "|]")
+                    .Replace("\r", "|r")
+                    .Replace("\n", "|n")
+                ;
             return output;
         }
 
