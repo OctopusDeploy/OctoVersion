@@ -11,6 +11,7 @@ namespace OctoVersion.Core
         private readonly string _currentBranch;
 
         private readonly ILogger _logger = Log.ForContext<StructuredOutputFactory>();
+        private readonly PreReleaseTagSanitizer _preReleaseTagSanitizer = new PreReleaseTagSanitizer();
         private readonly string[] _nonPreReleaseTags;
         private readonly string _nonPreReleaseTagsRegex;
         private readonly int? _overriddenMajorVersion;
@@ -84,8 +85,10 @@ namespace OctoVersion.Core
                 }
             }
 
-            _logger.Debug("Using pre-release tag {PreReleaseTag}", _currentBranch);
-            return _currentBranch;
+            var preReleaseTag = _preReleaseTagSanitizer.Sanitize(_currentBranch);
+
+            _logger.Debug("Using pre-release tag {PreReleaseTag}", preReleaseTag);
+            return preReleaseTag;
         }
     }
 }
