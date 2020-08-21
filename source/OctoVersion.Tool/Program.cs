@@ -23,14 +23,11 @@ namespace OctoVersion.Tool
                     // Special case: if we're writing to the console then use LiterateConsole
                     if (outputFormatters.OfType<ConsoleOutputFormatter>().Any()) lc.WriteTo.LiterateConsole();
                 });
+            Log.Debug("Running OctoVersion with {@AppSettings}", appSettings);
 
             var currentDirectory = Directory.GetCurrentDirectory();
             Log.Debug("Executing in {Directory}", currentDirectory);
 
-            var repositorySearchPath = string.IsNullOrWhiteSpace(appSettings.RepositoryPath)
-                ? currentDirectory
-                : appSettings.RepositoryPath;
-            Log.Debug("Running OctoVersion with {@AppSettings}", appSettings);
             foreach (var outputFormatter in outputFormatters)
                 Log.Debug("Writing build output using {OutputFormatter}", outputFormatter.GetType().Name);
 
@@ -48,6 +45,10 @@ namespace OctoVersion.Tool
             {
                 using (Log.Logger.BeginTimedOperation("Calculating version"))
                 {
+                    var repositorySearchPath = string.IsNullOrWhiteSpace(appSettings.RepositoryPath)
+                        ? currentDirectory
+                        : appSettings.RepositoryPath;
+
                     var versionCalculatorFactory = new VersionCalculatorFactory(repositorySearchPath);
                     var calculator = versionCalculatorFactory.Create();
                     var version = calculator.GetVersion();
