@@ -59,7 +59,6 @@ namespace OctoVersion.Core.VersionNumberCalculation
             if (taggedVersion != null) return taggedVersion;
 
             var maxParentVersion = commit.Parents
-                    .SelectMany(c => c.Parents)
                     .Select(GetVersionInternal)
                     .OrderByDescending(v => v)
                     .FirstOrDefault()
