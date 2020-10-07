@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using OctoVersion.Core;
 using OctoVersion.Core.VersionNumberCalculation;
 using OctoVersion.Tool.Configuration;
@@ -11,6 +12,8 @@ namespace OctoVersion.Tool
 {
     class Program
     {
+        static readonly string ApplicationVersion = typeof(Program).Assembly.GetCustomAttributes<AssemblyInformationalVersionAttribute>().Single().InformationalVersion;
+
         static void Main(string[] args)
         {
             var (appSettings, configuration) = ConfigurationBootstrapper.Bootstrap<AppSettings>(args);
@@ -23,7 +26,7 @@ namespace OctoVersion.Tool
                     // Special case: if we're writing to the console then use LiterateConsole
                     if (outputFormatters.OfType<ConsoleOutputFormatter>().Any()) lc.WriteTo.LiterateConsole();
                 });
-            Log.Debug("Running OctoVersion {OctoVersionVersion} with {@AppSettings}", typeof(Program).Assembly.GetName().Version, appSettings);
+            Log.Debug("Running OctoVersion {OctoVersionVersion} with {@AppSettings}", ApplicationVersion, appSettings);
 
             var currentDirectory = Directory.GetCurrentDirectory();
             Log.Debug("Executing in {Directory}", currentDirectory);

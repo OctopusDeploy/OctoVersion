@@ -32,21 +32,30 @@ Task("Clean")
 Task("Restore")
     .IsDependentOn("Clean")
     .Does(() => {
-        DotNetCoreRestore("source", new DotNetCoreRestoreSettings
-        {
-            ArgumentCustomization = args => args.Append($"-p:Version={buildNumber} -p:InformationalVersion=${buildNumber}")
-        });
+        DotNetCoreRestore("./source");
     });
 
 Task("Build")
     .IsDependentOn("Restore")
     .Does(() =>
     {
-        DotNetCorePublish("./source", new DotNetCorePublishSettings
+        DotNetCoreBuild("./source", new DotNetCoreBuildSettings
         {
             Configuration = configuration,
             NoRestore = true,
-            ArgumentCustomization = args => args.Append($"-p:Version={buildNumber} -p:InformationalVersion=${buildNumber}")
+            ArgumentCustomization = args => args.Append($"/p:Version={buildNumber} /p:InformationalVersion={buildNumber}"),
+            MSBuildSettings = new DotNetCoreMSBuildSettings
+            {
+                ArgumentCustomization = args => args.Append($"/p:Version={buildNumber} /p:InformationalVersion={buildNumber}")
+            }
+        });
+
+        DotNetCorePublish("./source", new DotNetCorePublishSettings
+        {
+            Configuration = configuration,
+            NoBuild = true,
+            NoRestore = true,
+            ArgumentCustomization = args => args.Append($"/p:Version={buildNumber} /p:InformationalVersion=${buildNumber}")
         });
     });
 
