@@ -27,6 +27,9 @@ namespace OctoVersion.Tool.Configuration
         public string PreReleaseTag { get; set; }
         public string BuildMetadata { get; set; }
 
+        // If this is set, it will override all of the other values and OctoVersion will just adopt it wholesale.
+        public string FullSemVer {get;set; }
+
         public string[] OutputFormats { get; set; } = Array.Empty<string>();
 
         public void ApplyDefaultsIfRequired()

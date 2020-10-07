@@ -2,35 +2,33 @@
 
 namespace OctoVersion.Core
 {
-    public class StructuredOutput
+    public class StructuredOutput : SemanticVersion
     {
-        public StructuredOutput(int major,
+        public StructuredOutput(
+            int major,
             int minor,
             int patch,
             string preReleaseTag,
-            string buildMetadata)
+            string buildMetadata) : base(major,
+            minor,
+            patch,
+            preReleaseTag,
+            buildMetadata)
         {
-            Major = major;
-            Minor = minor;
-            Patch = patch;
-            PreReleaseTag = preReleaseTag;
-            BuildMetadata = buildMetadata;
         }
 
-        public int Major { get; }
-        public int Minor { get; }
-        public int Patch { get; }
+        public StructuredOutput(SemanticVersion semanticVersion) : base(
+            semanticVersion.Major,
+            semanticVersion.Minor,
+            semanticVersion.Patch,
+            semanticVersion.PreReleaseTag,
+            semanticVersion.BuildMetadata)
+        {
+        }
+
+        public string PreReleaseTagWithDash => string.IsNullOrWhiteSpace(PreReleaseTag) ? string.Empty : $"-{PreReleaseTag}";
         public string MajorMinorPatch => $"{Major}.{Minor}.{Patch}";
-        public string PreReleaseTag { get; }
-
-        public string PreReleaseTagWithDash =>
-            string.IsNullOrWhiteSpace(PreReleaseTag) ? string.Empty : $"-{PreReleaseTag}";
-
-        public string BuildMetadata { get; }
-
-        public string BuildMetadataWithPlus =>
-            string.IsNullOrWhiteSpace(BuildMetadata) ? string.Empty : $"+{BuildMetadata}";
-
+        public string BuildMetadataWithPlus => string.IsNullOrWhiteSpace(BuildMetadata) ? string.Empty : $"+{BuildMetadata}";
         public string FullSemVer => $"{MajorMinorPatch}{PreReleaseTagWithDash}{BuildMetadataWithPlus}";
 
         public override string ToString()

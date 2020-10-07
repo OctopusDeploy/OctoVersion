@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Text.RegularExpressions;
+using OctoVersion.Core.VersionNumberCalculation;
 using Serilog;
 
 namespace OctoVersion.Core
@@ -36,33 +37,33 @@ namespace OctoVersion.Core
             _buildMetadata = buildMetadata ?? string.Empty;
         }
 
-        public StructuredOutput Create(VersionInfo versionInfo)
+        public StructuredOutput Create(SimpleVersion version)
         {
             var preReleaseTag = DerivePreReleaseTag();
 
-            var major = versionInfo.Major;
+            var major = version.Major;
             if (_overriddenMajorVersion.HasValue)
             {
                 _logger.Debug("Overriding derived major version {DerivedMajorVersion} with {OverriddenMajorVersion}",
-                    versionInfo.Major,
+                    version.Major,
                     _overriddenMajorVersion.Value);
                 major = _overriddenMajorVersion.Value;
             }
 
-            var minor = versionInfo.Minor;
+            var minor = version.Minor;
             if (_overriddenMinorVersion.HasValue)
             {
                 _logger.Debug("Overriding derived minor version {DerivedMinorVersion} with {OverriddenMinorVersion}",
-                    versionInfo.Minor,
+                    version.Minor,
                     _overriddenMinorVersion.Value);
                 minor = _overriddenMinorVersion.Value;
             }
 
-            var patch = versionInfo.Patch;
+            var patch = version.Patch;
             if (_overriddenPatchVersion.HasValue)
             {
                 _logger.Debug("Overriding derived patch version {DerivedPatchVersion} with {OverriddenPatchVersion}",
-                    versionInfo.Patch,
+                    version.Patch,
                     _overriddenPatchVersion.Value);
                 patch = _overriddenPatchVersion.Value;
             }

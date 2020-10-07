@@ -62,7 +62,7 @@ namespace OctoVersion.Core.VersionNumberCalculation
             {
                 foreach (var tag in allTags)
                 {
-                    var version = VersionInfo.TryParse(tag.FriendlyName);
+                    var version = SimpleVersion.TryParse(tag.FriendlyName);
                     if (version == null) continue;
 
                     // tags can reference to commits which have been removed. In this case we don't care.

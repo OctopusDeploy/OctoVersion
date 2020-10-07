@@ -26,16 +26,16 @@ namespace OctoVersion.Core.VersionNumberCalculation
         public bool BumpsMajorVersion { get; }
         public bool BumpsMinorVersion { get; }
         public ICollection<SimpleCommit> Parents { get; } = new HashSet<SimpleCommit>();
-        public ICollection<VersionInfo> TaggedWithVersions { get; } = new HashSet<VersionInfo>();
+        public ICollection<SimpleVersion> TaggedWithVersions { get; } = new HashSet<SimpleVersion>();
 
         public void AddParent(SimpleCommit parent)
         {
             Parents.Add(parent);
         }
 
-        public void TagWith(VersionInfo versionInfo)
+        public void TagWith(SimpleVersion version)
         {
-            TaggedWithVersions.Add(versionInfo);
+            TaggedWithVersions.Add(version);
         }
 
         public static SimpleCommit FromCommit(Commit commit)

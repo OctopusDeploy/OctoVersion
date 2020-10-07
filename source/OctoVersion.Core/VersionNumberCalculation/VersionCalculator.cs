@@ -6,8 +6,8 @@ namespace OctoVersion.Core.VersionNumberCalculation
 {
     public class VersionCalculator
     {
-        readonly Dictionary<SimpleCommit, VersionInfo> _calculatedVersions =
-            new Dictionary<SimpleCommit, VersionInfo>();
+        readonly Dictionary<SimpleCommit, SimpleVersion> _calculatedVersions =
+            new Dictionary<SimpleCommit, SimpleVersion>();
 
         readonly SimpleCommit[] _commits;
         bool _cacheIsPrimed;
@@ -32,20 +32,20 @@ namespace OctoVersion.Core.VersionNumberCalculation
             _cacheIsPrimed = true;
         }
 
-        public VersionInfo GetVersion()
+        public SimpleVersion GetVersion()
         {
             var commit = _commits.Single(c => c.Hash == CurrentCommitHash);
             return GetVersion(commit);
         }
 
-        VersionInfo GetVersion(SimpleCommit commit)
+        SimpleVersion GetVersion(SimpleCommit commit)
         {
             EnsureCacheIsPrimed();
 
             return GetVersionInternal(commit);
         }
 
-        VersionInfo GetVersionInternal(SimpleCommit commit)
+        SimpleVersion GetVersionInternal(SimpleCommit commit)
         {
             // We do this to avoid recursing too many stack frames
             if (_calculatedVersions.TryGetValue(commit, out var alreadyCalculatedVersion))
@@ -62,20 +62,20 @@ namespace OctoVersion.Core.VersionNumberCalculation
                     .Select(GetVersionInternal)
                     .OrderByDescending(v => v)
                     .FirstOrDefault()
-                ?? new VersionInfo(0, 0, 0);
+                ?? new SimpleVersion(0, 0, 0);
 
-            VersionInfo versionInfo;
+            SimpleVersion version;
             if (commit.BumpsMajorVersion)
-                versionInfo = new VersionInfo(maxParentVersion.Major + 1, 0, 0);
+                version = new SimpleVersion(maxParentVersion.Major + 1, 0, 0);
             else if (commit.BumpsMinorVersion)
-                versionInfo = new VersionInfo(maxParentVersion.Major, maxParentVersion.Minor + 1, 0);
+                version = new SimpleVersion(maxParentVersion.Major, maxParentVersion.Minor + 1, 0);
             else
-                versionInfo = new VersionInfo(maxParentVersion.Major,
+                version = new SimpleVersion(maxParentVersion.Major,
                     maxParentVersion.Minor,
                     maxParentVersion.Patch + 1);
-            _calculatedVersions[commit] = versionInfo;
+            _calculatedVersions[commit] = version;
 
-            return versionInfo;
+            return version;
         }
     }
 }

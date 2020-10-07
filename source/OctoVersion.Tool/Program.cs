@@ -32,14 +32,13 @@ namespace OctoVersion.Tool
                 Log.Debug("Writing build output using {OutputFormatter}", outputFormatter.GetType().Name);
 
             StructuredOutput structuredOutput;
-            if (appSettings.Major.HasValue && appSettings.Minor.HasValue && appSettings.Patch.HasValue && appSettings.PreReleaseTag != null && appSettings.BuildMetadata != null)
+            if (!string.IsNullOrWhiteSpace(appSettings.FullSemVer))
             {
-                Log.Information("Adopting previously-provided version information. Not calculating a new version number.");
-                structuredOutput = new StructuredOutput(appSettings.Major.Value,
-                    appSettings.Minor.Value,
-                    appSettings.Patch.Value,
-                    appSettings.PreReleaseTag,
-                    appSettings.BuildMetadata);
+                Log.Information("Adopting previously-provided version information {FullSemVer}. Not calculating a new version number.", appSettings.FullSemVer);
+                var semanticVersion = SemanticVersion.TryParse(appSettings.FullSemVer);
+                if (semanticVersion == null) throw new Exception("Failed to parse semantic version string");
+
+                structuredOutput = new StructuredOutput(semanticVersion);
             }
             else
             {
