@@ -23,7 +23,7 @@ namespace OctoVersion.Tool
                     // Special case: if we're writing to the console then use LiterateConsole
                     if (outputFormatters.OfType<ConsoleOutputFormatter>().Any()) lc.WriteTo.LiterateConsole();
                 });
-            Log.Debug("Running OctoVersion with {@AppSettings}", appSettings);
+            Log.Debug("Running OctoVersion {OctoVersionVersion} with {@AppSettings}", typeof(Program).Assembly.GetName().Version, appSettings);
 
             var currentDirectory = Directory.GetCurrentDirectory();
             Log.Debug("Executing in {Directory}", currentDirectory);
