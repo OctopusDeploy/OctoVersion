@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
@@ -9,9 +10,8 @@ namespace OctoVersion.Tool.Configuration
         void ApplyDefaultsIfRequired();
     }
 
-    public class AppSettings : IAppSettings
+    public class AppSettings : IAppSettings, IValidatableObject
     {
-        [Required]
         public string CurrentBranch { get; set; }
 
         [Required]
@@ -28,7 +28,7 @@ namespace OctoVersion.Tool.Configuration
         public string BuildMetadata { get; set; }
 
         // If this is set, it will override all of the other values and OctoVersion will just adopt it wholesale.
-        public string FullSemVer {get;set; }
+        public string FullSemVer { get; set; }
 
         public string[] OutputFormats { get; set; } = Array.Empty<string>();
 
@@ -36,6 +36,12 @@ namespace OctoVersion.Tool.Configuration
         {
             if (!NonPreReleaseTags.Any()) NonPreReleaseTags = new[] { "main", "master" };
             if (!OutputFormats.Any()) OutputFormats = new[] { "Console" };
+        }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (string.IsNullOrWhiteSpace(CurrentBranch) && string.IsNullOrWhiteSpace(FullSemVer))
+                yield return new ValidationResult($"At least one of {nameof(CurrentBranch)} or {nameof(FullSemVer)} must be provided.", new[] { nameof(CurrentBranch), nameof(FullSemVer) });
         }
     }
 }
