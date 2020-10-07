@@ -38,7 +38,7 @@ namespace OctoVersion.Core.VersionNumberCalculation
                 if (indexOfEndOfDigits > 0)
                 {
                     var suffix = versionString.Substring(indexOfEndOfDigits);
-                    if (suffix.StartsWith("-")) return null;     // No pre-release versions - they don't contribute to our version calculations
+                    if (suffix.StartsWith("-")) return null; // No pre-release versions - they don't contribute to our version calculations
 
                     versionString = versionString.Substring(0, indexOfEndOfDigits);
                 }
@@ -51,9 +51,9 @@ namespace OctoVersion.Core.VersionNumberCalculation
                 var major = majorToken != null ? int.Parse(majorToken) : 0;
                 var minor = minorToken != null ? int.Parse(minorToken) : 0;
                 var patch = patchToken != null ? int.Parse(patchToken) : 0;
-                return new SimpleVersion(major,minor,patch);
+                return new SimpleVersion(major, minor, patch);
             }
-            catch (Exception )
+            catch (Exception)
             {
                 return null;
             }

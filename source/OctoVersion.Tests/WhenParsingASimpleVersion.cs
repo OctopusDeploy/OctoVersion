@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using OctoVersion.Core;
 using OctoVersion.Core.VersionNumberCalculation;
 using Shouldly;
 using Xunit;
