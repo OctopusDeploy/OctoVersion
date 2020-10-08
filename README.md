@@ -8,11 +8,18 @@ Install the tool into the global tool registry:
 dotnet tool install --global OctoVersion.Tool
 ```
 
+or into the local project's tool manifest:
+
+```
+dotnet tool install OctoVersion.Tool
+```
+
 Run it against a local Git repository:
 
 ```
 cd ~/code/my-app
-octoversion --CurrentBranch=main
+octoversion --CurrentBranch=main # if installed globally
+dotnet tool run octoversion --CurrentBranch=main # if installed locally
 ```
 
 You should see output that looks something like this:
