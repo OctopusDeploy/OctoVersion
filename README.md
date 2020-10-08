@@ -1,5 +1,9 @@
 # Welcome to OctoVersion
 
+## What is OctoVersion?
+
+OctoVersion is a dotnet tool for deriving a SemVer 2.0 version number based on a Git revision graph.
+
 ## Getting started
 
 Install the tool into the global tool registry:
