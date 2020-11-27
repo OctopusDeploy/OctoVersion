@@ -3,7 +3,7 @@ using Microsoft.Extensions.Configuration;
 using OctoVersion.Core.ExtensionMethods;
 using Serilog;
 
-namespace OctoVersion.Tool
+namespace OctoVersion.Core
 {
     public static class LogBootstrapper
     {
@@ -14,7 +14,7 @@ namespace OctoVersion.Tool
                 .ReadFrom.Configuration(configuration)
                 .Enrich.FromLogContext()
                 .Enrich.WithProperty("Application", "OctoVersion")
-                .Enrich.WithProperty("ApplicationVersion", typeof(Program).Assembly.GetName().Version)
+                .Enrich.WithProperty("ApplicationVersion", typeof(LogBootstrapper).Assembly.GetName().Version)
                 .Apply(additionalConfiguration)
                 .CreateLogger();
         }

@@ -2,17 +2,17 @@
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using Microsoft.Extensions.Configuration;
+using OctoVersion.Core.Configuration;
 using OctoVersion.Core.ExtensionMethods;
-using OctoVersion.Tool.Configuration;
 
-namespace OctoVersion.Tool
+namespace OctoVersion.Core
 {
     public static class ConfigurationBootstrapper
     {
         // ReSharper disable once StringLiteralTypo
         public const string EnvironmentVariablePrefix = "OCTOVERSION_";
 
-        public static (T, IConfigurationRoot) Bootstrap<T>(string[] args) where T : IAppSettings, new()
+        public static (T, IConfigurationRoot) Bootstrap<T>(params string[] args) where T : IAppSettings, new()
         {
             var configFilePath = BestEffortConfigFilePath();
 
@@ -36,7 +36,7 @@ namespace OctoVersion.Tool
             return (appSettings, configuration);
         }
 
-        static FileInfo BestEffortConfigFilePath()
+        static FileInfo? BestEffortConfigFilePath()
         {
             var directory = new DirectoryInfo(Directory.GetCurrentDirectory());
             while (directory != null)

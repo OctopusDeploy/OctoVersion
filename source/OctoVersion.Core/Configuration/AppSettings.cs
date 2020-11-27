@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
-namespace OctoVersion.Tool.Configuration
+namespace OctoVersion.Core.Configuration
 {
     public interface IAppSettings
     {

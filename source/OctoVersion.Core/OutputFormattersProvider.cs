@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Linq;
-using OctoVersion.Core;
 
-namespace OctoVersion.Tool
+namespace OctoVersion.Core
 {
     public class OutputFormattersProvider
     {
         public IOutputFormatter[] GetFormatters(string[] outputFormatterNames)
         {
-            var allFormatters = typeof(Program).Assembly.DefinedTypes
+            var allFormatters = GetType().Assembly.DefinedTypes
                 .Where(t => typeof(IOutputFormatter).IsAssignableFrom(t))
                 .Where(t => !t.IsInterface)
                 .Where(t => !t.IsAbstract)

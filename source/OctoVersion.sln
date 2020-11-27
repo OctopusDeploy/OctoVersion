@@ -7,7 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OctoVersion.Core", "OctoVer
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OctoVersion.Tool", "OctoVersion.Tool\OctoVersion.Tool.csproj", "{186C4135-A3FF-48BA-9625-32DFFEDE6525}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OctoVersion.Tests", "OctoVersion.Tests\OctoVersion.Tests.csproj", "{194D5D6A-E952-4F7D-9D1B-ACBE6D0F861E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OctoVersion.Tests", "OctoVersion.Tests\OctoVersion.Tests.csproj", "{194D5D6A-E952-4F7D-9D1B-ACBE6D0F861E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cake.OctoVersion", "Cake.OctoVersion\Cake.OctoVersion.csproj", "{7D55ADCB-5E7C-4AD4-8DCF-8F35885B07C8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{194D5D6A-E952-4F7D-9D1B-ACBE6D0F861E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{194D5D6A-E952-4F7D-9D1B-ACBE6D0F861E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{194D5D6A-E952-4F7D-9D1B-ACBE6D0F861E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D55ADCB-5E7C-4AD4-8DCF-8F35885B07C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D55ADCB-5E7C-4AD4-8DCF-8F35885B07C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D55ADCB-5E7C-4AD4-8DCF-8F35885B07C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D55ADCB-5E7C-4AD4-8DCF-8F35885B07C8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
