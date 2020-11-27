@@ -37,7 +37,7 @@ namespace OctoVersion.Core
             _buildMetadata = buildMetadata ?? string.Empty;
         }
 
-        public StructuredOutput Create(SimpleVersion version)
+        public OctoVersionInfo Create(SimpleVersion version)
         {
             var preReleaseTag = DerivePreReleaseTag();
 
@@ -68,7 +68,7 @@ namespace OctoVersion.Core
                 patch = _overriddenPatchVersion.Value;
             }
 
-            var result = new StructuredOutput(major,
+            var result = new OctoVersionInfo(major,
                 minor,
                 patch,
                 preReleaseTag,

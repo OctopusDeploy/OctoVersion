@@ -1,25 +1,24 @@
 ﻿using System;
 using System.Reflection;
-using OctoVersion.Core;
-using OctoVersion.Tool.Logging;
+using OctoVersion.Core.Logging;
 using Serilog.Core;
 
-namespace OctoVersion.Tool.OutputFormatting.Environment
+namespace OctoVersion.Core.OutputFormatting.Environment
 {
     public class EnvironmentOutputFormatter : IOutputFormatter
     {
         public ILogEventSink LogSink { get; } = new NullSink();
 
-        public void Write(StructuredOutput structuredOutput)
+        public void Write(OctoVersionInfo octoVersionInfo)
         {
             const string prefix = ConfigurationBootstrapper.EnvironmentVariablePrefix;
 
-            var properties = structuredOutput.GetType()
+            var properties = octoVersionInfo.GetType()
                 .GetProperties(BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.Instance);
             foreach (var property in properties)
             {
                 var key = $"{prefix}{property.Name}";
-                var value = property.GetValue(structuredOutput)?.ToString() ?? string.Empty;
+                var value = property.GetValue(octoVersionInfo)?.ToString() ?? string.Empty;
                 var line = $"{key}={value}";
                 System.Console.WriteLine(line);
             }
