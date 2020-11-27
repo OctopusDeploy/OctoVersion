@@ -2,7 +2,7 @@
 using Serilog.Core;
 using Serilog.Events;
 
-namespace OctoVersion.Tool.Logging
+namespace OctoVersion.Core.Logging
 {
     class NullSink : ILogEventSink
     {

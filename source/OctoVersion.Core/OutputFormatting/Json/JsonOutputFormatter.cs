@@ -1,10 +1,9 @@
 ﻿using System;
 using Newtonsoft.Json;
-using OctoVersion.Core;
-using OctoVersion.Tool.Logging;
+using OctoVersion.Core.Logging;
 using Serilog.Core;
 
-namespace OctoVersion.Tool.OutputFormatting.Json
+namespace OctoVersion.Core.OutputFormatting.Json
 {
     public class JsonOutputFormatter : IOutputFormatter
     {
@@ -15,9 +14,9 @@ namespace OctoVersion.Tool.OutputFormatting.Json
 
         public ILogEventSink LogSink { get; } = new NullSink();
 
-        public void Write(StructuredOutput structuredOutput)
+        public void Write(OctoVersionInfo octoVersionInfo)
         {
-            var json = JsonConvert.SerializeObject(structuredOutput, Settings);
+            var json = JsonConvert.SerializeObject(octoVersionInfo, Settings);
             System.Console.WriteLine(json);
         }
     }

@@ -1,6 +1,6 @@
 ﻿using System;
 using OctoVersion.Core;
-using OctoVersion.Tool.Configuration;
+using OctoVersion.Core.Configuration;
 using Shouldly;
 using Xunit;
 
@@ -13,11 +13,11 @@ namespace OctoVersion.Tests
         {
             // When exported to the environment, the expectation is that we should be able to re-import these on a subsequent
             // run without re-deriving everything. This means that our output names need to match our input names.
-            nameof(AppSettings.Major).ShouldBe(nameof(StructuredOutput.Major));
-            nameof(AppSettings.Minor).ShouldBe(nameof(StructuredOutput.Minor));
-            nameof(AppSettings.Patch).ShouldBe(nameof(StructuredOutput.Patch));
-            nameof(AppSettings.PreReleaseTag).ShouldBe(nameof(StructuredOutput.PreReleaseTag));
-            nameof(AppSettings.BuildMetadata).ShouldBe(nameof(StructuredOutput.BuildMetadata));
+            nameof(AppSettings.Major).ShouldBe(nameof(OctoVersionInfo.Major));
+            nameof(AppSettings.Minor).ShouldBe(nameof(OctoVersionInfo.Minor));
+            nameof(AppSettings.Patch).ShouldBe(nameof(OctoVersionInfo.Patch));
+            nameof(AppSettings.PreReleaseTag).ShouldBe(nameof(OctoVersionInfo.PreReleaseTag));
+            nameof(AppSettings.BuildMetadata).ShouldBe(nameof(OctoVersionInfo.BuildMetadata));
         }
     }
 }

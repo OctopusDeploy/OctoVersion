@@ -1,40 +1,39 @@
 ﻿using System;
 using System.Reflection;
-using OctoVersion.Core;
 using Serilog.Core;
 
-namespace OctoVersion.Tool.OutputFormatting.TeamCity
+namespace OctoVersion.Core.OutputFormatting.TeamCity
 {
     public class TeamCityOutputFormatter : IOutputFormatter
     {
         public ILogEventSink LogSink { get; } = new TeamCityLogSink();
 
-        public void Write(StructuredOutput structuredOutput)
+        public void Write(OctoVersionInfo octoVersionInfo)
         {
-            WriteBuildNumber(structuredOutput);
-            WriteEnvironmentVariables(structuredOutput);
+            WriteBuildNumber(octoVersionInfo);
+            WriteEnvironmentVariables(octoVersionInfo);
         }
 
-        static void WriteBuildNumber(StructuredOutput structuredOutput)
+        static void WriteBuildNumber(OctoVersionInfo octoVersionInfo)
         {
             //##teamcity[buildNumber '<new build number>']
-            var message = $"##teamcity[buildNumber '{structuredOutput.FullSemVer}']";
+            var message = $"##teamcity[buildNumber '{octoVersionInfo.FullSemVer}']";
             System.Console.WriteLine(message);
         }
 
-        static void WriteEnvironmentVariables(StructuredOutput structuredOutput)
+        static void WriteEnvironmentVariables(OctoVersionInfo octoVersionInfo)
         {
             // ##teamcity[setParameter name='ddd' value='fff']
 
             const string prefix = ConfigurationBootstrapper.EnvironmentVariablePrefix;
-            var properties = structuredOutput.GetType()
+            var properties = octoVersionInfo.GetType()
                 .GetProperties(BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.Instance);
             foreach (var property in properties)
             {
                 var environmentVariableKey = $"env.{prefix}{property.Name}";
                 var configurationVariableKey = $"OctoVersion.{property.Name}";
 
-                var value = property.GetValue(structuredOutput)?.ToString() ?? string.Empty;
+                var value = property.GetValue(octoVersionInfo)?.ToString() ?? string.Empty;
 
                 var environmentVariableMessage = $"##teamcity[setParameter name='{environmentVariableKey}' value='{value}']";
                 System.Console.WriteLine(environmentVariableMessage);
