@@ -2,9 +2,9 @@
 
 namespace OctoVersion.Core
 {
-    public class StructuredOutput : SemanticVersion
+    public class OctoVersionInfo : SemanticVersion
     {
-        public StructuredOutput(
+        public OctoVersionInfo(
             int major,
             int minor,
             int patch,
@@ -17,7 +17,7 @@ namespace OctoVersion.Core
         {
         }
 
-        public StructuredOutput(SemanticVersion semanticVersion) : base(
+        public OctoVersionInfo(SemanticVersion semanticVersion) : base(
             semanticVersion.Major,
             semanticVersion.Minor,
             semanticVersion.Patch,

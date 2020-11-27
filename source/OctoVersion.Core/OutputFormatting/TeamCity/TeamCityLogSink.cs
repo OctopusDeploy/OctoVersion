@@ -2,7 +2,7 @@
 using Serilog.Core;
 using Serilog.Events;
 
-namespace OctoVersion.Tool.OutputFormatting.TeamCity
+namespace OctoVersion.Core.OutputFormatting.TeamCity
 {
     public class TeamCityLogSink : ILogEventSink
     {
