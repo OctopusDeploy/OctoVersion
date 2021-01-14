@@ -1,6 +1,7 @@
 ﻿using System;
 using OctoVersion.Core;
 using OctoVersion.Core.Configuration;
+using Serilog;
 
 namespace OctoVersion.Tool
 {
@@ -10,7 +11,7 @@ namespace OctoVersion.Tool
         {
             var (appSettings, configuration) = ConfigurationBootstrapper.Bootstrap<AppSettings>(args);
 
-            var runner = new OctoVersionRunner(appSettings, configuration);
+            var runner = new OctoVersionRunner(appSettings, configuration, (lc) => { });
             runner.Run(out _);
         }
     }

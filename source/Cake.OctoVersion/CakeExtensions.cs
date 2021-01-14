@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Linq;
 using Cake.Core;
 using Cake.Core.Annotations;
 using Cake.Core.Diagnostics;
+using Cake.OctoVersion.Logging;
 using OctoVersion.Core;
 using OctoVersion.Runner;
+using Serilog;
 
 // ReSharper disable UnusedMember.Global
 [assembly: CakeNamespaceImport("OctoVersion.Core")]
@@ -15,16 +18,21 @@ namespace Cake.OctoVersion
         [CakeMethodAlias]
         public static void OctoVersion(this ICakeContext context, out OctoVersionInfo versionInfo)
         {
-            OctoVersionExtension.OctoVersion(out versionInfo);
+            var outputFormatter = GetOutputFormatter(context);
+            OctoVersionExtension.OctoVersion(out versionInfo, lc => WriteLogToSink(lc, outputFormatter));
         }
 
         [CakeMethodAlias]
         public static void OctoVersionDiscoverLocalGitBranch(this ICakeContext context, out string branch)
         {
-            OctoVersionExtension.OctoVersionDiscoverLocalGitBranch(out branch);
-
-            //context.Log.Warning("The current Git branch has been automatically determined to be {0}.", branch);
-            //context.Log.Warning($"It is STRONGLY RECOMMENDED to NOT rely on automatic branch detection on your build agents. It will fail in unexpected ways for tags, pull requests, commit hashes etc. Please set the {environmentVariableName} variable deterministically instead.");
+            var outputFormatter = GetOutputFormatter(context);
+            OctoVersionExtension.OctoVersionDiscoverLocalGitBranch(out branch, lc => WriteLogToSink(lc, outputFormatter));
         }
+
+        static void WriteLogToSink(LoggerConfiguration loggerConfiguration, IOutputFormatter outputFormatter) =>
+            loggerConfiguration.WriteTo.Sink(outputFormatter.LogSink);
+
+        static IOutputFormatter GetOutputFormatter(ICakeContext context) => 
+            new CakeOutputFormatter(context);
     }
 }

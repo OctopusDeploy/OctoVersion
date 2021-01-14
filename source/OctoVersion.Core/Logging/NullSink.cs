@@ -4,7 +4,7 @@ using Serilog.Events;
 
 namespace OctoVersion.Core.Logging
 {
-    class NullSink : ILogEventSink
+    public class NullSink : ILogEventSink
     {
         public void Emit(LogEvent logEvent)
         {

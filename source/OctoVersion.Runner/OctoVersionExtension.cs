@@ -3,20 +3,24 @@ using System.Diagnostics;
 using OctoVersion.Core;
 using OctoVersion.Core.Configuration;
 using OctoVersion.Core.ExtensionMethods;
+using Serilog;
 
 namespace OctoVersion.Runner
 {
     public static class OctoVersionExtension
     {
-        public static void OctoVersion(out OctoVersionInfo versionInfo)
+        public static void OctoVersion(out OctoVersionInfo versionInfo, Action<LoggerConfiguration> additionLogs)
         {
             var (appSettings, configuration) = ConfigurationBootstrapper.Bootstrap<AppSettings>();
-            var runner = new OctoVersionRunner(appSettings, configuration);
+            var runner = new OctoVersionRunner(appSettings, configuration, additionLogs);
             runner.Run(out versionInfo);
         }
         
-        public static void OctoVersionDiscoverLocalGitBranch(out string branch)
+        public static void OctoVersionDiscoverLocalGitBranch(out string branch, Action<LoggerConfiguration> additionLogs)
         {
+            var (_, configuration) = ConfigurationBootstrapper.Bootstrap<AppSettings>();
+            LogBootstrapper.Bootstrap(configuration, additionLogs);
+
             var startProcessInfo = new ProcessStartInfo
             {
                 FileName = "git",
@@ -50,8 +54,8 @@ namespace OctoVersion.Runner
             var environmentVariableName = $"{ConfigurationBootstrapper.EnvironmentVariablePrefix}{nameof(AppSettings.CurrentBranch)}";
             Environment.SetEnvironmentVariable(environmentVariableName, branch);
 
-            //context.Log.Warning("The current Git branch has been automatically determined to be {0}.", branch);
-            //context.Log.Warning($"It is STRONGLY RECOMMENDED to NOT rely on automatic branch detection on your build agents. It will fail in unexpected ways for tags, pull requests, commit hashes etc. Please set the {environmentVariableName} variable deterministically instead.");
+            Log.Warning("The current Git branch has been automatically determined to be {0}.", branch);
+            Log.Warning($"It is STRONGLY RECOMMENDED to NOT rely on automatic branch detection on your build agents. It will fail in unexpected ways for tags, pull requests, commit hashes etc. Please set the {environmentVariableName} variable deterministically instead.");
         }
     }
 }
