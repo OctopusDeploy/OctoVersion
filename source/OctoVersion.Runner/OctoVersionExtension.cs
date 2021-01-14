@@ -24,6 +24,7 @@ namespace OctoVersion.Runner
                 RedirectStandardOutput = true,
                 RedirectStandardError = true
             };
+            
             var process = Process.Start(startProcessInfo);
             if (process == null)
             {
