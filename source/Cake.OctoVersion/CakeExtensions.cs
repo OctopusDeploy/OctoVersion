@@ -19,14 +19,14 @@ namespace Cake.OctoVersion
         public static void OctoVersion(this ICakeContext context, out OctoVersionInfo versionInfo)
         {
             var outputFormatter = GetOutputFormatter(context);
-            OctoVersionExtension.OctoVersion(out versionInfo, lc => WriteLogToSink(lc, outputFormatter));
+            OctoVersionRunnerWrapper.OctoVersion(out versionInfo, lc => WriteLogToSink(lc, outputFormatter));
         }
 
         [CakeMethodAlias]
         public static void OctoVersionDiscoverLocalGitBranch(this ICakeContext context, out string branch)
         {
             var outputFormatter = GetOutputFormatter(context);
-            OctoVersionExtension.OctoVersionDiscoverLocalGitBranch(out branch, lc => WriteLogToSink(lc, outputFormatter));
+            OctoVersionRunnerWrapper.OctoVersionDiscoverLocalGitBranch(out branch, lc => WriteLogToSink(lc, outputFormatter));
         }
 
         static void WriteLogToSink(LoggerConfiguration loggerConfiguration, IOutputFormatter outputFormatter) =>

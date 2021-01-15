@@ -7,7 +7,7 @@ using Serilog;
 
 namespace OctoVersion.Runner
 {
-    public static class OctoVersionExtension
+    public static class OctoVersionRunnerWrapper
     {
         public static void OctoVersion(out OctoVersionInfo versionInfo, Action<LoggerConfiguration> additionLogs)
         {
@@ -18,7 +18,7 @@ namespace OctoVersion.Runner
         
         public static void OctoVersionDiscoverLocalGitBranch(out string branch, Action<LoggerConfiguration> additionLogs)
         {
-            var (_, configuration) = ConfigurationBootstrapper.Bootstrap<AppSettings>();
+            var (_, configuration) = ConfigurationBootstrapper.BootstrapWithoutValidation<AppSettings>();
             LogBootstrapper.Bootstrap(configuration, additionLogs);
 
             var startProcessInfo = new ProcessStartInfo

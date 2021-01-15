@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OctoVersion.Tests", "OctoVe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cake.OctoVersion", "Cake.OctoVersion\Cake.OctoVersion.csproj", "{7D55ADCB-5E7C-4AD4-8DCF-8F35885B07C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OctoVersion.Runner", "OctoVersion.Runner\OctoVersion.Runner.csproj", "{2D0B8F67-FAEE-43ED-AD47-319FD352D9C3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OctoVersion.RunnerWrapper", "OctoVersion.RunnerWrapper\OctoVersion.RunnerWrapper.csproj", "{2D0B8F67-FAEE-43ED-AD47-319FD352D9C3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nuke.OctoVersion", "Nuke.OctoVersion\Nuke.OctoVersion.csproj", "{8C86B4A8-0021-4404-ABE5-2D2FDD2192DB}"
 EndProject
