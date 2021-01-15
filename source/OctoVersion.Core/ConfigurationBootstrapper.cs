@@ -14,6 +14,16 @@ namespace OctoVersion.Core
 
         public static (T, IConfigurationRoot) Bootstrap<T>(params string[] args) where T : IAppSettings, new()
         {
+            var (appSettings, configuration) = BootstrapWithoutValidation<T>(args);
+
+            var validationContext = new ValidationContext(appSettings);
+            Validator.ValidateObject(appSettings, validationContext);
+
+            return (appSettings, configuration);
+        }
+
+        public static (T, IConfigurationRoot) BootstrapWithoutValidation<T>(params string[] args) where T : IAppSettings, new()
+        {
             var configFilePath = BestEffortConfigFilePath();
 
             var configuration = new ConfigurationBuilder()
@@ -29,10 +39,7 @@ namespace OctoVersion.Core
             configuration.Bind(appSettings);
 
             appSettings.ApplyDefaultsIfRequired();
-
-            var validationContext = new ValidationContext(appSettings);
-            Validator.ValidateObject(appSettings, validationContext);
-
+            
             return (appSettings, configuration);
         }
 

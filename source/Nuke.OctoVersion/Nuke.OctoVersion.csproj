@@ -11,7 +11,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\OctoVersion.Runner\OctoVersion.Runner.csproj" />
+      <ProjectReference Include="..\OctoVersion.RunnerWrapper\OctoVersion.RunnerWrapper.csproj" />
     </ItemGroup>
 
 </Project>

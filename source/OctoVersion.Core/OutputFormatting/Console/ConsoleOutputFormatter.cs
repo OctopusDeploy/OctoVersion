@@ -4,7 +4,7 @@ using Serilog.Core;
 
 namespace OctoVersion.Core.OutputFormatting.Console
 {
-    class ConsoleOutputFormatter : IOutputFormatter
+    public class ConsoleOutputFormatter : IOutputFormatter
     {
         public ILogEventSink LogSink { get; } = new NullSink();
 
