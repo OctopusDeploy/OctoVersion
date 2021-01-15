@@ -11,7 +11,7 @@ namespace Cake.OctoVersion.Logging
     {
         public ILogEventSink LogSink { get; }
 
-        ICakeContext context;
+        readonly ICakeContext context;
         
         public CakeOutputFormatter(ICakeContext context)
         {
