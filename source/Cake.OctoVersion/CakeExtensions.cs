@@ -33,6 +33,6 @@ namespace Cake.OctoVersion
             loggerConfiguration.WriteTo.Sink(outputFormatter.LogSink);
 
         static IOutputFormatter GetOutputFormatter(ICakeContext context) => 
-            new CakeOutputFormatter(context);
+            new CakeOutputFormatter(context); 
     }
 }
