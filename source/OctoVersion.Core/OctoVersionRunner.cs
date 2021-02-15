@@ -16,11 +16,18 @@ namespace OctoVersion.Core
 
         readonly AppSettings appSettings;
         readonly IConfigurationRoot configuration;
+        readonly Action<LoggerConfiguration> additionalLogConfiguration;
 
         public OctoVersionRunner(AppSettings appSettings, IConfigurationRoot configuration)
+            : this(appSettings, configuration, loggerConfiguration => { })
+        {
+        }
+
+        public OctoVersionRunner(AppSettings appSettings, IConfigurationRoot configuration, Action<LoggerConfiguration> additionalLogConfiguration)
         {
             this.appSettings = appSettings;
             this.configuration = configuration;
+            this.additionalLogConfiguration = additionalLogConfiguration;
         }
 
         public void Run(out OctoVersionInfo versionInfo)
@@ -33,6 +40,7 @@ namespace OctoVersion.Core
 
                     // Special case: if we're writing to the console then use LiterateConsole
                     if (outputFormatters.OfType<ConsoleOutputFormatter>().Any()) lc.WriteTo.LiterateConsole();
+                    additionalLogConfiguration(lc);
                 });
             Log.Debug("Running OctoVersion {OctoVersionVersion} with {@AppSettings}", ApplicationVersion, appSettings);
 

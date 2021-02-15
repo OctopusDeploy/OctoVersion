@@ -1,6 +1,7 @@
 ﻿using System;
 using OctoVersion.Core;
 using OctoVersion.Core.Configuration;
+using Serilog;
 
 namespace OctoVersion.Tool
 {
