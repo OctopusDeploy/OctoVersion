@@ -5,7 +5,6 @@ using Cake.Core.Annotations;
 using Cake.Core.Diagnostics;
 using Cake.OctoVersion.Logging;
 using OctoVersion.Core;
-using OctoVersion.Runner;
 using Serilog;
 
 // ReSharper disable UnusedMember.Global
@@ -32,7 +31,7 @@ namespace Cake.OctoVersion
         static void WriteLogToSink(LoggerConfiguration loggerConfiguration, IOutputFormatter outputFormatter) =>
             loggerConfiguration.WriteTo.Sink(outputFormatter.LogSink);
 
-        static IOutputFormatter GetOutputFormatter(ICakeContext context) => 
-            new CakeOutputFormatter(context); 
+        static IOutputFormatter GetOutputFormatter(ICakeContext context) =>
+            new CakeOutputFormatter(context);
     }
 }

@@ -11,7 +11,7 @@ namespace OctoVersion.Tool
         {
             var (appSettings, configuration) = ConfigurationBootstrapper.Bootstrap<AppSettings>(args);
 
-            var runner = new OctoVersionRunner(appSettings, configuration, (lc) => { });
+            var runner = new OctoVersionRunner(appSettings, configuration);
             runner.Run(out _);
         }
     }

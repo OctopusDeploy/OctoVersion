@@ -4,7 +4,6 @@ using JetBrains.Annotations;
 using Nuke.Common;
 using Nuke.Common.ValueInjection;
 using OctoVersion.Core;
-using OctoVersion.Runner;
 using Serilog;
 
 namespace Nuke.OctoVersion

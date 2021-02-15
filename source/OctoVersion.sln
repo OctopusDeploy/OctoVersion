@@ -11,8 +11,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OctoVersion.Tests", "OctoVe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cake.OctoVersion", "Cake.OctoVersion\Cake.OctoVersion.csproj", "{7D55ADCB-5E7C-4AD4-8DCF-8F35885B07C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OctoVersion.RunnerWrapper", "OctoVersion.RunnerWrapper\OctoVersion.RunnerWrapper.csproj", "{2D0B8F67-FAEE-43ED-AD47-319FD352D9C3}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nuke.OctoVersion", "Nuke.OctoVersion\Nuke.OctoVersion.csproj", "{8C86B4A8-0021-4404-ABE5-2D2FDD2192DB}"
 EndProject
 Global
@@ -37,10 +35,6 @@ Global
 		{7D55ADCB-5E7C-4AD4-8DCF-8F35885B07C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7D55ADCB-5E7C-4AD4-8DCF-8F35885B07C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7D55ADCB-5E7C-4AD4-8DCF-8F35885B07C8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2D0B8F67-FAEE-43ED-AD47-319FD352D9C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2D0B8F67-FAEE-43ED-AD47-319FD352D9C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2D0B8F67-FAEE-43ED-AD47-319FD352D9C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2D0B8F67-FAEE-43ED-AD47-319FD352D9C3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8C86B4A8-0021-4404-ABE5-2D2FDD2192DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8C86B4A8-0021-4404-ABE5-2D2FDD2192DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8C86B4A8-0021-4404-ABE5-2D2FDD2192DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
