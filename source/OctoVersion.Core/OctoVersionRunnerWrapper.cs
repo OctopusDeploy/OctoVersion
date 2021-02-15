@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Octopus.Shellfish;
 using OctoVersion.Core.Configuration;
 using OctoVersion.Core.ExtensionMethods;
 using Serilog;
@@ -24,7 +25,7 @@ namespace OctoVersion.Core
             var stdout = new List<string>();
             var stderr = new List<string>();
 
-            var exitCode = Octopus.SilentProcessRunner.SilentProcessRunner.ExecuteCommand(
+            var exitCode = ShellExecutor.ExecuteCommand(
                 executable: "git",
                 arguments:"rev-parse --abbrev-ref HEAD",
                 workingDirectory: Environment.CurrentDirectory,
