@@ -8,7 +8,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="Cake.Common" Version="0.38.5" />
-		<PackageReference Include="Cake.Core" Version="0.38.5" />
+		<PackageReference Include="Cake.Core" Version="1.0.0" />
 		<PackageReference Include="NUnit" Version="3.13.0" />
 	</ItemGroup>
 
