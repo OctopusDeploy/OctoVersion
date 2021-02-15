@@ -34,6 +34,19 @@ You should see output that looks something like this:
 
 ## Integrating with build tools
 
+### Nuke
+
+Add a reference to `Nuke.OctoVersion` in your `_build` project.
+Add a parameter marked with `[NukeOctoVersion]` and it will be auto-populated:
+
+```c#
+[NukeOctoVersion] readonly OctoVersionInfo OctoVersionInfo;
+```
+
+### Cake
+
+See the [build.cake](build.cake) file.
+
 ### TeamCity
 
 ```bash
