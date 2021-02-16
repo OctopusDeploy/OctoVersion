@@ -39,7 +39,7 @@ namespace OctoVersion.Core
             configuration.Bind(appSettings);
 
             appSettings.ApplyDefaultsIfRequired();
-            
+
             return (appSettings, configuration);
         }
 

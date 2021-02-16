@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Linq;
 using Cake.Core;
 using Cake.Core.Annotations;
-using Cake.Core.Diagnostics;
 using Cake.OctoVersion.Logging;
 using OctoVersion.Core;
 using Serilog;
@@ -28,10 +26,14 @@ namespace Cake.OctoVersion
             OctoVersionRunnerWrapper.OctoVersionDiscoverLocalGitBranch(out branch, lc => WriteLogToSink(lc, outputFormatter));
         }
 
-        static void WriteLogToSink(LoggerConfiguration loggerConfiguration, IOutputFormatter outputFormatter) =>
+        static void WriteLogToSink(LoggerConfiguration loggerConfiguration, IOutputFormatter outputFormatter)
+        {
             loggerConfiguration.WriteTo.Sink(outputFormatter.LogSink);
+        }
 
-        static IOutputFormatter GetOutputFormatter(ICakeContext context) =>
-            new CakeOutputFormatter(context);
+        static IOutputFormatter GetOutputFormatter(ICakeContext context)
+        {
+            return new CakeOutputFormatter(context);
+        }
     }
 }
