@@ -14,7 +14,7 @@ namespace Cake.OctoVersion.Logging
         {
             this.context = context;
         }
-        
+
         public void Emit(LogEvent logEvent)
         {
             var message = logEvent.MessageTemplate.Render(logEvent.Properties);

@@ -26,12 +26,12 @@ namespace OctoVersion.Core
             var stderr = new List<string>();
 
             var exitCode = ShellExecutor.ExecuteCommand(
-                executable: "git",
-                arguments:"rev-parse --abbrev-ref HEAD",
-                workingDirectory: Environment.CurrentDirectory,
-                debug: log => { },
-                info: log => { stdout.Add(log); },
-                error: log => { stdout.Add(log); }
+                "git",
+                "rev-parse --abbrev-ref HEAD",
+                Environment.CurrentDirectory,
+                log => { },
+                log => { stdout.Add(log); },
+                log => { stdout.Add(log); }
             );
 
             if (exitCode != 0)
