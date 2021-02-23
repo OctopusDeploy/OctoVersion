@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 namespace OctoVersion.Core
 {
-    public class PreReleaseTagSanitizer
+    public class Sanitizer
     {
         static readonly Regex SafeCharactersRegex = new Regex("[\\w-.]", RegexOptions.Compiled);
         static readonly Regex DuplicateCharactersRegex = new Regex("-+", RegexOptions.Compiled);
