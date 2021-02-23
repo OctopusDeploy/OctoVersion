@@ -51,7 +51,7 @@ namespace OctoVersion.Tests
                     3,
                     string.Empty,
                     "build"),
-                "1.2.3+build"
+                "1.2.3"
             };
             yield return new object[]
             {
@@ -60,7 +60,7 @@ namespace OctoVersion.Tests
                     3,
                     "pre",
                     "build"),
-                "1.2.3-pre+build"
+                "1.2.3-pre"
             };
         }
     }
