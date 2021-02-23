@@ -30,16 +30,38 @@ namespace OctoVersion.Tests
 
         static IEnumerable<SampleData> TestCases()
         {
-            yield return DefaultScenario.ExpectResult("1.2.3+Branch.main.Sha.a1b2c3d4e5");
-            yield return DefaultScenario.WithOverriddenMajorVersion(9).ExpectResult("9.2.3+Branch.main.Sha.a1b2c3d4e5");
-            yield return DefaultScenario.WithOverriddenMinorVersion(9).ExpectResult("1.9.3+Branch.main.Sha.a1b2c3d4e5");
-            yield return DefaultScenario.WithOverriddenPatchVersion(9).ExpectResult("1.2.9+Branch.main.Sha.a1b2c3d4e5");
-            yield return DefaultScenario.WithOverriddenBuildMetadata("custom build meta/data").ExpectResult("1.2.3+custom-build-meta-data");
-            yield return DefaultScenario.WithCurrentSha("aaabbbccc").ExpectResult("1.2.3+Branch.main.Sha.aaabbbccc");
-            yield return DefaultScenario.WithVersion(new SimpleVersion(9, 8, 7)).ExpectResult("9.8.7+Branch.main.Sha.a1b2c3d4e5");
-            yield return DefaultScenario.WithNonPreReleaseTags(new[] { "refs/heads/trunk" }).ExpectResult("1.2.3-main+Branch.main.Sha.a1b2c3d4e5");
-            yield return DefaultScenario.WithNonPreReleaseTags(new string[0]).WithNonPreReleaseTagsRegex("refs/heads/m.*").ExpectResult("1.2.3+Branch.main.Sha.a1b2c3d4e5");
-            yield return DefaultScenario.WithNonPreReleaseTags(new string[0]).WithNonPreReleaseTagsRegex("refs/heads/m.*").WithCurrentBranch("refs/heads/feature/versioning").ExpectResult("1.2.3-feature-versioning+Branch.feature-versioning.Sha.a1b2c3d4e5");
+            yield return DefaultScenario
+                .ExpectResult("1.2.3+Branch.main.Sha.a1b2c3d4e5");
+            yield return DefaultScenario
+                .WithOverriddenMajorVersion(9)
+                .ExpectResult("9.2.3+Branch.main.Sha.a1b2c3d4e5");
+            yield return DefaultScenario
+                .WithOverriddenMinorVersion(9)
+                .ExpectResult("1.9.3+Branch.main.Sha.a1b2c3d4e5");
+            yield return DefaultScenario
+                .WithOverriddenPatchVersion(9)
+                .ExpectResult("1.2.9+Branch.main.Sha.a1b2c3d4e5");
+            yield return DefaultScenario
+                .WithOverriddenBuildMetadata("custom build meta/data")
+                .ExpectResult("1.2.3+custom-build-meta-data");
+            yield return DefaultScenario
+                .WithCurrentSha("aaabbbccc")
+                .ExpectResult("1.2.3+Branch.main.Sha.aaabbbccc");
+            yield return DefaultScenario
+                .WithVersion(new SimpleVersion(9, 8, 7))
+                .ExpectResult("9.8.7+Branch.main.Sha.a1b2c3d4e5");
+            yield return DefaultScenario
+                .WithNonPreReleaseTags(new[] { "refs/heads/trunk" })
+                .ExpectResult("1.2.3-main+Branch.main.Sha.a1b2c3d4e5");
+            yield return DefaultScenario
+                .WithNonPreReleaseTags(new string[0])
+                .WithNonPreReleaseTagsRegex("refs/heads/m.*")
+                .ExpectResult("1.2.3+Branch.main.Sha.a1b2c3d4e5");
+            yield return DefaultScenario
+                .WithNonPreReleaseTags(new string[0])
+                .WithNonPreReleaseTagsRegex("refs/heads/m.*")
+                .WithCurrentBranch("refs/heads/feature/versioning")
+                .ExpectResult("1.2.3-feature-versioning+Branch.feature-versioning.Sha.a1b2c3d4e5");
         }
 
         static SampleData DefaultScenario => new SampleData();
