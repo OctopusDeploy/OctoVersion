@@ -166,13 +166,13 @@ namespace OctoVersion.Tests
             3,
             "pre",
             "build",
-            "1.2.3-pre+build")]
+            "1.2.3-pre")]
         [InlineData(2021,
             1,
             3,
             "mark-genericDocumentStore",
             "Branch.mark-genericDocumentStore.Sha.fb13016f3a21d7c2058fb74ab25f19e5311c6550",
-            "2021.1.3-mark-genericDocumentStore+Branch.mark-genericDocumentStore.Sha.fb13016f3a21d7c2058fb74ab25f19e5311c6550")]
+            "2021.1.3-mark-genericDocumentStore")]
         public void TheFullSemVerShouldBeCorrect(int major,
             int minor,
             int patch,
@@ -230,6 +230,51 @@ namespace OctoVersion.Tests
                 patch,
                 preReleaseTag,
                 buildMetadata).NuGetVersion.ShouldBe(expected);
+        }
+
+        [Theory]
+        [InlineData(0,
+            0,
+            0,
+            "",
+            "",
+            "0.0.0")]
+        [InlineData(1,
+            2,
+            3,
+            "",
+            "",
+            "1.2.3")]
+        [InlineData(1,
+            2,
+            3,
+            "pre",
+            "",
+            "1.2.3-pre")]
+        [InlineData(1,
+            2,
+            3,
+            "pre",
+            "build",
+            "1.2.3-pre+build")]
+        [InlineData(2021,
+            1,
+            3,
+            "mark-genericDocumentStore",
+            "Branch.mark-genericDocumentStore.Sha.fb13016f3a21d7c2058fb74ab25f19e5311c6550",
+            "2021.1.3-mark-genericDocumentStore+Branch.mark-genericDocumentStore.Sha.fb13016f3a21d7c2058fb74ab25f19e5311c6550")]
+        public void TheInformationalVersionShouldBeCorrect(int major,
+            int minor,
+            int patch,
+            string preReleaseTag,
+            string buildMetadata,
+            string expected)
+        {
+            new OctoVersionInfo(major,
+                minor,
+                patch,
+                preReleaseTag,
+                buildMetadata).InformationalVersion.ShouldBe(expected);
         }
     }
 }
