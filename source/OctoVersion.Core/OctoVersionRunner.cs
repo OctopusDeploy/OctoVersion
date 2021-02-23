@@ -69,12 +69,14 @@ namespace OctoVersion.Core
                     var versionCalculatorFactory = new VersionCalculatorFactory(repositorySearchPath);
                     var calculator = versionCalculatorFactory.Create();
                     var version = calculator.GetVersion();
+                    var currentSha = calculator.CurrentCommitHash;
                     versionInfo = new StructuredOutputFactory(appSettings.NonPreReleaseTags,
                             appSettings.NonPreReleaseTagsRegex,
                             appSettings.Major,
                             appSettings.Minor,
                             appSettings.Patch,
                             appSettings.CurrentBranch,
+                            currentSha,
                             appSettings.BuildMetadata)
                         .Create(version);
                 }

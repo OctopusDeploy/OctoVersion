@@ -8,8 +8,9 @@ namespace OctoVersion.Core
 {
     public class StructuredOutputFactory
     {
-        readonly string _buildMetadata;
+        readonly string _overriddenBuildMetadata;
         readonly string _currentBranch;
+        readonly string _currentSha;
 
         readonly ILogger _logger = Log.ForContext<StructuredOutputFactory>();
         readonly FullyQualifiedBranchFlattener _branchFlattener = new FullyQualifiedBranchFlattener();
@@ -26,15 +27,17 @@ namespace OctoVersion.Core
             int? overriddenMinorVersion,
             int? overriddenPatchVersion,
             string currentBranch,
-            string? buildMetadata)
+            string currentSha,
+            string? overriddenBuildMetadata)
         {
             _currentBranch = currentBranch;
+            _currentSha = currentSha;
             _nonPreReleaseTags = nonPreReleaseTags;
             _nonPreReleaseTagsRegex = nonPreReleaseTagsRegex;
             _overriddenMajorVersion = overriddenMajorVersion;
             _overriddenMinorVersion = overriddenMinorVersion;
             _overriddenPatchVersion = overriddenPatchVersion;
-            _buildMetadata = buildMetadata ?? string.Empty;
+            _overriddenBuildMetadata = overriddenBuildMetadata ?? string.Empty;
         }
 
         public OctoVersionInfo Create(SimpleVersion version)
@@ -68,11 +71,21 @@ namespace OctoVersion.Core
                 patch = _overriddenPatchVersion.Value;
             }
 
+            var buildMetadata = DeriveBuildMetadata();
+            if (!string.IsNullOrEmpty(_overriddenBuildMetadata))
+            {
+                var sanitizedBuildMetadata = _sanitizer.Sanitize(_overriddenBuildMetadata);
+                _logger.Debug("Overriding derived build metadata {DerivedBuildMetadata} with {OverriddenBuildMetadata}",
+                    buildMetadata,
+                    sanitizedBuildMetadata);
+                buildMetadata = sanitizedBuildMetadata;
+            }
+
             var result = new OctoVersionInfo(major,
                 minor,
                 patch,
                 preReleaseTag,
-                _sanitizer.Sanitize(_buildMetadata));
+                buildMetadata);
             return result;
         }
 
@@ -106,6 +119,16 @@ namespace OctoVersion.Core
 
             _logger.Debug("Using pre-release tag {PreReleaseTag}", preReleaseTag);
             return preReleaseTag;
+        }
+
+        string DeriveBuildMetadata()
+        {
+            var flattenedBranchName = _branchFlattener.Flatten(_currentBranch);
+            var sanitizedBranchName = _sanitizer.Sanitize(flattenedBranchName);
+            var buildMetadata = $"Branch.{sanitizedBranchName}.Sha.{_currentSha}";
+
+            _logger.Debug("Using build metadata {BuildMetadata}", buildMetadata);
+            return buildMetadata;
         }
     }
 }
