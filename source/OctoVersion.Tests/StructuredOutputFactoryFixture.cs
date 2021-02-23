@@ -30,68 +30,70 @@ namespace OctoVersion.Tests
 
         static IEnumerable<SampleData> TestCases()
         {
-            yield return DefaultScenario
+            SampleData ForDefaultScenario()
+            {
+                return new SampleData
+                {
+                    NonPreReleaseTags = new[] { "refs/heads/main" },
+                    NonPreReleaseTagsRegex = string.Empty,
+                    OverriddenMajorVersion = null,
+                    OverriddenMinorVersion = null,
+                    OverriddenPatchVersion = null,
+                    CurrentBranch = "refs/heads/main",
+                    CurrentSha = "a1b2c3d4e5",
+                    OverriddenBuildMetadata = null,
+                    Version = new SimpleVersion(1, 2, 3),
+                    Expected = "1.2.3+Branch.main.Sha.a1b2c3d4e5",
+                };
+            }
+
+            yield return ForDefaultScenario()
                 .ExpectResult("1.2.3+Branch.main.Sha.a1b2c3d4e5");
-            yield return DefaultScenario
+            yield return ForDefaultScenario()
                 .WithOverriddenMajorVersion(9)
                 .ExpectResult("9.2.3+Branch.main.Sha.a1b2c3d4e5");
-            yield return DefaultScenario
+            yield return ForDefaultScenario()
                 .WithOverriddenMinorVersion(9)
                 .ExpectResult("1.9.3+Branch.main.Sha.a1b2c3d4e5");
-            yield return DefaultScenario
+            yield return ForDefaultScenario()
                 .WithOverriddenPatchVersion(9)
                 .ExpectResult("1.2.9+Branch.main.Sha.a1b2c3d4e5");
-            yield return DefaultScenario
+            yield return ForDefaultScenario()
                 .WithOverriddenBuildMetadata("custom build meta/data")
                 .ExpectResult("1.2.3+custom-build-meta-data");
-            yield return DefaultScenario
+            yield return ForDefaultScenario()
                 .WithCurrentSha("aaabbbccc")
                 .ExpectResult("1.2.3+Branch.main.Sha.aaabbbccc");
-            yield return DefaultScenario
+            yield return ForDefaultScenario()
                 .WithVersion(new SimpleVersion(9, 8, 7))
                 .ExpectResult("9.8.7+Branch.main.Sha.a1b2c3d4e5");
-            yield return DefaultScenario
+            yield return ForDefaultScenario()
                 .WithNonPreReleaseTags(new[] { "refs/heads/trunk" })
                 .ExpectResult("1.2.3-main+Branch.main.Sha.a1b2c3d4e5");
-            yield return DefaultScenario
+            yield return ForDefaultScenario()
                 .WithNonPreReleaseTags(new string[0])
                 .WithNonPreReleaseTagsRegex("refs/heads/m.*")
                 .ExpectResult("1.2.3+Branch.main.Sha.a1b2c3d4e5");
-            yield return DefaultScenario
+            yield return ForDefaultScenario()
                 .WithNonPreReleaseTags(new string[0])
                 .WithNonPreReleaseTagsRegex("refs/heads/m.*")
                 .WithCurrentBranch("refs/heads/feature/versioning")
                 .ExpectResult("1.2.3-feature-versioning+Branch.feature-versioning.Sha.a1b2c3d4e5");
         }
-
-        static SampleData DefaultScenario => new SampleData();
     }
 
     public class SampleData
     {
-        public SampleData() {
-            NonPreReleaseTags = new[] { "refs/heads/main" };
-            NonPreReleaseTagsRegex = string.Empty;
-            OverriddenMajorVersion = null;
-            OverriddenMinorVersion = null;
-            OverriddenPatchVersion = null;
-            CurrentBranch = "refs/heads/main";
-            CurrentSha = "a1b2c3d4e5";
-            OverriddenBuildMetadata = null;
-            Version = new SimpleVersion(1, 2, 3);
-            Expected = "1.2.3+Branch.main.Sha.a1b2c3d4e5";
-        }
-
-        public string[] NonPreReleaseTags { get; private set; }
-        public string NonPreReleaseTagsRegex { get; private set; }
-        public int? OverriddenMajorVersion { get; private set; }
-        public int? OverriddenMinorVersion { get; private set; }
-        public int? OverriddenPatchVersion { get; private set; }
-        public string CurrentBranch { get; private set; }
-        public string CurrentSha { get; private set; }
-        public string OverriddenBuildMetadata { get; private set; }
-        public string Expected { get; private set; }
-        public SimpleVersion Version { get; private set; }
+        public string[] NonPreReleaseTags { get; set; }
+        public string NonPreReleaseTagsRegex { get; set; }
+        public int? OverriddenMajorVersion { get; set; }
+        public int? OverriddenMinorVersion { get; set; }
+        public int? OverriddenPatchVersion { get; set; }
+        public string CurrentBranch { get; set; }
+        public string CurrentSha { get; set; }
+        public string OverriddenBuildMetadata { get; set; }
+        public string Expected { get; set; }
+        public SimpleVersion Version { get; set; }
 
         public SampleData WithNonPreReleaseTags(string[] nonPreReleaseTags) { NonPreReleaseTags = nonPreReleaseTags; return this; }
         public SampleData WithNonPreReleaseTagsRegex(string nonPreReleaseTagsRegex) { this.NonPreReleaseTagsRegex = nonPreReleaseTagsRegex; return this; }
