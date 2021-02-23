@@ -13,7 +13,6 @@ namespace OctoVersion.Core
 
         readonly ILogger _logger = Log.ForContext<StructuredOutputFactory>();
         readonly FullyQualifiedBranchFlattener _branchFlattener = new FullyQualifiedBranchFlattener();
-        readonly PreReleaseTagSanitizer _preReleaseTagSanitizer = new PreReleaseTagSanitizer();
         readonly string[] _nonPreReleaseTags;
         readonly string _nonPreReleaseTagsRegex;
         readonly int? _overriddenMajorVersion;
@@ -102,7 +101,7 @@ namespace OctoVersion.Core
             }
 
             var flattenedBranchName = _branchFlattener.Flatten(_currentBranch);
-            var preReleaseTag = _preReleaseTagSanitizer.Sanitize(flattenedBranchName);
+            var preReleaseTag = Sanitizer.Sanitize(flattenedBranchName);
 
             _logger.Debug("Using pre-release tag {PreReleaseTag}", preReleaseTag);
             return preReleaseTag;

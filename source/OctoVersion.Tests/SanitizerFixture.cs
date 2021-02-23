@@ -6,15 +6,13 @@ using Xunit;
 
 namespace OctoVersion.Tests
 {
-    public class PreReleaseTagSanitizerFixture
+    public class SanitizerFixture
     {
         [Theory]
         [MemberData(nameof(TestCases))]
         public void OutputsShouldBeAsExpected(string input, string expected)
         {
-            var sanitizer = new PreReleaseTagSanitizer();
-
-            sanitizer.Sanitize(input).ShouldBe(expected);
+            Sanitizer.Sanitize(input).ShouldBe(expected);
         }
 
         public static IEnumerable<object[]> TestCases()

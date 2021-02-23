@@ -13,7 +13,7 @@ namespace OctoVersion.Core
             minor,
             patch,
             preReleaseTag,
-            buildMetadata)
+            Sanitizer.Sanitize(buildMetadata))
         {
         }
 
@@ -30,6 +30,7 @@ namespace OctoVersion.Core
         public string MajorMinorPatch => $"{Major}.{Minor}.{Patch}";
         public string BuildMetadataWithPlus => string.IsNullOrWhiteSpace(BuildMetadata) ? string.Empty : $"+{BuildMetadata}";
         public string FullSemVer => $"{MajorMinorPatch}{PreReleaseTagWithDash}{BuildMetadataWithPlus}";
+        public string NuGetVersion => $"{MajorMinorPatch}{PreReleaseTagWithDash.Substring(0, Math.Min(PreReleaseTagWithDash.Length, 20))}";
 
         public override string ToString()
         {
