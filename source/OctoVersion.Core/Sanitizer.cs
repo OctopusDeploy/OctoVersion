@@ -4,13 +4,13 @@ using System.Text.RegularExpressions;
 
 namespace OctoVersion.Core
 {
-    public static class Sanitizer
+    public class Sanitizer
     {
         static readonly Regex SafeCharactersRegex = new Regex("[\\w-.]", RegexOptions.Compiled);
         static readonly Regex DuplicateCharactersRegex = new Regex("-+", RegexOptions.Compiled);
         static readonly Regex MultipleDotsRegex = new Regex("\\.+", RegexOptions.Compiled);
 
-        public static string Sanitize(string input)
+        public string Sanitize(string input)
         {
             var preReleaseTag = input;
 

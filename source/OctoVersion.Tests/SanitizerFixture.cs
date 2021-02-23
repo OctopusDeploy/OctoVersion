@@ -12,7 +12,7 @@ namespace OctoVersion.Tests
         [MemberData(nameof(TestCases))]
         public void OutputsShouldBeAsExpected(string input, string expected)
         {
-            Sanitizer.Sanitize(input).ShouldBe(expected);
+            new Sanitizer().Sanitize(input).ShouldBe(expected);
         }
 
         public static IEnumerable<object[]> TestCases()

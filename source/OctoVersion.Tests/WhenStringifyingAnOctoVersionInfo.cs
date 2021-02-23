@@ -57,7 +57,6 @@ namespace OctoVersion.Tests
         [InlineData(1, 2, 3, "", "", "1.2.3")]
         [InlineData(1, 2, 3, "pre", "", "1.2.3-pre")]
         [InlineData(1, 2, 3, "pre", "build", "1.2.3-pre")]
-        [InlineData(2021, 1, 3, "mark-genericDocumentStore", "Branch.mark/genericDocumentStore.Sha.fb13016f3a21d7c2058fb74ab25f19e5311c6550", "2021.1.3-mark-genericDocumen")] //note the slash in the branch name - we want to make it easy to use
         [InlineData(2021, 1, 3, "mark-genericDocumentStore", "Branch.mark-genericDocumentStore.Sha.fb13016f3a21d7c2058fb74ab25f19e5311c6550", "2021.1.3-mark-genericDocumen")]
         public void TheNuGetVersionShouldBeCorrect(int major, int minor, int patch, string preReleaseTag, string buildMetadata, string expected)
         {

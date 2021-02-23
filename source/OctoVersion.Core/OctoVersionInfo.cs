@@ -13,7 +13,7 @@ namespace OctoVersion.Core
             minor,
             patch,
             preReleaseTag,
-            Sanitizer.Sanitize(buildMetadata))
+            buildMetadata)
         {
         }
 
