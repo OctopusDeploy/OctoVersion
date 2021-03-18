@@ -218,6 +218,12 @@ namespace OctoVersion.Tests
             "mark-genericDocumentStore",
             "Branch.mark-genericDocumentStore.Sha.fb13016f3a21d7c2058fb74ab25f19e5311c6550",
             "2021.1.3-mark-genericDocumen")]
+        [InlineData(2021,
+            1,
+            3,
+            "dependabot/npm_and_yarn/source/TentacleArmy.Web/ini-1.3.6",
+            "Branch.dependabot/npm_and_yarn/source/TentacleArmy.Web/ini-1.3.6.Sha.069392d9d2d37ddb6009998b92e70963badcc666",
+            "2021.1.3-dependabot/npm-and-")]
         public void TheNuGetVersionShouldBeCorrect(int major,
             int minor,
             int patch,
