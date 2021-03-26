@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OctoVersion.Core;
@@ -27,7 +28,10 @@ namespace OctoVersion.Tests
         }
 
         //map from a sane type into what xunit expects
-        public static IEnumerable<object[]> XUnitFormattedTestCases() => TestCases().Select(sampleData => new object[] { sampleData });
+        public static IEnumerable<object[]> XUnitFormattedTestCases()
+        {
+            return TestCases().Select(sampleData => new object[] { sampleData });
+        }
 
         static IEnumerable<SampleData> TestCases()
         {
@@ -44,7 +48,7 @@ namespace OctoVersion.Tests
                     CurrentSha = "a1b2c3d4e5",
                     OverriddenBuildMetadata = null,
                     Version = new SimpleVersion(1, 2, 3),
-                    ExpectedInformationalVersion = "1.2.3+Branch.main.Sha.a1b2c3d4e5",
+                    ExpectedInformationalVersion = "1.2.3+Branch.main.Sha.a1b2c3d4e5"
                 };
             }
 
@@ -107,16 +111,70 @@ namespace OctoVersion.Tests
         public string ExpectedFullSemVer { get; set; }
         public SimpleVersion Version { get; set; }
 
-        public SampleData WithNonPreReleaseTags(string[] nonPreReleaseTags) { NonPreReleaseTags = nonPreReleaseTags; return this; }
-        public SampleData WithNonPreReleaseTagsRegex(string nonPreReleaseTagsRegex) { this.NonPreReleaseTagsRegex = nonPreReleaseTagsRegex; return this; }
-        public SampleData WithOverriddenMajorVersion(int? overriddenMajorVersion) { this.OverriddenMajorVersion = overriddenMajorVersion; return this; }
-        public SampleData WithOverriddenMinorVersion(int? overriddenMinorVersion) { this.OverriddenMinorVersion = overriddenMinorVersion; return this; }
-        public SampleData WithOverriddenPatchVersion(int? overriddenPatchVersion) { this.OverriddenPatchVersion = overriddenPatchVersion; return this; }
-        public SampleData WithCurrentBranch(string currentBranch) { this.CurrentBranch = currentBranch; return this; }
-        public SampleData WithCurrentSha(string currentSha) { this.CurrentSha = currentSha; return this; }
-        public SampleData WithOverriddenBuildMetadata(string overriddenBuildMetadata) { this.OverriddenBuildMetadata = overriddenBuildMetadata; return this; }
-        public SampleData WithVersion(SimpleVersion version) { this.Version = version; return this; }
-        public SampleData ExpectAnInformationalVersionOf(string expected) { this.ExpectedInformationalVersion = expected; return this; }
-        public SampleData ExpectAFullSemVerOf(string expected) { this.ExpectedFullSemVer = expected; return this; }
+        public SampleData WithNonPreReleaseTags(string[] nonPreReleaseTags)
+        {
+            NonPreReleaseTags = nonPreReleaseTags;
+            return this;
+        }
+
+        public SampleData WithNonPreReleaseTagsRegex(string nonPreReleaseTagsRegex)
+        {
+            NonPreReleaseTagsRegex = nonPreReleaseTagsRegex;
+            return this;
+        }
+
+        public SampleData WithOverriddenMajorVersion(int? overriddenMajorVersion)
+        {
+            OverriddenMajorVersion = overriddenMajorVersion;
+            return this;
+        }
+
+        public SampleData WithOverriddenMinorVersion(int? overriddenMinorVersion)
+        {
+            OverriddenMinorVersion = overriddenMinorVersion;
+            return this;
+        }
+
+        public SampleData WithOverriddenPatchVersion(int? overriddenPatchVersion)
+        {
+            OverriddenPatchVersion = overriddenPatchVersion;
+            return this;
+        }
+
+        public SampleData WithCurrentBranch(string currentBranch)
+        {
+            CurrentBranch = currentBranch;
+            return this;
+        }
+
+        public SampleData WithCurrentSha(string currentSha)
+        {
+            CurrentSha = currentSha;
+            return this;
+        }
+
+        public SampleData WithOverriddenBuildMetadata(string overriddenBuildMetadata)
+        {
+            OverriddenBuildMetadata = overriddenBuildMetadata;
+            return this;
+        }
+
+        public SampleData WithVersion(SimpleVersion version)
+        {
+            Version = version;
+            return this;
+        }
+
+        public SampleData ExpectAnInformationalVersionOf(string expected)
+        {
+            ExpectedInformationalVersion = expected;
+            return this;
+        }
+
+        public SampleData ExpectAFullSemVerOf(string expected)
+        {
+            ExpectedFullSemVer = expected;
+            return this;
+        }
     }
 }

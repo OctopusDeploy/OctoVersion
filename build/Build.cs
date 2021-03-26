@@ -1,4 +1,5 @@
 // ReSharper disable RedundantUsingDirective - prevent PrettyBot from getting confused about unused code.
+
 using System;
 using Nuke.Common;
 using Nuke.Common.CI;
@@ -17,10 +18,9 @@ using OctoVersion.Core;
 [ShutdownDotNetAfterServerBuild]
 class Build : NukeBuild
 {
-    [Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")]
-    readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
-    [Parameter("Test filter expression", Name = "where")]
-    readonly string TestFilter = string.Empty;
+    [Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")] readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
+
+    [Parameter("Test filter expression", Name = "where")] readonly string TestFilter = string.Empty;
 
     [Solution] readonly Solution Solution;
     [NukeOctoVersion] readonly OctoVersionInfo OctoVersionInfo;
@@ -69,7 +69,7 @@ class Build : NukeBuild
                 .SetFilter(TestFilter)
                 .EnableNoBuild()
                 .EnableNoRestore());
-            GlobFiles(SourceDirectory, $"**/*.trx").ForEach(x => CopyFileToDirectory(x, ArtifactsDirectory));
+            GlobFiles(SourceDirectory, "**/*.trx").ForEach(x => CopyFileToDirectory(x, ArtifactsDirectory));
         });
 
     Target Pack => _ => _
