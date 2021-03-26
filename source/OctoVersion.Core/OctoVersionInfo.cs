@@ -30,7 +30,7 @@ namespace OctoVersion.Core
         public string MajorMinorPatch => $"{Major}.{Minor}.{Patch}";
         public string BuildMetadataWithPlus => string.IsNullOrWhiteSpace(BuildMetadata) ? string.Empty : $"+{BuildMetadata}";
         public string FullSemVer => $"{MajorMinorPatch}{PreReleaseTagWithDash}";
-        public string InformationalVersion=> $"{MajorMinorPatch}{PreReleaseTagWithDash}{BuildMetadataWithPlus}";
+        public string InformationalVersion => $"{MajorMinorPatch}{PreReleaseTagWithDash}{BuildMetadataWithPlus}";
         string NuGetCompatiblePreReleaseWithDash => PreReleaseTagWithDash.Substring(0, Math.Min(PreReleaseTagWithDash.Length, 20)).Replace("_", "-");
         public string NuGetVersion => $"{MajorMinorPatch}{NuGetCompatiblePreReleaseWithDash}";
 
