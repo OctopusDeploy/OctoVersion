@@ -15,3 +15,4 @@ tools
 artifacts
 TestResults
 .idea/
+.nuke/temp/
