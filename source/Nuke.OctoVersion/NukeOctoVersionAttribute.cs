@@ -11,13 +11,9 @@ namespace Nuke.OctoVersion
     [UsedImplicitly(ImplicitUseKindFlags.Default)]
     public class NukeOctoVersionAttribute : ValueInjectionAttributeBase
     {
-        // This is the same was as how NukeBuild determines if it's a local build or not as seen here:
-        // https://github.com/nuke-build/nuke/blob/772b22391bda0929d758f4089e2da55e7566fb8d/source/Nuke.Common/NukeBuild.Statics.cs#L114
-        static bool IsLocalBuild => NukeBuild.Host == HostType.Console;
-
         public override object GetValue(MemberInfo member, object instance)
         {
-            if (IsLocalBuild)
+            if (NukeBuild.IsLocalBuild)
                 OctoVersionDiscoverLocalGitBranch();
 
             return OctoVersion();
