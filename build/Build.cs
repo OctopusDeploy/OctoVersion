@@ -96,7 +96,8 @@ class Build : NukeBuild
         });
 
     Target Default => _ => _
-        .DependsOn(CopyToLocalPackages);
+        .DependsOn(CopyToLocalPackages)
+        .DependsOn(Pack);
 
     /// Support plugins are available for:
     /// - JetBrains ReSharper        https://nuke.build/resharper
