@@ -1,3 +1,5 @@
+[![feedz.io](https://img.shields.io/badge/endpoint.svg?url=https%3A%2F%2Ff.feedz.io%2Foctopus-deploy%2Fdependencies%2Fshield%2FNuke.OctoVersion%2Fstable&label=Nuke.OctoVersion)](https://f.feedz.io/octopus-deploy/dependencies/packages/Nuke.OctoVersion/stable/download)
+
 # Welcome to OctoVersion
 
 ## What is OctoVersion?
