@@ -38,6 +38,7 @@ namespace OctoVersion.Core
             var appSettings = new T();
             configuration.Bind(appSettings);
 
+            appSettings.ContributeSaneArrayArgs(args);
             appSettings.ApplyDefaultsIfRequired();
 
             return (appSettings, configuration);
