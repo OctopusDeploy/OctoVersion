@@ -8,6 +8,7 @@ namespace OctoVersion.Core.Configuration
     public interface IAppSettings
     {
         void ApplyDefaultsIfRequired();
+        void ContributeSaneArrayArgs(string[] args);
     }
 
     public class AppSettings : IAppSettings, IValidatableObject
@@ -36,6 +37,41 @@ namespace OctoVersion.Core.Configuration
         {
             if (!NonPreReleaseTags.Any()) NonPreReleaseTags = new[] { "main", "master" };
             if (!OutputFormats.Any()) OutputFormats = new[] { "Console" };
+        }
+
+        /// <param name="strings"></param>
+        /// <remarks>
+        /// dotnet core doesn't allow multiple args of the same name
+        /// for array types, it expects you to pass them like "--OutputFormats:0 Json"
+        /// which is just... undiscoverable
+        /// So, let's manually parse it for now
+        /// Maybe one day in the future, change over to use Octopus.Commandline
+        /// </remarks>
+        public void ContributeSaneArrayArgs(string[] args)
+        {
+            if (!NonPreReleaseTags.Any())
+                NonPreReleaseTags = ParseArgsForArrayArguments(args, nameof(NonPreReleaseTags));
+            if (!OutputFormats.Any())
+                OutputFormats = ParseArgsForArrayArguments(args, nameof(OutputFormats));
+        }
+
+        static string[] ParseArgsForArrayArguments(string[] args, string name)
+        {
+            var result = new List<string>();
+            var addArg = false;
+            foreach (var arg in args)
+            {
+                if (addArg)
+                {
+                    result.Add(arg);
+                    addArg = false;
+                }
+
+                if (arg.StartsWith("--" + name.TrimEnd('s'), StringComparison.OrdinalIgnoreCase))
+                    addArg = true;
+            }
+
+            return result.ToArray();
         }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
