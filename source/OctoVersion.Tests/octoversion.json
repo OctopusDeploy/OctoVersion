@@ -1,0 +1,3 @@
+{
+  //empty configuration file to prevent the real octoversion.json in the root from affecting the tests
+}
