@@ -36,8 +36,8 @@ namespace OctoVersion.Tests
             var args = new[] { "--CurrentBranch", "main" };
             var (appSettings, _) = ConfigurationBootstrapper.Bootstrap<AppSettings>(args);
             appSettings.CurrentBranch.ShouldBe("main");
-            appSettings.NonPreReleaseTags.ShouldBeEquivalentTo(new [] { "main", "master" }); //defaults should be applied
-            appSettings.OutputFormats.ShouldBeEquivalentTo(new [] { "Console" }); //defaults should be applied
+            appSettings.NonPreReleaseTags.ShouldBeEquivalentTo(new[] { "main", "master" }); //defaults should be applied
+            appSettings.OutputFormats.ShouldBeEquivalentTo(new[] { "Console" }); //defaults should be applied
         }
 
         [Fact]
@@ -46,15 +46,15 @@ namespace OctoVersion.Tests
             var args = new[] { "--FullSemVer", "1.0.0" };
             var (appSettings, _) = ConfigurationBootstrapper.Bootstrap<AppSettings>(args);
             appSettings.FullSemVer.ShouldBe("1.0.0");
-            appSettings.NonPreReleaseTags.ShouldBeEquivalentTo(new [] { "main", "master" }); //defaults should be applied
-            appSettings.OutputFormats.ShouldBeEquivalentTo(new [] { "Console" }); //defaults should be applied
+            appSettings.NonPreReleaseTags.ShouldBeEquivalentTo(new[] { "main", "master" }); //defaults should be applied
+            appSettings.OutputFormats.ShouldBeEquivalentTo(new[] { "Console" }); //defaults should be applied
         }
 
         [Theory]
         [MemberData(nameof(OutputFormatTestCases))]
         public void WhenPassingOutputFormats(string[] args, string[] expectedOutputFormats)
         {
-            var fullArgs = new [] { "--CurrentBranch", "main" }.Concat(args).ToArray();
+            var fullArgs = new[] { "--CurrentBranch", "main" }.Concat(args).ToArray();
             var (appSettings, _) = ConfigurationBootstrapper.Bootstrap<AppSettings>(fullArgs);
             appSettings.OutputFormats.ShouldBeEquivalentTo(expectedOutputFormats);
         }
@@ -62,12 +62,12 @@ namespace OctoVersion.Tests
         public static IEnumerable<object[]> OutputFormatTestCases()
         {
             // sane formats
-            yield return new object[] { new [] { "--outputformat", "json" }, new [] { "json" } };
-            yield return new object[] { new [] { "--outputformat", "json", "--outputformat", "console" }, new [] { "json", "console" } };
+            yield return new object[] { new[] { "--outputformat", "json" }, new[] { "json" } };
+            yield return new object[] { new[] { "--outputformat", "json", "--outputformat", "console" }, new[] { "json", "console" } };
 
             // dotnet configuration formats
-            yield return new object[] { new [] { "--outputformat:0", "json" }, new [] { "json" } };
-            yield return new object[] { new [] { "--outputformat:0", "json", "--outputformat:1", "console" }, new [] { "json", "console" } };
+            yield return new object[] { new[] { "--outputformat:0", "json" }, new[] { "json" } };
+            yield return new object[] { new[] { "--outputformat:0", "json", "--outputformat:1", "console" }, new[] { "json", "console" } };
         }
 
         [Theory]
@@ -86,12 +86,12 @@ namespace OctoVersion.Tests
             yield return new object[]
             {
                 new[] { new ValueTuple<string, string>("OCTOVERSION_OutputFormats__0", "main") },
-                new [] { "main" }
+                new[] { "main" }
             };
             yield return new object[]
             {
-                new[] { new ValueTuple<string, string>( "OCTOVERSION_OutputFormats__0", "main"), new ValueTuple<string, string> ("OCTOVERSION_OutputFormats__1", "release") },
-                new [] { "main", "release" }
+                new[] { new ValueTuple<string, string>("OCTOVERSION_OutputFormats__0", "main"), new ValueTuple<string, string>("OCTOVERSION_OutputFormats__1", "release") },
+                new[] { "main", "release" }
             };
         }
 
@@ -99,7 +99,7 @@ namespace OctoVersion.Tests
         [MemberData(nameof(NonPreReleaseTagsTestCases))]
         public void WhenPassingNonPreReleaseTags(string[] args, string[] expectedNonPreReleaseTags)
         {
-            var fullArgs = new [] { "--CurrentBranch", "main" }.Concat(args).ToArray();
+            var fullArgs = new[] { "--CurrentBranch", "main" }.Concat(args).ToArray();
             var (appSettings, _) = ConfigurationBootstrapper.Bootstrap<AppSettings>(fullArgs);
             appSettings.NonPreReleaseTags.ShouldBeEquivalentTo(expectedNonPreReleaseTags);
         }
@@ -107,12 +107,12 @@ namespace OctoVersion.Tests
         public static IEnumerable<object[]> NonPreReleaseTagsTestCases()
         {
             // sane formats
-            yield return new object[] { new [] { "--nonprereleasetags", "main" }, new [] { "main" } };
-            yield return new object[] { new [] { "--nonprereleasetags", "main", "--nonprereleasetags", "release" }, new [] { "main", "release" } };
+            yield return new object[] { new[] { "--nonprereleasetags", "main" }, new[] { "main" } };
+            yield return new object[] { new[] { "--nonprereleasetags", "main", "--nonprereleasetags", "release" }, new[] { "main", "release" } };
 
             // dotnet configuration formats
-            yield return new object[] { new [] { "--nonprereleasetags:0", "main" }, new [] { "main" } };
-            yield return new object[] { new [] { "--nonprereleasetags:0", "main", "--nonprereleasetags:1", "release" }, new [] { "main", "release" } };
+            yield return new object[] { new[] { "--nonprereleasetags:0", "main" }, new[] { "main" } };
+            yield return new object[] { new[] { "--nonprereleasetags:0", "main", "--nonprereleasetags:1", "release" }, new[] { "main", "release" } };
         }
 
         [Theory]
@@ -132,12 +132,12 @@ namespace OctoVersion.Tests
             yield return new object[]
             {
                 new[] { new ValueTuple<string, string>("OCTOVERSION_NonPreReleaseTags__0", "main") },
-                new [] { "main" }
+                new[] { "main" }
             };
             yield return new object[]
             {
-                new[] { new ValueTuple<string, string>( "OCTOVERSION_NonPreReleaseTags__0", "main"), new ValueTuple<string, string> ("OCTOVERSION_NonPreReleaseTags__1", "release") },
-                new [] { "main", "release" }
+                new[] { new ValueTuple<string, string>("OCTOVERSION_NonPreReleaseTags__0", "main"), new ValueTuple<string, string>("OCTOVERSION_NonPreReleaseTags__1", "release") },
+                new[] { "main", "release" }
             };
         }
     }
