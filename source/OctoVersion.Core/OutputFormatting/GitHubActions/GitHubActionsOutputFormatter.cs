@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Reflection;
 using Serilog.Core;
+using Serilog.Events;
 
 namespace OctoVersion.Core.OutputFormatting.GitHubActions
 {
@@ -48,7 +49,7 @@ namespace OctoVersion.Core.OutputFormatting.GitHubActions
 
             if (gitHubSetEnvFilePath != null)
             {
-                GitHubActionsLogSink.Log(LogLevel.Normal, $"Writing version variables to $GITHUB_ENV file for '{nameof(GitHubActionsOutputFormatter)}'.");
+                GitHubActionsLogSink.Log(LogEventLevel.Information, $"Writing version variables to {GitHubSetEnvTempFileEnvironmentVariableName} file ({gitHubSetEnvFilePath}) for '{nameof(GitHubActionsOutputFormatter)}'.");
                 using var streamWriter = File.AppendText(gitHubSetEnvFilePath);
                 foreach (var property in properties)
                 {
@@ -61,7 +62,7 @@ namespace OctoVersion.Core.OutputFormatting.GitHubActions
             }
             else
             {
-                GitHubActionsLogSink.Log(LogLevel.Warning, $"Unable to write GitVersion variables to ${GitHubSetEnvTempFileEnvironmentVariableName} because the environment variable is not set.");
+                GitHubActionsLogSink.Log(LogEventLevel.Warning, $"Unable to write GitVersion variables to ${GitHubSetEnvTempFileEnvironmentVariableName} because the environment variable is not set.");
             }
         }
     }
