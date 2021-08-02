@@ -25,7 +25,7 @@ namespace OctoVersion.Core.OutputFormatting.GitHubActions
                 .GetProperties(BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.Instance);
             foreach (var property in properties)
             {
-                var configurationVariableKey = $"OctoVersion.{property.Name}";
+                var configurationVariableKey = $"OctoVersion_{property.Name}";
 
                 var value = property.GetValue(octoVersionInfo)?.ToString() ?? string.Empty;
 
