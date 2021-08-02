@@ -19,7 +19,7 @@ namespace OctoVersion.Core.OutputFormatting.GitHubActions
 
         static void WriteOutputVariables(OctoVersionInfo octoVersionInfo)
         {
-            // ::set-output name='OctoVersion.ddd'::'fff']
+            // ::set-output name='OctoVersion_ddd'::'fff']
 
             var properties = octoVersionInfo.GetType()
                 .GetProperties(BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.Instance);
