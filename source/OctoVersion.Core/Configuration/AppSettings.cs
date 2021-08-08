@@ -49,10 +49,12 @@ namespace OctoVersion.Core.Configuration
         /// </remarks>
         public void ContributeSaneArrayArgs(string[] args)
         {
-            if (!NonPreReleaseTags.Any())
-                NonPreReleaseTags = ParseArgsForArrayArguments(args, nameof(NonPreReleaseTags));
-            if (!OutputFormats.Any())
-                OutputFormats = ParseArgsForArrayArguments(args, nameof(OutputFormats));
+            var cliNonPreReleaseTags = ParseArgsForArrayArguments(args, nameof(NonPreReleaseTags));
+            if (cliNonPreReleaseTags.Any())
+                NonPreReleaseTags = cliNonPreReleaseTags;
+            var cliOutputFormats = ParseArgsForArrayArguments(args, nameof(OutputFormats));
+            if (cliOutputFormats.Any())
+                OutputFormats = cliOutputFormats;
         }
 
         static string[] ParseArgsForArrayArguments(string[] args, string name)
