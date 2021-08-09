@@ -80,7 +80,7 @@ namespace OctoVersion.Tests
             Environment.SetEnvironmentVariable("OCTOVERSION_OutputFormats__0", "TeamCity");
             var fullArgs = new[] { "--CurrentBranch", "main" }.Concat(new[] { "--outputformat", "json" }).ToArray();
             var (appSettings, _) = ConfigurationBootstrapper.Bootstrap<AppSettings>(fullArgs);
-            appSettings.OutputFormats.ShouldBeEquivalentTo(new [] { "json" });
+            appSettings.OutputFormats.ShouldBeEquivalentTo(new[] { "json" });
         }
 
         [Theory]
