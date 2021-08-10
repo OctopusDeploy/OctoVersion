@@ -10,6 +10,7 @@ using Xunit;
 
 namespace OctoVersion.Tests
 {
+    [Collection("TheseTestsModifyEnvironmentVariables")] //Cant run these in parallel, as they modify global state (environment variables)
     public class ConfigurationBootstrapperFixture : IDisposable
     {
         public void Dispose()
@@ -65,9 +66,21 @@ namespace OctoVersion.Tests
             yield return new object[] { new[] { "--outputformat", "json" }, new[] { "json" } };
             yield return new object[] { new[] { "--outputformat", "json", "--outputformat", "console" }, new[] { "json", "console" } };
 
+            yield return new object[] { new[] { "--outputformats", "json" }, new[] { "json" } };
+            yield return new object[] { new[] { "--outputformats", "json", "--outputformats", "console" }, new[] { "json", "console" } };
+
             // dotnet configuration formats
             yield return new object[] { new[] { "--outputformat:0", "json" }, new[] { "json" } };
             yield return new object[] { new[] { "--outputformat:0", "json", "--outputformat:1", "console" }, new[] { "json", "console" } };
+        }
+
+        [Fact]
+        public void WhenEnvironmentVariableAndCommandLineArgExistTheCommandLineArgWins()
+        {
+            Environment.SetEnvironmentVariable("OCTOVERSION_OutputFormats__0", "TeamCity");
+            var fullArgs = new[] { "--CurrentBranch", "main" }.Concat(new[] { "--outputformat", "json" }).ToArray();
+            var (appSettings, _) = ConfigurationBootstrapper.Bootstrap<AppSettings>(fullArgs);
+            appSettings.OutputFormats.ShouldBeEquivalentTo(new[] { "json" });
         }
 
         [Theory]
