@@ -7,6 +7,7 @@ namespace OctoVersion.Core
     {
         //https://semver.org/spec/v2.0.0.html#spec-item-9
         static readonly Regex InvalidPreReleaseCharacters = new Regex("[^0-9A-Za-z-\\.]", RegexOptions.Compiled);
+
         //https://semver.org/spec/v2.0.0.html#spec-item-10
         static readonly Regex InvalidBuildMetadataCharacters = new Regex("[^0-9A-Za-z-\\.]", RegexOptions.Compiled);
 

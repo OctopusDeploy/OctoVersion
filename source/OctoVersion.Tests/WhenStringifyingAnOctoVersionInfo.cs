@@ -8,12 +8,41 @@ namespace OctoVersion.Tests
 {
     public class WhenStringifyingAnOctoVersionInfo
     {
-        static readonly OctoVersionInfo AllVersionPartsSetTo0 = new OctoVersionInfo(0, 0, 0, "", "");
-        static readonly OctoVersionInfo AllVersionPartsSetToValues = new OctoVersionInfo(1, 2, 3, "", "");
-        static readonly OctoVersionInfo VersionWithPreReleaseTag = new OctoVersionInfo(1, 2, 3, "pre", "");
-        static readonly OctoVersionInfo VersionWithPreReleaseTagAndBuildMetadata = new OctoVersionInfo(1, 2, 3, "pre", "build");
-        static readonly OctoVersionInfo VersionWithLongPreReleaseTagAndBuildMetadata = new OctoVersionInfo(2021, 1, 3, "mark-genericDocumentStore", "Branch.mark-genericDocumentStore.Sha.fb13016f3a21d7c2058fb74ab25f19e5311c6550");
-        static readonly OctoVersionInfo VersionWithLongPreReleaseTagWithSlashesAndBuildMetadata = new OctoVersionInfo(2021,1,3,"dependabot/npm_and_yarn/source/TentacleArmy.Web/ini-1.3.6","Branch.dependabot/npm_and_yarn/source/TentacleArmy.Web/ini-1.3.6.Sha.069392d9d2d37ddb6009998b92e70963badcc666");
+        static readonly OctoVersionInfo AllVersionPartsSetTo0 = new OctoVersionInfo(0,
+            0,
+            0,
+            "",
+            "");
+
+        static readonly OctoVersionInfo AllVersionPartsSetToValues = new OctoVersionInfo(1,
+            2,
+            3,
+            "",
+            "");
+
+        static readonly OctoVersionInfo VersionWithPreReleaseTag = new OctoVersionInfo(1,
+            2,
+            3,
+            "pre",
+            "");
+
+        static readonly OctoVersionInfo VersionWithPreReleaseTagAndBuildMetadata = new OctoVersionInfo(1,
+            2,
+            3,
+            "pre",
+            "build");
+
+        static readonly OctoVersionInfo VersionWithLongPreReleaseTagAndBuildMetadata = new OctoVersionInfo(2021,
+            1,
+            3,
+            "mark-genericDocumentStore",
+            "Branch.mark-genericDocumentStore.Sha.fb13016f3a21d7c2058fb74ab25f19e5311c6550");
+
+        static readonly OctoVersionInfo VersionWithLongPreReleaseTagWithSlashesAndBuildMetadata = new OctoVersionInfo(2021,
+            1,
+            3,
+            "dependabot/npm_and_yarn/source/TentacleArmy.Web/ini-1.3.6",
+            "Branch.dependabot/npm_and_yarn/source/TentacleArmy.Web/ini-1.3.6.Sha.069392d9d2d37ddb6009998b92e70963badcc666");
 
         //xunit is blurgh - IEnumerable of object[]? ick.
         public static IEnumerable<object[]> PreReleaseTagWithDashTestCases()
