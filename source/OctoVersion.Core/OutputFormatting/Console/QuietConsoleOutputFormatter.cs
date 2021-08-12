@@ -7,10 +7,13 @@ namespace OctoVersion.Core.OutputFormatting.Console
     class QuietConsoleOutputFormatter : IOutputFormatter
     {
         public ILogEventSink LogSink { get; } = new NullSink();
+        public string Name => "QuietConsole";
 
         public void Write(OctoVersionInfo octoVersionInfo)
         {
             System.Console.WriteLine(octoVersionInfo);
         }
+
+        public bool MatchesRuntimeEnvironment() => false;
     }
 }

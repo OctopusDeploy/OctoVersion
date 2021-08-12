@@ -38,7 +38,6 @@ namespace OctoVersion.Tests
             var (appSettings, _) = ConfigurationBootstrapper.Bootstrap<AppSettings>(args);
             appSettings.CurrentBranch.ShouldBe("main");
             appSettings.NonPreReleaseTags.ShouldBeEquivalentTo(new[] { "main", "master" }); //defaults should be applied
-            appSettings.OutputFormats.ShouldBeEquivalentTo(new[] { "Console" }); //defaults should be applied
         }
 
         [Fact]
@@ -48,7 +47,6 @@ namespace OctoVersion.Tests
             var (appSettings, _) = ConfigurationBootstrapper.Bootstrap<AppSettings>(args);
             appSettings.FullSemVer.ShouldBe("1.0.0");
             appSettings.NonPreReleaseTags.ShouldBeEquivalentTo(new[] { "main", "master" }); //defaults should be applied
-            appSettings.OutputFormats.ShouldBeEquivalentTo(new[] { "Console" }); //defaults should be applied
         }
 
         [Theory]
