@@ -24,6 +24,9 @@ namespace Cake.OctoVersion.Logging
             context.Log.Information(octoVersionInfo);
         }
 
-        public bool MatchesRuntimeEnvironment() => false;
+        public bool MatchesRuntimeEnvironment()
+        {
+            return false;
+        }
     }
 }

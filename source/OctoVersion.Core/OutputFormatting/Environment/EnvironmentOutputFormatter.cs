@@ -25,6 +25,9 @@ namespace OctoVersion.Core.OutputFormatting.Environment
             }
         }
 
-        public bool MatchesRuntimeEnvironment() => false;
+        public bool MatchesRuntimeEnvironment()
+        {
+            return false;
+        }
     }
 }

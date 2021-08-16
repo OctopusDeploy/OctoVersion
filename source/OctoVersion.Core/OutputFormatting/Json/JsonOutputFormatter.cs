@@ -21,6 +21,9 @@ namespace OctoVersion.Core.OutputFormatting.Json
             System.Console.WriteLine(json);
         }
 
-        public bool MatchesRuntimeEnvironment() => false;
+        public bool MatchesRuntimeEnvironment()
+        {
+            return false;
+        }
     }
 }

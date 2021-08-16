@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Linq;
 using OctoVersion.Core;
 using OctoVersion.Core.Configuration;
@@ -32,7 +31,7 @@ namespace OctoVersion.Tests
                 OutputFormats = Array.Empty<string>()
             };
             var results = new OutputFormattersProvider().GetFormatters(appSettings).Select(x => x.Name).ToArray();
-            results.ShouldBeEquivalentTo(new [] { "Console" }, "it should default to safe and show some output");
+            results.ShouldBeEquivalentTo(new[] { "Console" }, "it should default to safe and show some output");
         }
 
         [Fact]
@@ -41,10 +40,10 @@ namespace OctoVersion.Tests
             var appSettings = new AppSettings
             {
                 DetectEnvironment = false,
-                OutputFormats = new [] { "Json" }
+                OutputFormats = new[] { "Json" }
             };
             var results = new OutputFormattersProvider().GetFormatters(appSettings).Select(x => x.Name).ToArray();
-            results.ShouldBeEquivalentTo(new [] { "Json" }, "it should use the requested output format");
+            results.ShouldBeEquivalentTo(new[] { "Json" }, "it should use the requested output format");
         }
 
         [Fact]
@@ -53,10 +52,10 @@ namespace OctoVersion.Tests
             var appSettings = new AppSettings
             {
                 DetectEnvironment = false,
-                OutputFormats = new [] { "Json", "Environment" }
+                OutputFormats = new[] { "Json", "Environment" }
             };
             var results = new OutputFormattersProvider().GetFormatters(appSettings).Select(x => x.Name).ToArray();
-            results.ShouldBeEquivalentTo(new [] { "Json", "Environment" }, "it should allow multiple output formats");
+            results.ShouldBeEquivalentTo(new[] { "Json", "Environment" }, "it should allow multiple output formats");
         }
 
         [Fact]
@@ -66,10 +65,10 @@ namespace OctoVersion.Tests
             var appSettings = new AppSettings
             {
                 DetectEnvironment = true,
-                OutputFormats = new [] { "Json" }
+                OutputFormats = new[] { "Json" }
             };
             var results = new OutputFormattersProvider().GetFormatters(appSettings).Select(x => x.Name).ToArray();
-            results.ShouldBeEquivalentTo(new [] { "TeamCity" }, "it should have prioritised auto-detection over the provided value");
+            results.ShouldBeEquivalentTo(new[] { "TeamCity" }, "it should have prioritised auto-detection over the provided value");
         }
     }
 }

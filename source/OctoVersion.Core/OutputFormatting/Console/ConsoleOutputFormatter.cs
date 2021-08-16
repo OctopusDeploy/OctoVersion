@@ -14,6 +14,9 @@ namespace OctoVersion.Core.OutputFormatting.Console
             System.Console.WriteLine(octoVersionInfo);
         }
 
-        public bool MatchesRuntimeEnvironment() => false;
+        public bool MatchesRuntimeEnvironment()
+        {
+            return false;
+        }
     }
 }

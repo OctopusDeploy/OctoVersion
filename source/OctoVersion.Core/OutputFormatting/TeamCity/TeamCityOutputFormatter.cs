@@ -15,7 +15,10 @@ namespace OctoVersion.Core.OutputFormatting.TeamCity
             WriteEnvironmentVariables(octoVersionInfo);
         }
 
-        public bool MatchesRuntimeEnvironment() => !string.IsNullOrEmpty(System.Environment.GetEnvironmentVariable("TEAMCITY_VERSION"));
+        public bool MatchesRuntimeEnvironment()
+        {
+            return !string.IsNullOrEmpty(System.Environment.GetEnvironmentVariable("TEAMCITY_VERSION"));
+        }
 
         static void WriteBuildNumber(OctoVersionInfo octoVersionInfo)
         {
