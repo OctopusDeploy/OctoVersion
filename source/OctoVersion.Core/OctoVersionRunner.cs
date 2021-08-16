@@ -32,7 +32,7 @@ namespace OctoVersion.Core
 
         public void Run(out OctoVersionInfo versionInfo)
         {
-            var outputFormatters = new OutputFormattersProvider().GetFormatters(appSettings.OutputFormats);
+            var outputFormatters = new OutputFormattersProvider().GetFormatters(appSettings);
             LogBootstrapper.Bootstrap(configuration,
                 lc =>
                 {

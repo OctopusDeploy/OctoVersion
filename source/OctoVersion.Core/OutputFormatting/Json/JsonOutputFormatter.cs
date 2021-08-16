@@ -13,11 +13,14 @@ namespace OctoVersion.Core.OutputFormatting.Json
         };
 
         public ILogEventSink LogSink { get; } = new NullSink();
+        public string Name => "Json";
 
         public void Write(OctoVersionInfo octoVersionInfo)
         {
             var json = JsonConvert.SerializeObject(octoVersionInfo, Settings);
             System.Console.WriteLine(json);
         }
+
+        public bool MatchesRuntimeEnvironment() => false;
     }
 }
