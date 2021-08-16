@@ -1,11 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using OctoVersion.Core.Configuration;
 
 namespace OctoVersion.Core
 {
     public class OutputFormattersProvider
     {
-        public IOutputFormatter[] GetFormatters(string[] outputFormatterNames)
+        public IOutputFormatter[] GetFormatters(AppSettings appSettings)
         {
             var allFormatters = GetType()
                 .Assembly.DefinedTypes
@@ -15,12 +17,32 @@ namespace OctoVersion.Core
                 .Select(t => (IOutputFormatter)Activator.CreateInstance(t))
                 .ToArray();
 
+            var settings = appSettings.OutputFormats;
+
+            if (appSettings.DetectEnvironment)
+                settings = DiscoverOutputFormatFromRuntimeEnvironment(allFormatters);
+
+            if (!settings.Any())
+                settings = new[] { "Console" };
+
+            return RequestedOutputFormatters(settings, allFormatters);
+        }
+
+        static IOutputFormatter[] RequestedOutputFormatters(string[] requestedOutputFormats, IOutputFormatter[] allFormatters)
+        {
             var formatters = allFormatters
-                .Where(f => outputFormatterNames.Any(n =>
-                    f.GetType().Name.Equals($"{n}OutputFormatter", StringComparison.OrdinalIgnoreCase)))
+                .Where(formatter => requestedOutputFormats.Any(requestedFormatter => formatter.Name.Equals(requestedFormatter, StringComparison.OrdinalIgnoreCase)))
                 .ToArray();
 
             return formatters;
+        }
+
+        static string[] DiscoverOutputFormatFromRuntimeEnvironment(IOutputFormatter[] outputFormatters)
+        {
+            return outputFormatters
+                .Where(formatter => formatter.MatchesRuntimeEnvironment())
+                .Select(x => x.Name)
+                .ToArray();
         }
     }
 }
