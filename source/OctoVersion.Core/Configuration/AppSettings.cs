@@ -33,10 +33,12 @@ namespace OctoVersion.Core.Configuration
 
         public string[] OutputFormats { get; set; } = Array.Empty<string>();
 
+        public bool DetectEnvironment { get; set; }
+
         public void ApplyDefaultsIfRequired()
         {
-            if (!NonPreReleaseTags.Any()) NonPreReleaseTags = new[] { "main", "master" };
-            if (!OutputFormats.Any()) OutputFormats = new[] { "Console" };
+            if (!NonPreReleaseTags.Any())
+                NonPreReleaseTags = new[] { "main", "master" };
         }
 
         /// <param name="strings"></param>

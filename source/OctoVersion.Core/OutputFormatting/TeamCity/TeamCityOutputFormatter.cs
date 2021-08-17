@@ -7,11 +7,17 @@ namespace OctoVersion.Core.OutputFormatting.TeamCity
     public class TeamCityOutputFormatter : IOutputFormatter
     {
         public ILogEventSink LogSink { get; } = new TeamCityLogSink();
+        public string Name => "TeamCity";
 
         public void Write(OctoVersionInfo octoVersionInfo)
         {
             WriteBuildNumber(octoVersionInfo);
             WriteEnvironmentVariables(octoVersionInfo);
+        }
+
+        public bool MatchesRuntimeEnvironment()
+        {
+            return !string.IsNullOrEmpty(System.Environment.GetEnvironmentVariable("TEAMCITY_VERSION"));
         }
 
         static void WriteBuildNumber(OctoVersionInfo octoVersionInfo)

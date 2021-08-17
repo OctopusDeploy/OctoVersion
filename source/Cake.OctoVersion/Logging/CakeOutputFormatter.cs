@@ -17,10 +17,16 @@ namespace Cake.OctoVersion.Logging
         }
 
         public ILogEventSink LogSink { get; }
+        public string Name => "Cake";
 
         public void Write(OctoVersionInfo octoVersionInfo)
         {
             context.Log.Information(octoVersionInfo);
+        }
+
+        public bool MatchesRuntimeEnvironment()
+        {
+            return false;
         }
     }
 }

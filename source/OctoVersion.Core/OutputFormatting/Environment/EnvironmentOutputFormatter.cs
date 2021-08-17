@@ -8,6 +8,7 @@ namespace OctoVersion.Core.OutputFormatting.Environment
     public class EnvironmentOutputFormatter : IOutputFormatter
     {
         public ILogEventSink LogSink { get; } = new NullSink();
+        public string Name => "Environment";
 
         public void Write(OctoVersionInfo octoVersionInfo)
         {
@@ -22,6 +23,11 @@ namespace OctoVersion.Core.OutputFormatting.Environment
                 var line = $"{key}={value}";
                 System.Console.WriteLine(line);
             }
+        }
+
+        public bool MatchesRuntimeEnvironment()
+        {
+            return false;
         }
     }
 }
