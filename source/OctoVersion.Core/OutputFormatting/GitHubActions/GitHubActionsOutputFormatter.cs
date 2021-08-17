@@ -7,14 +7,22 @@ namespace OctoVersion.Core.OutputFormatting.GitHubActions
 {
     public class GitHubActionsOutputFormatter : IOutputFormatter
     {
-        public const string GitHubSetEnvTempFileEnvironmentVariableName = "GITHUB_ENV";
+        // https://docs.github.com/en/actions/reference/environment-variables#default-environment-variables
+        public const string GitHubActionsEnvironmentVariableName = "GITHUB_ACTIONS";
+        public const string GitHubActionsEnvTempFileEnvironmentVariableName = "GITHUB_ENV";
 
         ILogEventSink IOutputFormatter.LogSink => new GitHubActionsLogSink();
+        public string Name => "GitHubActions";
 
         public void Write(OctoVersionInfo octoVersionInfo)
         {
             WriteOutputVariables(octoVersionInfo);
             WriteEnvironmentVariables(octoVersionInfo);
+        }
+
+        public bool MatchesRuntimeEnvironment()
+        {
+            return !string.IsNullOrEmpty(System.Environment.GetEnvironmentVariable(GitHubActionsEnvironmentVariableName));
         }
 
         static void WriteOutputVariables(OctoVersionInfo octoVersionInfo)
@@ -45,11 +53,11 @@ namespace OctoVersion.Core.OutputFormatting.GitHubActions
             // https://docs.github.com/en/actions/reference/workflow-commands-for-github-actions#environment-files
             // The outgoing environment variables must be written to a temporary file (identified by the $GITHUB_ENV environment
             // variable, which changes for every step in a workflow) which is then parsed. That file must also be UTF-8 or it will fail.
-            var gitHubSetEnvFilePath = System.Environment.GetEnvironmentVariable(GitHubSetEnvTempFileEnvironmentVariableName);
+            var gitHubSetEnvFilePath = System.Environment.GetEnvironmentVariable(GitHubActionsEnvTempFileEnvironmentVariableName);
 
             if (gitHubSetEnvFilePath != null)
             {
-                GitHubActionsLogSink.Log(LogEventLevel.Information, $"Writing version variables to {GitHubSetEnvTempFileEnvironmentVariableName} file ({gitHubSetEnvFilePath}) for '{nameof(GitHubActionsOutputFormatter)}'.");
+                GitHubActionsLogSink.Log(LogEventLevel.Information, $"Writing version variables to {GitHubActionsEnvTempFileEnvironmentVariableName} file ({gitHubSetEnvFilePath}) for '{nameof(GitHubActionsOutputFormatter)}'.");
                 using var streamWriter = File.AppendText(gitHubSetEnvFilePath);
                 foreach (var property in properties)
                 {
@@ -62,7 +70,7 @@ namespace OctoVersion.Core.OutputFormatting.GitHubActions
             }
             else
             {
-                GitHubActionsLogSink.Log(LogEventLevel.Warning, $"Unable to write GitVersion variables to ${GitHubSetEnvTempFileEnvironmentVariableName} because the environment variable is not set.");
+                GitHubActionsLogSink.Log(LogEventLevel.Warning, $"Unable to write GitVersion variables to ${GitHubActionsEnvTempFileEnvironmentVariableName} because the environment variable is not set.");
             }
         }
     }

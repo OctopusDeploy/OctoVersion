@@ -70,5 +70,18 @@ namespace OctoVersion.Tests
             var results = new OutputFormattersProvider().GetFormatters(appSettings).Select(x => x.Name).ToArray();
             results.ShouldBeEquivalentTo(new[] { "TeamCity" }, "it should have prioritised auto-detection over the provided value");
         }
+
+        [Fact]
+        public void DetectsGitHubActionsFromEnvironmentIfRequested()
+        {
+            Environment.SetEnvironmentVariable("GITHUB_ACTIONS", "true");
+            var appSettings = new AppSettings
+            {
+                DetectEnvironment = true,
+                OutputFormats = new[] { "Json" }
+            };
+            var results = new OutputFormattersProvider().GetFormatters(appSettings).Select(x => x.Name).ToArray();
+            results.ShouldBeEquivalentTo(new[] { "GitHubActions" }, "it should have prioritised auto-detection over the provided value");
+        }
     }
 }
