@@ -22,7 +22,7 @@ namespace OctoVersion.Core.OutputFormatting.GitHubActions
 
         public bool MatchesRuntimeEnvironment()
         {
-            return !string.IsNullOrEmpty(System.Environment.GetEnvironmentVariable(GitHubActionsEnvironmentVariableName));
+            return string.Equals("true", System.Environment.GetEnvironmentVariable(GitHubActionsEnvironmentVariableName), System.StringComparison.InvariantCultureIgnoreCase);
         }
 
         static void WriteOutputVariables(OctoVersionInfo octoVersionInfo)
