@@ -27,13 +27,13 @@ namespace OctoVersion.Core.OutputFormatting.GitHubActions
 
         static void WriteOutputVariables(OctoVersionInfo octoVersionInfo)
         {
-            // ::set-output name='OctoVersion_ddd'::'fff']
+            // ::set-output name='octoversion_ddd'::'fff']
 
             var properties = octoVersionInfo.GetType()
                 .GetProperties(BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.Instance);
             foreach (var property in properties)
             {
-                var configurationVariableKey = $"OctoVersion_{property.Name}";
+                var configurationVariableKey = $"octoversion_{property.Name.ToLowerInvariant()}";
 
                 var value = property.GetValue(octoVersionInfo)?.ToString() ?? string.Empty;
 
