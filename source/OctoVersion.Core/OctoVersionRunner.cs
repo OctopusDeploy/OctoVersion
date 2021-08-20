@@ -5,6 +5,7 @@ using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using OctoVersion.Core.Configuration;
 using OctoVersion.Core.OutputFormatting.Console;
+using OctoVersion.Core.OutputFormatting.Json;
 using OctoVersion.Core.VersionNumberCalculation;
 using Serilog;
 
@@ -83,6 +84,12 @@ namespace OctoVersion.Core
             }
 
             Log.Information("Version is {FullSemVer}", versionInfo.FullSemVer);
+
+            if (!string.IsNullOrEmpty(appSettings.OutputJsonFile))
+            {
+                Log.Information("Writing versionInfo to {outputJsonFile}", appSettings.OutputJsonFile);
+                new JsonOutputFormatter().WriteToFile(versionInfo, appSettings.OutputJsonFile);
+            }
 
             foreach (var outputFormatter in outputFormatters)
                 outputFormatter.Write(versionInfo);

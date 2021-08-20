@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using Newtonsoft.Json;
 using OctoVersion.Core.Logging;
 using Serilog.Core;
@@ -19,6 +20,14 @@ namespace OctoVersion.Core.OutputFormatting.Json
         {
             var json = JsonConvert.SerializeObject(octoVersionInfo, Settings);
             System.Console.WriteLine(json);
+        }
+
+        public void WriteToFile(OctoVersionInfo octoVersionInfo, string outputJsonFile)
+        {
+            var json = JsonConvert.SerializeObject(octoVersionInfo, Settings);
+
+            using var streamWriter = File.AppendText(outputJsonFile);
+            streamWriter.Write(json);
         }
 
         public bool MatchesRuntimeEnvironment()
