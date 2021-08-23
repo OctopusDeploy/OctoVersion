@@ -28,7 +28,7 @@ namespace Cake.OctoVersion
 
         static void WriteLogToSink(LoggerConfiguration loggerConfiguration, IOutputFormatter outputFormatter)
         {
-            outputFormatter.ConfigureLogSink(loggerConfiguration);
+            loggerConfiguration.WriteTo.Sink(outputFormatter.LogSink);
         }
 
         static IOutputFormatter GetOutputFormatter(ICakeContext context)

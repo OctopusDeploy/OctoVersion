@@ -9,6 +9,7 @@ namespace OctoVersion.Core.OutputFormatting.Environment
 {
     public class EnvironmentOutputFormatter : IOutputFormatter
     {
+        public ILogEventSink LogSink { get; } = new NullSink();
         public string Name => "Environment";
 
         public EnvironmentOutputFormatter(AppSettings appSettings)
@@ -30,11 +31,8 @@ namespace OctoVersion.Core.OutputFormatting.Environment
             }
         }
 
-        public bool MatchesRuntimeEnvironment()
-        {
-            return false;
-        }
+        public bool MatchesRuntimeEnvironment() => false;
 
-        public void ConfigureLogSink(LoggerConfiguration lc) => lc.WriteTo.Sink(new NullSink());
+        public bool SuppressDefaultConsoleOutput => true;
     }
 }

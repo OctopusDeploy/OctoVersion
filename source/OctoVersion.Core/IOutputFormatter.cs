@@ -1,5 +1,6 @@
 ﻿using System;
 using Serilog;
+using Serilog.Core;
 
 namespace OctoVersion.Core
 {
@@ -8,6 +9,7 @@ namespace OctoVersion.Core
         string Name { get; }
         void Write(OctoVersionInfo octoVersionInfo);
         bool MatchesRuntimeEnvironment();
-        void ConfigureLogSink(LoggerConfiguration lc);
+        bool SuppressDefaultConsoleOutput { get; }
+        ILogEventSink LogSink { get; }
     }
 }

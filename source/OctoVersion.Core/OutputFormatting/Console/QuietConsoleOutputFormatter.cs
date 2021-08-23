@@ -1,13 +1,13 @@
 ﻿using System;
 using OctoVersion.Core.Configuration;
 using OctoVersion.Core.Logging;
-using Serilog;
 using Serilog.Core;
 
 namespace OctoVersion.Core.OutputFormatting.Console
 {
     class QuietConsoleOutputFormatter : IOutputFormatter
     {
+        public ILogEventSink LogSink { get; } = new NullSink();
         public string Name => "QuietConsole";
 
         public QuietConsoleOutputFormatter(AppSettings appSettings)
@@ -24,6 +24,6 @@ namespace OctoVersion.Core.OutputFormatting.Console
             return false;
         }
 
-        public void ConfigureLogSink(LoggerConfiguration lc) => lc.WriteTo.Sink(new NullSink());
+        public bool SuppressDefaultConsoleOutput => true;
     }
 }

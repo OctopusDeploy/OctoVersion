@@ -32,6 +32,7 @@ namespace OctoVersion.Core.OutputFormatting.Json
             return false;
         }
 
-        public void ConfigureLogSink(LoggerConfiguration lc) => lc.WriteTo.Sink(new NullSink());
+        public bool SuppressDefaultConsoleOutput => true;
+        public ILogEventSink LogSink => new NullSink();
     }
 }

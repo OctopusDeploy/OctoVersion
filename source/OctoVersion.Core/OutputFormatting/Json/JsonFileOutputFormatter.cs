@@ -17,6 +17,7 @@ namespace OctoVersion.Core.OutputFormatting.Json
             Formatting = Formatting.Indented
         };
 
+        public ILogEventSink LogSink { get; } = new NullSink();
         public string Name => "JsonFile";
 
         public JsonFileOutputFormatter(AppSettings appSettings)
@@ -41,6 +42,6 @@ namespace OctoVersion.Core.OutputFormatting.Json
             return !string.IsNullOrEmpty(appSettings.OutputJsonFile);
         }
 
-        public void ConfigureLogSink(LoggerConfiguration lc) => lc.WriteTo.LiterateConsole();
+        public bool SuppressDefaultConsoleOutput => false;
     }
 }
