@@ -27,6 +27,8 @@ namespace OctoVersion.Tests
             yield return new object[] { "1+some-build-info", new SimpleVersion(1, 0, 0) };
             yield return new object[] { "1.2+some-build-info", new SimpleVersion(1, 2, 0) };
             yield return new object[] { "1.2.3+some-build-info", new SimpleVersion(1, 2, 3) };
+            yield return new object[] { "v0.1.0", new SimpleVersion(0, 1, 0) };
+            yield return new object[] { "x0.1.0", null };
         }
     }
 }

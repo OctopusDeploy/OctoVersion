@@ -34,6 +34,11 @@ namespace OctoVersion.Core.VersionNumberCalculation
         {
             try
             {
+                if (versionString.StartsWith("v"))
+                {
+                    versionString = versionString.Substring(1);
+                }
+
                 var indexOfEndOfDigits = versionString.IndexOfAny("-+".ToCharArray());
                 if (indexOfEndOfDigits > 0)
                 {
