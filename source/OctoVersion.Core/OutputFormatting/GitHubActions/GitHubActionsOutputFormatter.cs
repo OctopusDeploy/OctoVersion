@@ -12,7 +12,7 @@ namespace OctoVersion.Core.OutputFormatting.GitHubActions
         public const string GitHubActionsEnvironmentVariableName = "GITHUB_ACTIONS";
         public const string GitHubActionsEnvTempFileEnvironmentVariableName = "GITHUB_ENV";
 
-        ILogEventSink LogSink => new GitHubActionsLogSink();
+        public ILogEventSink LogSink => new GitHubActionsLogSink();
 
         public string Name => "GitHubActions";
 
