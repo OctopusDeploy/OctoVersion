@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Reflection;
+using OctoVersion.Core.Configuration;
 using Serilog.Core;
 using Serilog.Events;
 
@@ -13,6 +14,10 @@ namespace OctoVersion.Core.OutputFormatting.GitHubActions
 
         ILogEventSink IOutputFormatter.LogSink => new GitHubActionsLogSink();
         public string Name => "GitHubActions";
+
+        public GitHubActionsOutputFormatter(AppSettings appSettings)
+        {
+        }
 
         public void Write(OctoVersionInfo octoVersionInfo)
         {
