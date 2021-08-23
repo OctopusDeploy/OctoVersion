@@ -10,20 +10,22 @@ namespace OctoVersion.Core.OutputFormatting.Json
 {
     public class JsonFileOutputFormatter : IOutputFormatter
     {
-        readonly AppSettings appSettings;
-
         static readonly JsonSerializerSettings Settings = new JsonSerializerSettings
         {
             Formatting = Formatting.Indented
         };
 
-        public ILogEventSink LogSink { get; } = new NullSink();
-        public string Name => "JsonFile";
+        readonly AppSettings appSettings;
 
         public JsonFileOutputFormatter(AppSettings appSettings)
         {
             this.appSettings = appSettings;
         }
+
+        public ILogEventSink LogSink { get; } = new NullSink();
+        public string Name => "JsonFile";
+
+        public bool SuppressDefaultConsoleOutput => false; //we'd still like to keep the standard console output logging
 
         public void Write(OctoVersionInfo octoVersionInfo)
         {
@@ -32,6 +34,7 @@ namespace OctoVersion.Core.OutputFormatting.Json
                 Log.Warning($"{Name} output requested, but no {nameof(appSettings.OutputJsonFile)} provided");
                 return;
             }
+
             Log.Information("Writing version info to {outputJsonFile}", appSettings.OutputJsonFile);
             var json = JsonConvert.SerializeObject(octoVersionInfo, Settings);
             File.WriteAllText(appSettings.OutputJsonFile, json);
@@ -41,7 +44,5 @@ namespace OctoVersion.Core.OutputFormatting.Json
         {
             return !string.IsNullOrEmpty(appSettings.OutputJsonFile);
         }
-
-        public bool SuppressDefaultConsoleOutput => false; //we'd still like to keep the standard console output logging
     }
 }

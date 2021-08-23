@@ -7,12 +7,14 @@ namespace OctoVersion.Core.OutputFormatting.Console
 {
     class QuietConsoleOutputFormatter : IOutputFormatter
     {
-        public ILogEventSink LogSink { get; } = new NullSink();
-        public string Name => "QuietConsole";
-
         public QuietConsoleOutputFormatter(AppSettings appSettings)
         {
         }
+
+        public ILogEventSink LogSink { get; } = new NullSink();
+        public string Name => "QuietConsole";
+
+        public bool SuppressDefaultConsoleOutput => true; //shhh. we dont want any noise
 
         public void Write(OctoVersionInfo octoVersionInfo)
         {
@@ -23,7 +25,5 @@ namespace OctoVersion.Core.OutputFormatting.Console
         {
             return false;
         }
-
-        public bool SuppressDefaultConsoleOutput => true; //shhh. we dont want any noise
     }
 }

@@ -26,11 +26,9 @@ namespace OctoVersion.Core.OutputFormatting.GitHubActions
             System.Console.WriteLine($"{prefix}{Sanitize(message)}");
 
             if ((logEventLevel == LogEventLevel.Error ||
-                logEventLevel == LogEventLevel.Fatal) &&
+                    logEventLevel == LogEventLevel.Fatal) &&
                 !string.IsNullOrEmpty(errorDetails))
-            {
                 System.Console.WriteLine($"{prefix}{Sanitize(errorDetails)}");
-            }
         }
 
         static string Sanitize(string input)
@@ -50,10 +48,10 @@ namespace OctoVersion.Core.OutputFormatting.GitHubActions
             return logEventLevel switch
             {
                 LogEventLevel.Verbose or LogEventLevel.Debug => "::debug::",
-                LogEventLevel.Information => "",
-                LogEventLevel.Warning => "::warn::",
-                LogEventLevel.Error or LogEventLevel.Fatal => "::error::",
-                _ => throw new ArgumentOutOfRangeException(nameof(logEventLevel), logEventLevel, null),
+            LogEventLevel.Information => "",
+            LogEventLevel.Warning => "::warn::",
+            LogEventLevel.Error or LogEventLevel.Fatal => "::error::",
+            _ => throw new ArgumentOutOfRangeException(nameof(logEventLevel), logEventLevel, null),
             };
         }
     }
