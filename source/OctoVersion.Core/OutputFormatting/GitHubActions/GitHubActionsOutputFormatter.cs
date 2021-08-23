@@ -25,6 +25,8 @@ namespace OctoVersion.Core.OutputFormatting.GitHubActions
             return string.Equals("true", System.Environment.GetEnvironmentVariable(GitHubActionsEnvironmentVariableName), System.StringComparison.InvariantCultureIgnoreCase);
         }
 
+        public bool SuppressDefaultConsoleOutput => true; //we do our own logging via GitHubActions workflow commands
+
         static void WriteOutputVariables(OctoVersionInfo octoVersionInfo)
         {
             // ::set-output name='octoversion_ddd'::'fff']
