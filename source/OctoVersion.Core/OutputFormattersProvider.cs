@@ -13,7 +13,7 @@ namespace OctoVersion.Core
                 .Where(t => typeof(IOutputFormatter).IsAssignableFrom(t))
                 .Where(t => !t.IsInterface)
                 .Where(t => !t.IsAbstract)
-                .Select(t => (IOutputFormatter)Activator.CreateInstance(t))
+                .Select(t => (IOutputFormatter)Activator.CreateInstance(t, appSettings))
                 .ToArray();
 
             var settings = appSettings.OutputFormats;
