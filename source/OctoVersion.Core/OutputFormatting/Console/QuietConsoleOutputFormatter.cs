@@ -24,6 +24,6 @@ namespace OctoVersion.Core.OutputFormatting.Console
             return false;
         }
 
-        public bool SuppressDefaultConsoleOutput => true;
+        public bool SuppressDefaultConsoleOutput => true; //shhh. we dont want any noise
     }
 }

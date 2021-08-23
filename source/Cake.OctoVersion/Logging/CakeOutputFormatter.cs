@@ -29,6 +29,6 @@ namespace Cake.OctoVersion.Logging
             return false;
         }
 
-        public bool SuppressDefaultConsoleOutput => true;
+        public bool SuppressDefaultConsoleOutput => true; //we do our own logging via the cake logger
     }
 }

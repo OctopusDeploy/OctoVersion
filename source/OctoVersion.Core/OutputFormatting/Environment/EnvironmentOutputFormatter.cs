@@ -35,6 +35,6 @@ namespace OctoVersion.Core.OutputFormatting.Environment
             return false;
         }
 
-        public bool SuppressDefaultConsoleOutput => true;
+        public bool SuppressDefaultConsoleOutput => false; //we'd still like to keep the standard console output logging
     }
 }

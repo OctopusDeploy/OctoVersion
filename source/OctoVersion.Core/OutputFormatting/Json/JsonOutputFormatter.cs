@@ -31,6 +31,6 @@ namespace OctoVersion.Core.OutputFormatting.Json
             return false;
         }
 
-        public bool SuppressDefaultConsoleOutput => true;
+        public bool SuppressDefaultConsoleOutput => true; //dont write anything else to console please - it needs to be json
     }
 }

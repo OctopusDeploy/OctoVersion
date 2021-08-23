@@ -25,7 +25,7 @@ namespace OctoVersion.Core.OutputFormatting.TeamCity
             return !string.IsNullOrEmpty(System.Environment.GetEnvironmentVariable("TEAMCITY_VERSION"));
         }
 
-        public bool SuppressDefaultConsoleOutput => true;
+        public bool SuppressDefaultConsoleOutput => true; //we do our own logging via teamcity messages
 
         static void WriteBuildNumber(OctoVersionInfo octoVersionInfo)
         {

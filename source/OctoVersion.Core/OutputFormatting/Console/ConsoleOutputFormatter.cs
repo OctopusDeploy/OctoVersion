@@ -24,6 +24,6 @@ namespace OctoVersion.Core.OutputFormatting.Console
             return false;
         }
 
-        public bool SuppressDefaultConsoleOutput => false;
+        public bool SuppressDefaultConsoleOutput => false; //console output is our Raison D'Être
     }
 }

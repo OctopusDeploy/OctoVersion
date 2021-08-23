@@ -42,6 +42,6 @@ namespace OctoVersion.Core.OutputFormatting.Json
             return !string.IsNullOrEmpty(appSettings.OutputJsonFile);
         }
 
-        public bool SuppressDefaultConsoleOutput => false;
+        public bool SuppressDefaultConsoleOutput => false; //we'd still like to keep the standard console output logging
     }
 }
