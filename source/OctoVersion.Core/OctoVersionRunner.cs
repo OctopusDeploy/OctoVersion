@@ -4,8 +4,6 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using OctoVersion.Core.Configuration;
-using OctoVersion.Core.OutputFormatting.Console;
-using OctoVersion.Core.OutputFormatting.Json;
 using OctoVersion.Core.VersionNumberCalculation;
 using Serilog;
 

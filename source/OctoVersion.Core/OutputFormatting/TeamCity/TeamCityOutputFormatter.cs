@@ -7,6 +7,7 @@ namespace OctoVersion.Core.OutputFormatting.TeamCity
 {
     public class TeamCityOutputFormatter : IOutputFormatter
     {
+        public ILogEventSink LogSink => new TeamCityLogSink();
         public string Name => "TeamCity";
 
         public TeamCityOutputFormatter(IAppSettings appSettings)
@@ -25,7 +26,6 @@ namespace OctoVersion.Core.OutputFormatting.TeamCity
         }
 
         public bool SuppressDefaultConsoleOutput => true;
-        public ILogEventSink LogSink => new TeamCityLogSink();
 
         static void WriteBuildNumber(OctoVersionInfo octoVersionInfo)
         {

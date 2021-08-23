@@ -2,7 +2,6 @@
 using System.Reflection;
 using OctoVersion.Core.Configuration;
 using OctoVersion.Core.Logging;
-using Serilog;
 using Serilog.Core;
 
 namespace OctoVersion.Core.OutputFormatting.Environment
@@ -31,7 +30,10 @@ namespace OctoVersion.Core.OutputFormatting.Environment
             }
         }
 
-        public bool MatchesRuntimeEnvironment() => false;
+        public bool MatchesRuntimeEnvironment()
+        {
+            return false;
+        }
 
         public bool SuppressDefaultConsoleOutput => true;
     }

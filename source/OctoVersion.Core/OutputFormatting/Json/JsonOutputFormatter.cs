@@ -1,9 +1,7 @@
 ﻿using System;
-using System.IO;
 using Newtonsoft.Json;
 using OctoVersion.Core.Configuration;
 using OctoVersion.Core.Logging;
-using Serilog;
 using Serilog.Core;
 
 namespace OctoVersion.Core.OutputFormatting.Json
@@ -15,6 +13,7 @@ namespace OctoVersion.Core.OutputFormatting.Json
             Formatting = Formatting.Indented
         };
 
+        public ILogEventSink LogSink => new NullSink();
         public string Name => "Json";
 
         public JsonOutputFormatter(AppSettings appSettings)
@@ -33,6 +32,5 @@ namespace OctoVersion.Core.OutputFormatting.Json
         }
 
         public bool SuppressDefaultConsoleOutput => true;
-        public ILogEventSink LogSink => new NullSink();
     }
 }

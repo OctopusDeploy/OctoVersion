@@ -1,7 +1,6 @@
 ﻿using System;
 using OctoVersion.Core.Configuration;
 using OctoVersion.Core.Logging;
-using Serilog;
 using Serilog.Core;
 
 namespace OctoVersion.Core.OutputFormatting.Console
