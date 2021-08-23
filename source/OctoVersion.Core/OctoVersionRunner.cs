@@ -4,7 +4,6 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using OctoVersion.Core.Configuration;
-using OctoVersion.Core.OutputFormatting.Console;
 using OctoVersion.Core.VersionNumberCalculation;
 using Serilog;
 
@@ -38,8 +37,8 @@ namespace OctoVersion.Core
                 {
                     foreach (var outputFormatter in outputFormatters) lc.WriteTo.Sink(outputFormatter.LogSink);
 
-                    // Special case: if we're writing to the console then use LiterateConsole
-                    if (outputFormatters.OfType<ConsoleOutputFormatter>().Any()) lc.WriteTo.LiterateConsole();
+                    // Special case: wire up LiterateConsole unless any formatters have said not to
+                    if (!outputFormatters.Any(f => f.SuppressDefaultConsoleOutput)) lc.WriteTo.LiterateConsole();
                     additionalLogConfiguration(lc);
                 });
             Log.Debug("Running OctoVersion {OctoVersionVersion} with {@AppSettings}", ApplicationVersion, appSettings);

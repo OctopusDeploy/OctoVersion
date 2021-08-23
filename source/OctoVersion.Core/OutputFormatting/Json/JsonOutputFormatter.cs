@@ -1,5 +1,6 @@
 ﻿using System;
 using Newtonsoft.Json;
+using OctoVersion.Core.Configuration;
 using OctoVersion.Core.Logging;
 using Serilog.Core;
 
@@ -15,6 +16,10 @@ namespace OctoVersion.Core.OutputFormatting.Json
         public ILogEventSink LogSink { get; } = new NullSink();
         public string Name => "Json";
 
+        public JsonOutputFormatter(AppSettings appSettings)
+        {
+        }
+
         public void Write(OctoVersionInfo octoVersionInfo)
         {
             var json = JsonConvert.SerializeObject(octoVersionInfo, Settings);
@@ -25,5 +30,7 @@ namespace OctoVersion.Core.OutputFormatting.Json
         {
             return false;
         }
+
+        public bool SuppressDefaultConsoleOutput => true; //dont write anything else to console please - it needs to be json
     }
 }

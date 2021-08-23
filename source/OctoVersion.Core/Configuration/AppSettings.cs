@@ -35,6 +35,8 @@ namespace OctoVersion.Core.Configuration
 
         public bool DetectEnvironment { get; set; }
 
+        public string OutputJsonFile { get; set; }
+
         public void ApplyDefaultsIfRequired()
         {
             if (!NonPreReleaseTags.Any())
