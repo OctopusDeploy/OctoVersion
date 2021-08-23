@@ -32,7 +32,7 @@ namespace OctoVersion.Core.OutputFormatting.Json
                 Log.Warning($"{Name} output requested, but no {nameof(appSettings.OutputJsonFile)} provided");
                 return;
             }
-            Log.Information("Writing versionInfo to {outputJsonFile}", appSettings.OutputJsonFile);
+            Log.Information("Writing version info to {outputJsonFile}", appSettings.OutputJsonFile);
             var json = JsonConvert.SerializeObject(octoVersionInfo, Settings);
             File.WriteAllText(appSettings.OutputJsonFile, json);
         }
