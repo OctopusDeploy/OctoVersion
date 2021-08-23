@@ -19,6 +19,8 @@ namespace Cake.OctoVersion.Logging
         public ILogEventSink LogSink { get; }
         public string Name => "Cake";
 
+        public bool SuppressDefaultConsoleOutput => true; //we do our own logging via the cake logger
+
         public void Write(OctoVersionInfo octoVersionInfo)
         {
             context.Log.Information(octoVersionInfo);
@@ -28,7 +30,5 @@ namespace Cake.OctoVersion.Logging
         {
             return false;
         }
-
-        public bool SuppressDefaultConsoleOutput => true; //we do our own logging via the cake logger
     }
 }

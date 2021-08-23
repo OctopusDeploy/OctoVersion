@@ -13,12 +13,14 @@ namespace OctoVersion.Core.OutputFormatting.Json
             Formatting = Formatting.Indented
         };
 
-        public ILogEventSink LogSink { get; } = new NullSink();
-        public string Name => "Json";
-
         public JsonOutputFormatter(AppSettings appSettings)
         {
         }
+
+        public ILogEventSink LogSink { get; } = new NullSink();
+        public string Name => "Json";
+
+        public bool SuppressDefaultConsoleOutput => true; //dont write anything else to console please - it needs to be json
 
         public void Write(OctoVersionInfo octoVersionInfo)
         {
@@ -30,7 +32,5 @@ namespace OctoVersion.Core.OutputFormatting.Json
         {
             return false;
         }
-
-        public bool SuppressDefaultConsoleOutput => true; //dont write anything else to console please - it needs to be json
     }
 }

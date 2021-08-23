@@ -8,12 +8,14 @@ namespace OctoVersion.Core.OutputFormatting.Environment
 {
     public class EnvironmentOutputFormatter : IOutputFormatter
     {
-        public ILogEventSink LogSink { get; } = new NullSink();
-        public string Name => "Environment";
-
         public EnvironmentOutputFormatter(AppSettings appSettings)
         {
         }
+
+        public ILogEventSink LogSink { get; } = new NullSink();
+        public string Name => "Environment";
+
+        public bool SuppressDefaultConsoleOutput => false; //we'd still like to keep the standard console output logging
 
         public void Write(OctoVersionInfo octoVersionInfo)
         {
@@ -34,7 +36,5 @@ namespace OctoVersion.Core.OutputFormatting.Environment
         {
             return false;
         }
-
-        public bool SuppressDefaultConsoleOutput => false; //we'd still like to keep the standard console output logging
     }
 }

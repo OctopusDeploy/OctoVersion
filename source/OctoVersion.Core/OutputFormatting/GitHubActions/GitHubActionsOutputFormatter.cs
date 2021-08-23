@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Reflection;
 using OctoVersion.Core.Configuration;
 using Serilog.Core;
@@ -12,13 +13,15 @@ namespace OctoVersion.Core.OutputFormatting.GitHubActions
         public const string GitHubActionsEnvironmentVariableName = "GITHUB_ACTIONS";
         public const string GitHubActionsEnvTempFileEnvironmentVariableName = "GITHUB_ENV";
 
+        public GitHubActionsOutputFormatter(AppSettings appSettings)
+        {
+        }
+
         public ILogEventSink LogSink => new GitHubActionsLogSink();
 
         public string Name => "GitHubActions";
 
-        public GitHubActionsOutputFormatter(AppSettings appSettings)
-        {
-        }
+        public bool SuppressDefaultConsoleOutput => true; //we do our own logging via GitHubActions workflow commands
 
         public void Write(OctoVersionInfo octoVersionInfo)
         {
@@ -28,10 +31,8 @@ namespace OctoVersion.Core.OutputFormatting.GitHubActions
 
         public bool MatchesRuntimeEnvironment()
         {
-            return string.Equals("true", System.Environment.GetEnvironmentVariable(GitHubActionsEnvironmentVariableName), System.StringComparison.InvariantCultureIgnoreCase);
+            return string.Equals("true", System.Environment.GetEnvironmentVariable(GitHubActionsEnvironmentVariableName), StringComparison.InvariantCultureIgnoreCase);
         }
-
-        public bool SuppressDefaultConsoleOutput => true; //we do our own logging via GitHubActions workflow commands
 
         static void WriteOutputVariables(OctoVersionInfo octoVersionInfo)
         {
