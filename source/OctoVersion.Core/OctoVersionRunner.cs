@@ -37,7 +37,7 @@ namespace OctoVersion.Core
                 {
                     foreach (var outputFormatter in outputFormatters) lc.WriteTo.Sink(outputFormatter.LogSink);
 
-                    //special case: wire up LiterateConsole unless any formatters have said not to
+                    // Special case: wire up LiterateConsole unless any formatters have said not to
                     if (!outputFormatters.Any(f => f.SuppressDefaultConsoleOutput)) lc.WriteTo.LiterateConsole();
                     additionalLogConfiguration(lc);
                 });
