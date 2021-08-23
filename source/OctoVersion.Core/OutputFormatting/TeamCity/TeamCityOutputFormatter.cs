@@ -7,7 +7,7 @@ namespace OctoVersion.Core.OutputFormatting.TeamCity
 {
     public class TeamCityOutputFormatter : IOutputFormatter
     {
-        public ILogEventSink LogSink => new TeamCityLogSink();
+        public ILogEventSink LogSink { get; } = new TeamCityLogSink();
         public string Name => "TeamCity";
 
         public TeamCityOutputFormatter(IAppSettings appSettings)

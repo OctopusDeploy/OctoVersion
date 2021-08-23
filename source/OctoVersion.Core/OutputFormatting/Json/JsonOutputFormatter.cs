@@ -13,7 +13,7 @@ namespace OctoVersion.Core.OutputFormatting.Json
             Formatting = Formatting.Indented
         };
 
-        public ILogEventSink LogSink => new NullSink();
+        public ILogEventSink LogSink { get; } = new NullSink();
         public string Name => "Json";
 
         public JsonOutputFormatter(AppSettings appSettings)
