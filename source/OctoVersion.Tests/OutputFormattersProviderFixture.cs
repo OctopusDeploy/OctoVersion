@@ -11,15 +11,24 @@ namespace OctoVersion.Tests
     public class OutputFormattersProviderFixture : IDisposable
     {
         readonly string? originalTeamCityVersionEnvVar;
+        readonly string? originalGitHubActionsEnvVar;
 
         public OutputFormattersProviderFixture()
         {
+            // Backup any current values of env vars used for platform detection
             originalTeamCityVersionEnvVar = Environment.GetEnvironmentVariable("TEAMCITY_VERSION");
+            originalGitHubActionsEnvVar = Environment.GetEnvironmentVariable("GITHUB_ACTIONS");
+
+            // Clear env vars used for platform detection
+            Environment.SetEnvironmentVariable("TEAMCITY_VERSION", null);
+            Environment.SetEnvironmentVariable("GITHUB_ACTIONS", null);
         }
 
         public void Dispose()
         {
+            // Restore previous values
             Environment.SetEnvironmentVariable("TEAMCITY_VERSION", originalTeamCityVersionEnvVar);
+            Environment.SetEnvironmentVariable("GITHUB_ACTIONS", originalGitHubActionsEnvVar);
         }
 
         [Fact]
@@ -69,6 +78,19 @@ namespace OctoVersion.Tests
             };
             var results = new OutputFormattersProvider().GetFormatters(appSettings).Select(x => x.Name).ToArray();
             results.ShouldBeEquivalentTo(new[] { "TeamCity" }, "it should have prioritised auto-detection over the provided value");
+        }
+
+        [Fact]
+        public void DetectsGitHubActionsFromEnvironmentIfRequested()
+        {
+            Environment.SetEnvironmentVariable("GITHUB_ACTIONS", "true");
+            var appSettings = new AppSettings
+            {
+                DetectEnvironment = true,
+                OutputFormats = new[] { "Json" }
+            };
+            var results = new OutputFormattersProvider().GetFormatters(appSettings).Select(x => x.Name).ToArray();
+            results.ShouldBeEquivalentTo(new[] { "GitHubActions" }, "it should have prioritised auto-detection over the provided value");
         }
     }
 }
