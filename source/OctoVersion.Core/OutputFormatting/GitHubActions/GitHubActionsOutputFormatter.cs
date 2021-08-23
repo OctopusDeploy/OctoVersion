@@ -12,7 +12,8 @@ namespace OctoVersion.Core.OutputFormatting.GitHubActions
         public const string GitHubActionsEnvironmentVariableName = "GITHUB_ACTIONS";
         public const string GitHubActionsEnvTempFileEnvironmentVariableName = "GITHUB_ENV";
 
-        ILogEventSink IOutputFormatter.LogSink => new GitHubActionsLogSink();
+        ILogEventSink LogSink => new GitHubActionsLogSink();
+
         public string Name => "GitHubActions";
 
         public GitHubActionsOutputFormatter(AppSettings appSettings)
@@ -69,9 +70,7 @@ namespace OctoVersion.Core.OutputFormatting.GitHubActions
                 foreach (var property in properties)
                 {
                     var environmentVariableKey = $"{prefix}{property.Name}";
-
                     var value = property.GetValue(octoVersionInfo)?.ToString() ?? string.Empty;
-
                     streamWriter.WriteLine($"{environmentVariableKey}={value}");
                 }
             }
