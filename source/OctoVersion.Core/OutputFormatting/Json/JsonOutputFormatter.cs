@@ -1,7 +1,9 @@
 ﻿using System;
 using System.IO;
 using Newtonsoft.Json;
+using OctoVersion.Core.Configuration;
 using OctoVersion.Core.Logging;
+using Serilog;
 using Serilog.Core;
 
 namespace OctoVersion.Core.OutputFormatting.Json
@@ -13,8 +15,11 @@ namespace OctoVersion.Core.OutputFormatting.Json
             Formatting = Formatting.Indented
         };
 
-        public ILogEventSink LogSink { get; } = new NullSink();
         public string Name => "Json";
+
+        public JsonOutputFormatter(AppSettings appSettings)
+        {
+        }
 
         public void Write(OctoVersionInfo octoVersionInfo)
         {
@@ -22,17 +27,11 @@ namespace OctoVersion.Core.OutputFormatting.Json
             System.Console.WriteLine(json);
         }
 
-        public void WriteToFile(OctoVersionInfo octoVersionInfo, string outputJsonFile)
-        {
-            var json = JsonConvert.SerializeObject(octoVersionInfo, Settings);
-
-            using var streamWriter = File.AppendText(outputJsonFile);
-            streamWriter.Write(json);
-        }
-
         public bool MatchesRuntimeEnvironment()
         {
             return false;
         }
+
+        public void ConfigureLogSink(LoggerConfiguration lc) => lc.WriteTo.Sink(new NullSink());
     }
 }

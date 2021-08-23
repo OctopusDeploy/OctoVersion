@@ -1,13 +1,19 @@
 ﻿using System;
 using System.Reflection;
+using OctoVersion.Core.Configuration;
+using OctoVersion.Core.Logging;
+using Serilog;
 using Serilog.Core;
 
 namespace OctoVersion.Core.OutputFormatting.TeamCity
 {
     public class TeamCityOutputFormatter : IOutputFormatter
     {
-        public ILogEventSink LogSink { get; } = new TeamCityLogSink();
         public string Name => "TeamCity";
+
+        public TeamCityOutputFormatter(IAppSettings appSettings)
+        {
+        }
 
         public void Write(OctoVersionInfo octoVersionInfo)
         {
@@ -48,5 +54,6 @@ namespace OctoVersion.Core.OutputFormatting.TeamCity
                 System.Console.WriteLine(configurationVariableMessage);
             }
         }
+        public void ConfigureLogSink(LoggerConfiguration lc) => lc.WriteTo.Sink(new TeamCityLogSink());
     }
 }

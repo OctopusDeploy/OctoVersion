@@ -37,10 +37,15 @@ namespace OctoVersion.Core
             LogBootstrapper.Bootstrap(configuration,
                 lc =>
                 {
-                    foreach (var outputFormatter in outputFormatters) lc.WriteTo.Sink(outputFormatter.LogSink);
+                    foreach (var outputFormatter in outputFormatters)
+                    {
+                        //lc.WriteTo.Sink(outputFormatter.LogSink);
+                        outputFormatter.ConfigureLogSink(lc);
+                    }
 
                     // Special case: if we're writing to the console then use LiterateConsole
-                    if (outputFormatters.OfType<ConsoleOutputFormatter>().Any()) lc.WriteTo.LiterateConsole();
+                    //if (outputFormatters.OfType<ConsoleOutputFormatter>().Any()) lc.WriteTo.LiterateConsole();
+                    //if (outputFormatters.Any(f => f.WritesToConsole)) lc.WriteTo.LiterateConsole();
                     additionalLogConfiguration(lc);
                 });
             Log.Debug("Running OctoVersion {OctoVersionVersion} with {@AppSettings}", ApplicationVersion, appSettings);
@@ -84,12 +89,6 @@ namespace OctoVersion.Core
             }
 
             Log.Information("Version is {FullSemVer}", versionInfo.FullSemVer);
-
-            if (!string.IsNullOrEmpty(appSettings.OutputJsonFile))
-            {
-                Log.Information("Writing versionInfo to {outputJsonFile}", appSettings.OutputJsonFile);
-                new JsonOutputFormatter().WriteToFile(versionInfo, appSettings.OutputJsonFile);
-            }
 
             foreach (var outputFormatter in outputFormatters)
                 outputFormatter.Write(versionInfo);

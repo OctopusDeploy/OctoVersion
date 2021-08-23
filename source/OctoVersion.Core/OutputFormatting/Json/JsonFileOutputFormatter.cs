@@ -3,41 +3,44 @@ using System.IO;
 using Newtonsoft.Json;
 using OctoVersion.Core.Configuration;
 using OctoVersion.Core.Logging;
+using Serilog;
 using Serilog.Core;
 
 namespace OctoVersion.Core.OutputFormatting.Json
 {
-    public class JsonOutputFormatter : IOutputFormatter
+    public class JsonFileOutputFormatter : IOutputFormatter
     {
+        readonly AppSettings appSettings;
+
         static readonly JsonSerializerSettings Settings = new JsonSerializerSettings
         {
             Formatting = Formatting.Indented
         };
 
-        public ILogEventSink LogSink { get; } = new NullSink();
-        public string Name => "Json";
+        public string Name => "JsonFile";
 
-        public JsonOutputFormatter(IAppSettings appSettings)
+        public JsonFileOutputFormatter(AppSettings appSettings)
         {
+            this.appSettings = appSettings;
         }
 
         public void Write(OctoVersionInfo octoVersionInfo)
         {
+            if (string.IsNullOrEmpty(appSettings.OutputJsonFile))
+            {
+                Log.Warning($"{Name} output requested, but no {nameof(appSettings.OutputJsonFile)} provided");
+                return;
+            }
+            Log.Information("Writing versionInfo to {outputJsonFile}", appSettings.OutputJsonFile);
             var json = JsonConvert.SerializeObject(octoVersionInfo, Settings);
-            System.Console.WriteLine(json);
-        }
-
-        public void WriteToFile(OctoVersionInfo octoVersionInfo, string outputJsonFile)
-        {
-            var json = JsonConvert.SerializeObject(octoVersionInfo, Settings);
-
-            using var streamWriter = File.AppendText(outputJsonFile);
-            streamWriter.Write(json);
+            File.WriteAllText(appSettings.OutputJsonFile, json);
         }
 
         public bool MatchesRuntimeEnvironment()
         {
-            return false;
+            return !string.IsNullOrEmpty(appSettings.OutputJsonFile);
         }
+
+        public void ConfigureLogSink(LoggerConfiguration lc) => lc.WriteTo.LiterateConsole();
     }
 }

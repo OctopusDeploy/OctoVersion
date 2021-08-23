@@ -1,13 +1,13 @@
 ﻿using System;
-using Serilog.Core;
+using Serilog;
 
 namespace OctoVersion.Core
 {
     public interface IOutputFormatter
     {
-        ILogEventSink LogSink { get; }
         string Name { get; }
         void Write(OctoVersionInfo octoVersionInfo);
         bool MatchesRuntimeEnvironment();
+        void ConfigureLogSink(LoggerConfiguration lc);
     }
 }

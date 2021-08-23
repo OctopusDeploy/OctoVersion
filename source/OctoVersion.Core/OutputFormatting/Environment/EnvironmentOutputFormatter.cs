@@ -1,14 +1,19 @@
 ﻿using System;
 using System.Reflection;
+using OctoVersion.Core.Configuration;
 using OctoVersion.Core.Logging;
+using Serilog;
 using Serilog.Core;
 
 namespace OctoVersion.Core.OutputFormatting.Environment
 {
     public class EnvironmentOutputFormatter : IOutputFormatter
     {
-        public ILogEventSink LogSink { get; } = new NullSink();
         public string Name => "Environment";
+
+        public EnvironmentOutputFormatter(AppSettings appSettings)
+        {
+        }
 
         public void Write(OctoVersionInfo octoVersionInfo)
         {
@@ -29,5 +34,7 @@ namespace OctoVersion.Core.OutputFormatting.Environment
         {
             return false;
         }
+
+        public void ConfigureLogSink(LoggerConfiguration lc) => lc.WriteTo.Sink(new NullSink());
     }
 }
