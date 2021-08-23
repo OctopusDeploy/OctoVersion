@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using OctoVersion.Core.Configuration;
 using Serilog.Core;
 
 namespace OctoVersion.Core.OutputFormatting.TeamCity
@@ -8,6 +9,10 @@ namespace OctoVersion.Core.OutputFormatting.TeamCity
     {
         public ILogEventSink LogSink { get; } = new TeamCityLogSink();
         public string Name => "TeamCity";
+
+        public TeamCityOutputFormatter(IAppSettings appSettings)
+        {
+        }
 
         public void Write(OctoVersionInfo octoVersionInfo)
         {
@@ -19,6 +24,8 @@ namespace OctoVersion.Core.OutputFormatting.TeamCity
         {
             return !string.IsNullOrEmpty(System.Environment.GetEnvironmentVariable("TEAMCITY_VERSION"));
         }
+
+        public bool SuppressDefaultConsoleOutput => true; //we do our own logging via teamcity messages
 
         static void WriteBuildNumber(OctoVersionInfo octoVersionInfo)
         {

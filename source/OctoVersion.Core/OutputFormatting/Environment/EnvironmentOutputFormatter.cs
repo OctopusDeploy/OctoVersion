@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using OctoVersion.Core.Configuration;
 using OctoVersion.Core.Logging;
 using Serilog.Core;
 
@@ -9,6 +10,10 @@ namespace OctoVersion.Core.OutputFormatting.Environment
     {
         public ILogEventSink LogSink { get; } = new NullSink();
         public string Name => "Environment";
+
+        public EnvironmentOutputFormatter(AppSettings appSettings)
+        {
+        }
 
         public void Write(OctoVersionInfo octoVersionInfo)
         {
@@ -29,5 +34,7 @@ namespace OctoVersion.Core.OutputFormatting.Environment
         {
             return false;
         }
+
+        public bool SuppressDefaultConsoleOutput => false; //we'd still like to keep the standard console output logging
     }
 }

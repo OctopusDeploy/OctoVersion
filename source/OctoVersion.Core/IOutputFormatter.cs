@@ -9,5 +9,10 @@ namespace OctoVersion.Core
         string Name { get; }
         void Write(OctoVersionInfo octoVersionInfo);
         bool MatchesRuntimeEnvironment();
+        /// <summary>
+        /// If this output formatter takes responsibility for outputting to the console (ie, CI specific log messages)
+        /// then this should return `true`.
+        /// </summary>
+        bool SuppressDefaultConsoleOutput { get; }
     }
 }
