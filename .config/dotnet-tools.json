@@ -2,10 +2,10 @@
   "version": 1,
   "isRoot": true,
   "tools": {
-    "nuke.globaltool": {
-      "version": "5.2.1",
+    "cake.tool": {
+      "version": "0.38.5",
       "commands": [
-        "nuke"
+        "dotnet-cake"
       ]
     }
   }
