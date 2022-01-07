@@ -33,22 +33,15 @@
             "GitHubActions",
             "GitLab",
             "Jenkins",
-            "Rider",
             "SpaceAutomation",
             "TeamCity",
             "Terminal",
-            "TravisCI",
-            "VisualStudio",
-            "VSCode"
+            "TravisCI"
           ]
         },
         "NoLogo": {
           "type": "boolean",
           "description": "Disables displaying the NUKE logo"
-        },
-        "Partition": {
-          "type": "string",
-          "description": "Partition to use on CI"
         },
         "Plan": {
           "type": "boolean",
@@ -74,6 +67,7 @@
               "Clean",
               "Compile",
               "CopyToLocalPackages",
+              "Default",
               "Pack",
               "Restore",
               "Test"
@@ -93,6 +87,7 @@
               "Clean",
               "Compile",
               "CopyToLocalPackages",
+              "Default",
               "Pack",
               "Restore",
               "Test"
