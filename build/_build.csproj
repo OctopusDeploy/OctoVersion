@@ -11,7 +11,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="LibGit2Sharp" Version="0.27.0-preview-0175" />
     <PackageReference Include="Nuke.Common" Version="5.2.1" />
     <PackageReference Include="Nuke.OctoVersion" Version="0.2.427" />
   </ItemGroup>
