@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using LibGit2Sharp;
+using OctoVersion.Core.Exceptions;
 using Serilog;
+using RepositoryNotFoundException = OctoVersion.Core.Exceptions.RepositoryNotFoundException;
 
 namespace OctoVersion.Core.VersionNumberCalculation
 {
@@ -14,12 +16,17 @@ namespace OctoVersion.Core.VersionNumberCalculation
         public VersionCalculatorFactory(string repositorySearchPath)
         {
             var gitRepositoryPath = Repository.Discover(repositorySearchPath);
+            if (gitRepositoryPath == null)
+                throw new RepositoryNotFoundException("Unable to resolve Git repository path.");
             _logger.Debug("Located Git repository in {GitRepositoryPath}", gitRepositoryPath);
             _repository = new Repository(gitRepositoryPath);
         }
 
         public VersionCalculator Create()
         {
+            if (_repository.Info.IsShallow)
+                throw new RepositoryIsShallowCloneException("This repository is a shallow clone; it does not contain enough history to resolve the version correctly.");
+            
             Commit[] allCommits;
             using (_logger.BeginTimedOperation("Loading commits"))
             {

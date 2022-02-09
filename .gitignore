@@ -16,3 +16,4 @@ artifacts
 TestResults
 .idea/
 .nuke/temp/
+.DS_Store
