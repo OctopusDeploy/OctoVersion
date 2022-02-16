@@ -38,12 +38,23 @@ You should see output that looks something like this:
 
 ### Nuke
 
-Add a reference to `Nuke.OctoVersion` in your `_build` project.
-Add a parameter marked with `[NukeOctoVersion]` and it will be auto-populated:
+Add a reference to `OctoVersion.Tool` in your Nuke `_build` project. This can be done using the nuke command:
+
+```
+nuke :add-package OctoVersion.Tool --version X.X.X
+```
+
+Add a parameter marked with `[OctoVersion]` and it will be auto-populated:
 
 ```c#
-[NukeOctoVersion] readonly OctoVersionInfo OctoVersionInfo;
+// The Required Attribute will automatically throw an exception if the 
+// OctoVersionInfo parameter is not set due to an error or misconfiguration in Nuke.
+[Required]
+[OctoVersion(AutoDetectBranchName = true)]
+readonly OctoVersionInfo? OctoVersionInfo;
 ```
+
+Take a look at the Nuke [OctoVersionAttribute](https://github.com/nuke-build/nuke/blob/master/source/Nuke.Common/Tools/OctoVersion/OctoVersionAttribute.cs) for all available attribute properties. 
 
 ### Cake
 
