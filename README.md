@@ -47,10 +47,23 @@ nuke :add-package OctoVersion.Tool --version X.X.X
 Add a parameter marked with `[OctoVersion]` and it will be auto-populated:
 
 ```c#
+[Parameter("Branch name for OctoVersion to use to calculate the version number. " +
+           "Can be set via the environment variable OCTOVERSION_CurrentBranch.", 
+           Name = "OCTOVERSION_CurrentBranch")] 
+readonly string BranchName;
+
+[Parameter("Whether to auto-detect the branch name - this is okay for a local " + 
+           "build, but should not be used under CI.")] 
+readonly bool AutoDetectBranch = IsLocalBuild;
+
 // The Required Attribute will automatically throw an exception if the 
 // OctoVersionInfo parameter is not set due to an error or misconfiguration in Nuke.
 [Required]
-[OctoVersion(AutoDetectBranchName = true)]
+// 'Framework = "net6.0"' is only required for net6.0 apps.
+[OctoVersion(UpdateBuildNumber = true, 
+             BranchParameter = nameof(BranchName), 
+             AutoDetectBranchParameter = nameof(AutoDetectBranch), 
+             Framework = "net6.0")] 
 readonly OctoVersionInfo? OctoVersionInfo;
 ```
 
