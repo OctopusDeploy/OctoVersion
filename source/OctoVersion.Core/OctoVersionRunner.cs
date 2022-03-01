@@ -5,6 +5,7 @@ using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using OctoVersion.Core.Configuration;
 using OctoVersion.Core.VersionNumberCalculation;
+using OctoVersion.Core.VersionTemplates;
 using Serilog;
 
 namespace OctoVersion.Core
@@ -52,10 +53,11 @@ namespace OctoVersion.Core
             if (!string.IsNullOrWhiteSpace(appSettings.FullSemVer))
             {
                 Log.Information("Adopting previously-provided version information {FullSemVer}. Not calculating a new version number.", appSettings.FullSemVer);
-                var semanticVersion = SemanticVersion.TryParse(appSettings.FullSemVer);
+                var versionParser = new VersionParser(appSettings.VersionTemplate);
+                var semanticVersion = versionParser.TryParseSemanticVersion(appSettings.FullSemVer);
                 if (semanticVersion == null) throw new Exception("Failed to parse semantic version string");
 
-                versionInfo = new OctoVersionInfo(semanticVersion);
+                versionInfo = new OctoVersionInfo(semanticVersion, versionParser);
             }
             else
             {
@@ -65,7 +67,8 @@ namespace OctoVersion.Core
                         ? currentDirectory
                         : appSettings.RepositoryPath;
 
-                    var versionCalculatorFactory = new VersionCalculatorFactory(repositorySearchPath);
+                    var versionParser = new VersionParser(appSettings.VersionTemplate);
+                    var versionCalculatorFactory = new VersionCalculatorFactory(repositorySearchPath, versionParser);
                     var calculator = versionCalculatorFactory.Create();
                     var version = calculator.GetVersion();
                     var currentSha = calculator.CurrentCommitHash;
@@ -74,9 +77,12 @@ namespace OctoVersion.Core
                             appSettings.Major,
                             appSettings.Minor,
                             appSettings.Patch,
+                            appSettings.PreReleaseTag,
+                            appSettings.Build,
                             appSettings.CurrentBranch,
                             currentSha,
-                            appSettings.BuildMetadata)
+                            appSettings.BuildMetadata,
+                            versionParser)
                         .Create(version);
                 }
             }

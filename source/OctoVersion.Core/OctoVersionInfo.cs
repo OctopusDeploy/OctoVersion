@@ -1,44 +1,50 @@
 ﻿using System;
 using System.Text.RegularExpressions;
+using OctoVersion.Core.VersionTemplates;
 
 namespace OctoVersion.Core
 {
     public class OctoVersionInfo : SemanticVersion
     {
-        //https://semver.org/spec/v2.0.0.html#spec-item-9
-        static readonly Regex InvalidPreReleaseCharacters = new Regex("[^0-9A-Za-z-\\.]", RegexOptions.Compiled);
+        readonly VersionParser _versionParser;
 
         //https://semver.org/spec/v2.0.0.html#spec-item-10
         static readonly Regex InvalidBuildMetadataCharacters = new Regex("[^0-9A-Za-z-\\.]", RegexOptions.Compiled);
 
-        public OctoVersionInfo(
-            int major,
+        internal OctoVersionInfo(int major,
             int minor,
-            int patch,
+            int? patch,
             string preReleaseTag,
-            string buildMetadata) : base(major,
+            int? build,
+            string buildMetadata,
+            VersionParser versionParser) : base(major,
             minor,
             patch,
             preReleaseTag,
+            build,
             buildMetadata)
         {
+            _versionParser = versionParser;
         }
 
-        public OctoVersionInfo(SemanticVersion semanticVersion) : base(
+        internal OctoVersionInfo(SemanticVersion semanticVersion,
+            VersionParser versionParser) : base(
             semanticVersion.Major,
             semanticVersion.Minor,
             semanticVersion.Patch,
             semanticVersion.PreReleaseTag,
+            semanticVersion.Build,
             semanticVersion.BuildMetadata)
         {
+            _versionParser = versionParser;
         }
 
-        public string PreReleaseTagWithDash => string.IsNullOrWhiteSpace(PreReleaseTag) ? string.Empty : $"-{InvalidPreReleaseCharacters.Replace(PreReleaseTag, "-")}";
-        public string MajorMinorPatch => $"{Major}.{Minor}.{Patch}";
+        public string PreReleaseTagWithDash => string.IsNullOrWhiteSpace(PreReleaseTag) ? string.Empty : _versionParser.GetPreReleaseTagWithDash(this);
+        public string MajorMinorPatch => _versionParser.GetMajorMinorPatch(this);
         public string BuildMetadataWithPlus => string.IsNullOrWhiteSpace(BuildMetadata) ? string.Empty : $"+{InvalidBuildMetadataCharacters.Replace(BuildMetadata, "-")}";
         public string FullSemVer => $"{MajorMinorPatch}{PreReleaseTagWithDash}";
         public string InformationalVersion => $"{MajorMinorPatch}{PreReleaseTagWithDash}{BuildMetadataWithPlus}";
-        string NuGetCompatiblePreReleaseWithDash => PreReleaseTagWithDash.Substring(0, Math.Min(PreReleaseTagWithDash.Length, 20));
+        string NuGetCompatiblePreReleaseWithDash => _versionParser.GetNuGetCompatiblePreReleaseWithDash(this);
         public string NuGetVersion => $"{MajorMinorPatch}{NuGetCompatiblePreReleaseWithDash}";
 
         public override string ToString()

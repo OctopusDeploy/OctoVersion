@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OctoVersion.Core;
 using OctoVersion.Core.VersionNumberCalculation;
+using OctoVersion.Core.VersionTemplates;
 using Shouldly;
 using Xunit;
 
@@ -14,14 +15,18 @@ namespace OctoVersion.Tests
         [MemberData(nameof(XUnitFormattedTestCases))]
         public void CalculatesOctoVersionCorrectly(SampleData sampleData)
         {
+            var versionParser = new VersionParser("{major}.{minor}.{build}-{preReleaseTag}");
             var factory = new StructuredOutputFactory(sampleData.NonPreReleaseTags,
                 sampleData.NonPreReleaseTagsRegex,
                 sampleData.OverriddenMajorVersion,
                 sampleData.OverriddenMinorVersion,
                 sampleData.OverriddenPatchVersion,
+                string.Empty,
+                sampleData.OverriddenBuild,
                 sampleData.CurrentBranch,
                 sampleData.CurrentSha,
-                sampleData.OverriddenBuildMetadata);
+                sampleData.OverriddenBuildMetadata,
+                versionParser);
             var result = factory.Create(sampleData.Version);
             result.InformationalVersion.ShouldBe(sampleData.ExpectedInformationalVersion);
             result.FullSemVer.ShouldBe(sampleData.ExpectedFullSemVer);
@@ -47,7 +52,7 @@ namespace OctoVersion.Tests
                     CurrentBranch = "refs/heads/main",
                     CurrentSha = "a1b2c3d4e5",
                     OverriddenBuildMetadata = null,
-                    Version = new SimpleVersion(1, 2, 3),
+                    Version = new SimpleVersion(1, 2, null, 3),
                     ExpectedInformationalVersion = "1.2.3+Branch.main.Sha.a1b2c3d4e5"
                 };
             }
@@ -64,7 +69,7 @@ namespace OctoVersion.Tests
                 .ExpectAnInformationalVersionOf("1.9.3+Branch.main.Sha.a1b2c3d4e5")
                 .ExpectAFullSemVerOf("1.9.3");
             yield return ForDefaultScenario()
-                .WithOverriddenPatchVersion(9)
+                .WithOverriddenBuild(9)
                 .ExpectAnInformationalVersionOf("1.2.9+Branch.main.Sha.a1b2c3d4e5")
                 .ExpectAFullSemVerOf("1.2.9");
             yield return ForDefaultScenario()
@@ -76,7 +81,7 @@ namespace OctoVersion.Tests
                 .ExpectAnInformationalVersionOf("1.2.3+Branch.main.Sha.aaabbbccc")
                 .ExpectAFullSemVerOf("1.2.3");
             yield return ForDefaultScenario()
-                .WithVersion(new SimpleVersion(9, 8, 7))
+                .WithVersion(new SimpleVersion(9, 8, null, 7))
                 .ExpectAnInformationalVersionOf("9.8.7+Branch.main.Sha.a1b2c3d4e5")
                 .ExpectAFullSemVerOf("9.8.7");
             yield return ForDefaultScenario()
@@ -104,6 +109,7 @@ namespace OctoVersion.Tests
         public int? OverriddenMajorVersion { get; set; }
         public int? OverriddenMinorVersion { get; set; }
         public int? OverriddenPatchVersion { get; set; }
+        public int? OverriddenBuild { get; set; }
         public string CurrentBranch { get; set; }
         public string CurrentSha { get; set; }
         public string OverriddenBuildMetadata { get; set; }
@@ -138,6 +144,12 @@ namespace OctoVersion.Tests
         public SampleData WithOverriddenPatchVersion(int? overriddenPatchVersion)
         {
             OverriddenPatchVersion = overriddenPatchVersion;
+            return this;
+        }
+
+        public SampleData WithOverriddenBuild(int? overriddenBuild)
+        {
+            OverriddenBuild = overriddenBuild;
             return this;
         }
 

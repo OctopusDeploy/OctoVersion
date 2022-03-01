@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using OctoVersion.Core;
+using OctoVersion.Core.VersionTemplates;
 using Shouldly;
 using Xunit;
 
@@ -8,41 +9,55 @@ namespace OctoVersion.Tests
 {
     public class WhenStringifyingAnOctoVersionInfo
     {
+        static readonly VersionParser VersionParser = new VersionParser("{major}.{minor}.{patch}-{preReleaseTag}.{build}");
+
         static readonly OctoVersionInfo AllVersionPartsSetTo0 = new OctoVersionInfo(0,
             0,
             0,
             "",
-            "");
+            null,
+            "",
+            VersionParser);
 
         static readonly OctoVersionInfo AllVersionPartsSetToValues = new OctoVersionInfo(1,
             2,
             3,
             "",
-            "");
+            null,
+            "",
+            VersionParser);
 
         static readonly OctoVersionInfo VersionWithPreReleaseTag = new OctoVersionInfo(1,
             2,
             3,
             "pre",
-            "");
+            null,
+            "",
+            VersionParser);
 
         static readonly OctoVersionInfo VersionWithPreReleaseTagAndBuildMetadata = new OctoVersionInfo(1,
             2,
             3,
             "pre",
-            "build");
+            null,
+            "build",
+            VersionParser);
 
         static readonly OctoVersionInfo VersionWithLongPreReleaseTagAndBuildMetadata = new OctoVersionInfo(2021,
             1,
             3,
             "mark-genericDocumentStore",
-            "Branch.mark-genericDocumentStore.Sha.fb13016f3a21d7c2058fb74ab25f19e5311c6550");
+            null,
+            "Branch.mark-genericDocumentStore.Sha.fb13016f3a21d7c2058fb74ab25f19e5311c6550",
+            VersionParser);
 
         static readonly OctoVersionInfo VersionWithLongPreReleaseTagWithSlashesAndBuildMetadata = new OctoVersionInfo(2021,
             1,
             3,
             "dependabot/npm_and_yarn/source/TentacleArmy.Web/ini-1.3.6",
-            "Branch.dependabot/npm_and_yarn/source/TentacleArmy.Web/ini-1.3.6.Sha.069392d9d2d37ddb6009998b92e70963badcc666");
+            null,
+            "Branch.dependabot/npm_and_yarn/source/TentacleArmy.Web/ini-1.3.6.Sha.069392d9d2d37ddb6009998b92e70963badcc666",
+            VersionParser);
 
         //xunit is blurgh - IEnumerable of object[]? ick.
         public static IEnumerable<object[]> PreReleaseTagWithDashTestCases()
@@ -50,10 +65,10 @@ namespace OctoVersion.Tests
             //format is input/output/because
             yield return new object[] { AllVersionPartsSetTo0, "", "there is no pre-release tag" };
             yield return new object[] { AllVersionPartsSetToValues, "", "there is no pre-release tag" };
-            yield return new object[] { VersionWithPreReleaseTag, "-pre", "it should append the pre-release tag" };
-            yield return new object[] { VersionWithPreReleaseTagAndBuildMetadata, "-pre", "it should append the pre-release tag, but not the build metadata" };
-            yield return new object[] { VersionWithLongPreReleaseTagAndBuildMetadata, "-mark-genericDocumentStore", "it should add the pre-release tag, and ignore the build metadata" };
-            yield return new object[] { VersionWithLongPreReleaseTagWithSlashesAndBuildMetadata, "-dependabot-npm-and-yarn-source-TentacleArmy.Web-ini-1.3.6", "it should add the pre-release tag, and ignore the build metadata" };
+            yield return new object[] { VersionWithPreReleaseTag, "-pre.0", "it should append the pre-release tag" };
+            yield return new object[] { VersionWithPreReleaseTagAndBuildMetadata, "-pre.0", "it should append the pre-release tag, but not the build metadata" };
+            yield return new object[] { VersionWithLongPreReleaseTagAndBuildMetadata, "-mark-genericDocumentStore.0", "it should add the pre-release tag, and ignore the build metadata" };
+            yield return new object[] { VersionWithLongPreReleaseTagWithSlashesAndBuildMetadata, "-dependabot-npm-and-yarn-source-TentacleArmy.Web-ini-1.3.6.0", "it should add the pre-release tag, and ignore the build metadata" };
         }
 
         [Theory]
@@ -104,10 +119,10 @@ namespace OctoVersion.Tests
             //format is input/output/because
             yield return new object[] { AllVersionPartsSetTo0, "0.0.0", "it should return the major.minor.patch" };
             yield return new object[] { AllVersionPartsSetToValues, "1.2.3", "it should return the major.minor.patch" };
-            yield return new object[] { VersionWithPreReleaseTag, "1.2.3-pre", "it should return the major.minor.patch and pre-release" };
-            yield return new object[] { VersionWithPreReleaseTagAndBuildMetadata, "1.2.3-pre", "it should return the major.minor.patch and pre-release but not the build metadata" };
-            yield return new object[] { VersionWithLongPreReleaseTagAndBuildMetadata, "2021.1.3-mark-genericDocumentStore", "it should return the major.minor.patch and pre-release but not the build metadata" };
-            yield return new object[] { VersionWithLongPreReleaseTagWithSlashesAndBuildMetadata, "2021.1.3-dependabot-npm-and-yarn-source-TentacleArmy.Web-ini-1.3.6", "it should return the major.minor.patch and pre-release but not the build metadata" };
+            yield return new object[] { VersionWithPreReleaseTag, "1.2.3-pre.0", "it should return the major.minor.patch and pre-release" };
+            yield return new object[] { VersionWithPreReleaseTagAndBuildMetadata, "1.2.3-pre.0", "it should return the major.minor.patch and pre-release but not the build metadata" };
+            yield return new object[] { VersionWithLongPreReleaseTagAndBuildMetadata, "2021.1.3-mark-genericDocumentStore.0", "it should return the major.minor.patch and pre-release but not the build metadata" };
+            yield return new object[] { VersionWithLongPreReleaseTagWithSlashesAndBuildMetadata, "2021.1.3-dependabot-npm-and-yarn-source-TentacleArmy.Web-ini-1.3.6.0", "it should return the major.minor.patch and pre-release but not the build metadata" };
         }
 
         [Theory]
@@ -122,10 +137,10 @@ namespace OctoVersion.Tests
             //format is input/output/because
             yield return new object[] { AllVersionPartsSetTo0, "0.0.0", "it should grab major.minor.patch" };
             yield return new object[] { AllVersionPartsSetToValues, "1.2.3", "it should grab major.minor.patch" };
-            yield return new object[] { VersionWithPreReleaseTag, "1.2.3-pre", "it should append the pre-release tag" };
-            yield return new object[] { VersionWithPreReleaseTagAndBuildMetadata, "1.2.3-pre", "it should return the major.minor.patch and pre-release but not the build metadata" };
-            yield return new object[] { VersionWithLongPreReleaseTagAndBuildMetadata, "2021.1.3-mark-genericDocumen", "it should return the major.minor.patch and trim the pre-release to 20 chars" };
-            yield return new object[] { VersionWithLongPreReleaseTagWithSlashesAndBuildMetadata, "2021.1.3-dependabot-npm-and-", "it should return the major.minor.patch and trim the pre-release to 20 chars" };
+            yield return new object[] { VersionWithPreReleaseTag, "1.2.3-pre.0", "it should append the pre-release tag" };
+            yield return new object[] { VersionWithPreReleaseTagAndBuildMetadata, "1.2.3-pre.0", "it should return the major.minor.patch and pre-release but not the build metadata" };
+            yield return new object[] { VersionWithLongPreReleaseTagAndBuildMetadata, "2021.1.3-mark-genericDocum.0", "it should return the major.minor.patch and trim the pre-release to 20 chars" };
+            yield return new object[] { VersionWithLongPreReleaseTagWithSlashesAndBuildMetadata, "2021.1.3-dependabot-npm-an.0", "it should return the major.minor.patch and trim the pre-release to 20 chars" };
         }
 
         [Theory]
@@ -140,10 +155,10 @@ namespace OctoVersion.Tests
             //format is input/output/because
             yield return new object[] { AllVersionPartsSetTo0, "0.0.0", "it should grab major.minor.patch" };
             yield return new object[] { AllVersionPartsSetToValues, "1.2.3", "it should grab major.minor.patch" };
-            yield return new object[] { VersionWithPreReleaseTag, "1.2.3-pre", "it should append the pre-release tag" };
-            yield return new object[] { VersionWithPreReleaseTagAndBuildMetadata, "1.2.3-pre+build", "it should return the major.minor.patch and pre-release and build metadata" };
-            yield return new object[] { VersionWithLongPreReleaseTagAndBuildMetadata, "2021.1.3-mark-genericDocumentStore+Branch.mark-genericDocumentStore.Sha.fb13016f3a21d7c2058fb74ab25f19e5311c6550", "it should return the major.minor.patch and pre-release and build metadata" };
-            yield return new object[] { VersionWithLongPreReleaseTagWithSlashesAndBuildMetadata, "2021.1.3-dependabot-npm-and-yarn-source-TentacleArmy.Web-ini-1.3.6+Branch.dependabot-npm-and-yarn-source-TentacleArmy.Web-ini-1.3.6.Sha.069392d9d2d37ddb6009998b92e70963badcc666", "it should return the major.minor.patch and pre-release and build metadata" };
+            yield return new object[] { VersionWithPreReleaseTag, "1.2.3-pre.0", "it should append the pre-release tag" };
+            yield return new object[] { VersionWithPreReleaseTagAndBuildMetadata, "1.2.3-pre.0+build", "it should return the major.minor.patch and pre-release and build metadata" };
+            yield return new object[] { VersionWithLongPreReleaseTagAndBuildMetadata, "2021.1.3-mark-genericDocumentStore.0+Branch.mark-genericDocumentStore.Sha.fb13016f3a21d7c2058fb74ab25f19e5311c6550", "it should return the major.minor.patch and pre-release and build metadata" };
+            yield return new object[] { VersionWithLongPreReleaseTagWithSlashesAndBuildMetadata, "2021.1.3-dependabot-npm-and-yarn-source-TentacleArmy.Web-ini-1.3.6.0+Branch.dependabot-npm-and-yarn-source-TentacleArmy.Web-ini-1.3.6.Sha.069392d9d2d37ddb6009998b92e70963badcc666", "it should return the major.minor.patch and pre-release and build metadata" };
         }
 
         [Theory]

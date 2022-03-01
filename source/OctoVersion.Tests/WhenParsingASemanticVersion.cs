@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using OctoVersion.Core;
+using OctoVersion.Core.VersionTemplates;
 using Shouldly;
 using Xunit;
 
@@ -12,7 +13,8 @@ namespace OctoVersion.Tests
         [MemberData(nameof(TestCases))]
         public void TheResultingVersionShouldBeCorrect(string input, SemanticVersion expected)
         {
-            var fullSemanticVersionInfo = SemanticVersion.TryParse(input);
+            var versionParser = new VersionParser("{major}.{minor}.{patch}-{preReleaseTag}.{build}");
+            var fullSemanticVersionInfo = versionParser.TryParseSemanticVersion(input);
             fullSemanticVersionInfo.ShouldBe(expected);
 
             if (fullSemanticVersionInfo == null) return;
@@ -35,6 +37,7 @@ namespace OctoVersion.Tests
                     0,
                     0,
                     string.Empty,
+                    null,
                     string.Empty)
             };
             yield return new object[]
@@ -43,6 +46,7 @@ namespace OctoVersion.Tests
                     0,
                     0,
                     string.Empty,
+                    null,
                     string.Empty)
             };
             yield return new object[]
@@ -51,6 +55,7 @@ namespace OctoVersion.Tests
                     0,
                     0,
                     string.Empty,
+                    null,
                     string.Empty)
             };
             yield return new object[]
@@ -59,6 +64,7 @@ namespace OctoVersion.Tests
                     0,
                     0,
                     string.Empty,
+                    null,
                     string.Empty)
             };
             yield return new object[]
@@ -67,6 +73,7 @@ namespace OctoVersion.Tests
                     2,
                     0,
                     string.Empty,
+                    null,
                     string.Empty)
             };
             yield return new object[]
@@ -75,6 +82,7 @@ namespace OctoVersion.Tests
                     2,
                     3,
                     string.Empty,
+                    null,
                     string.Empty)
             };
             yield return new object[]
@@ -83,6 +91,7 @@ namespace OctoVersion.Tests
                     2,
                     3,
                     "alpha",
+                    null,
                     string.Empty)
             };
             yield return new object[]
@@ -91,6 +100,7 @@ namespace OctoVersion.Tests
                     0,
                     0,
                     string.Empty,
+                    null,
                     "some-build-info")
             };
             yield return new object[]
@@ -99,6 +109,7 @@ namespace OctoVersion.Tests
                     2,
                     0,
                     string.Empty,
+                    null,
                     "some-build-info")
             };
             yield return new object[]
@@ -107,6 +118,7 @@ namespace OctoVersion.Tests
                     2,
                     3,
                     string.Empty,
+                    null,
                     "some-build-info")
             };
             yield return new object[]
@@ -115,6 +127,7 @@ namespace OctoVersion.Tests
                     2,
                     3,
                     "pre-release",
+                    null,
                     "some-build-info")
             };
         }

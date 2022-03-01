@@ -3,18 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using LibGit2Sharp;
 using OctoVersion.Core.Exceptions;
+using OctoVersion.Core.VersionTemplates;
 using Serilog;
 using RepositoryNotFoundException = OctoVersion.Core.Exceptions.RepositoryNotFoundException;
 
 namespace OctoVersion.Core.VersionNumberCalculation
 {
-    public class VersionCalculatorFactory
+    class VersionCalculatorFactory
     {
         readonly ILogger _logger = Log.ForContext<VersionCalculatorFactory>();
         readonly Repository _repository;
+        readonly VersionParser _versionParser;
 
-        public VersionCalculatorFactory(string repositorySearchPath)
+        public VersionCalculatorFactory(string repositorySearchPath, VersionParser versionParser)
         {
+            _versionParser = versionParser;
             var gitRepositoryPath = Repository.Discover(repositorySearchPath);
             if (gitRepositoryPath == null)
                 throw new RepositoryNotFoundException("Unable to resolve Git repository path.");
@@ -26,7 +29,7 @@ namespace OctoVersion.Core.VersionNumberCalculation
         {
             if (_repository.Info.IsShallow)
                 throw new RepositoryIsShallowCloneException("This repository is a shallow clone; it does not contain enough history to resolve the version correctly.");
-            
+
             Commit[] allCommits;
             using (_logger.BeginTimedOperation("Loading commits"))
             {
@@ -69,7 +72,7 @@ namespace OctoVersion.Core.VersionNumberCalculation
             {
                 foreach (var tag in allTags)
                 {
-                    var version = SimpleVersion.TryParse(tag.FriendlyName);
+                    var version = _versionParser.TryParseSimpleVersion(tag.FriendlyName);
                     if (version == null) continue;
 
                     // tags can reference to commits which have been removed. In this case we don't care.

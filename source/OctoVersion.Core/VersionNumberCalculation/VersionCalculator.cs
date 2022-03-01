@@ -62,17 +62,24 @@ namespace OctoVersion.Core.VersionNumberCalculation
                     .Select(GetVersionInternal)
                     .OrderByDescending(v => v)
                     .FirstOrDefault()
-                ?? new SimpleVersion(0, 0, 0);
+                ?? new SimpleVersion(0, 0, 0, 0);
 
             SimpleVersion version;
             if (commit.BumpsMajorVersion)
-                version = new SimpleVersion(maxParentVersion.Major + 1, 0, 0);
+                version = new SimpleVersion(maxParentVersion.Major + 1, 0, 0, maxParentVersion.Build + 1);
             else if (commit.BumpsMinorVersion)
-                version = new SimpleVersion(maxParentVersion.Major, maxParentVersion.Minor + 1, 0);
+                version = new SimpleVersion(maxParentVersion.Major, maxParentVersion.Minor + 1, 0, maxParentVersion.Build + 1);
             else
+            {
+                // patch bumps if the direct parent is tagged
+                var parentIsTagged = commit.Parents.Any(p => p.TaggedWithVersions.Any());
+                var patch = parentIsTagged ? maxParentVersion.Patch + 1 : maxParentVersion.Patch;
+
                 version = new SimpleVersion(maxParentVersion.Major,
                     maxParentVersion.Minor,
-                    maxParentVersion.Patch + 1);
+                    patch,
+                    maxParentVersion.Build + 1);
+            }
             _calculatedVersions[commit] = version;
 
             return version;

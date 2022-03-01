@@ -25,6 +25,7 @@ namespace OctoVersion.Core.Configuration
         public int? Major { get; set; }
         public int? Minor { get; set; }
         public int? Patch { get; set; }
+        public int? Build { get; set; }
         public string PreReleaseTag { get; set; }
         public string BuildMetadata { get; set; }
 
@@ -36,6 +37,8 @@ namespace OctoVersion.Core.Configuration
         public bool DetectEnvironment { get; set; }
 
         public string OutputJsonFile { get; set; }
+
+        public string VersionTemplate { get; set; } = "{major}.{minor}.{patch}-{preReleaseTag}.{build}";
 
         public void ApplyDefaultsIfRequired()
         {

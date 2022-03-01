@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using OctoVersion.Core;
+using OctoVersion.Core.VersionTemplates;
 using Shouldly;
 using Xunit;
 
@@ -12,7 +13,8 @@ namespace OctoVersion.Tests
         [MemberData(nameof(TestCases))]
         public void TheOutputShouldBeCorrect(SemanticVersion version, string expected)
         {
-            new OctoVersionInfo(version).ToString().ShouldBe(expected);
+            var versionParser = new VersionParser("{major}.{minor}.{patch}-{preReleaseTag}.{build}");
+            new OctoVersionInfo(version, versionParser).ToString().ShouldBe(expected);
         }
 
         public static IEnumerable<object[]> TestCases()
@@ -23,6 +25,7 @@ namespace OctoVersion.Tests
                     0,
                     0,
                     string.Empty,
+                    null,
                     string.Empty),
                 "0.0.0"
             };
@@ -32,6 +35,7 @@ namespace OctoVersion.Tests
                     2,
                     3,
                     string.Empty,
+                    null,
                     string.Empty),
                 "1.2.3"
             };
@@ -41,8 +45,9 @@ namespace OctoVersion.Tests
                     2,
                     3,
                     "pre",
+                    null,
                     string.Empty),
-                "1.2.3-pre"
+                "1.2.3-pre.0"
             };
             yield return new object[]
             {
@@ -50,6 +55,7 @@ namespace OctoVersion.Tests
                     2,
                     3,
                     string.Empty,
+                    null,
                     "build"),
                 "1.2.3"
             };
@@ -59,8 +65,9 @@ namespace OctoVersion.Tests
                     2,
                     3,
                     "pre",
+                    null,
                     "build"),
-                "1.2.3-pre"
+                "1.2.3-pre.0"
             };
         }
     }

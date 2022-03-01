@@ -2,15 +2,17 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 using OctoVersion.Core.VersionNumberCalculation;
+using OctoVersion.Core.VersionTemplates;
 using Serilog;
 
 namespace OctoVersion.Core
 {
-    public class StructuredOutputFactory
+    class StructuredOutputFactory
     {
         readonly string _overriddenBuildMetadata;
         readonly string _currentBranch;
         readonly string _currentSha;
+        readonly VersionParser _versionParser;
 
         readonly ILogger _logger = Log.ForContext<StructuredOutputFactory>();
         readonly FullyQualifiedBranchFlattener _branchFlattener = new FullyQualifiedBranchFlattener();
@@ -20,23 +22,31 @@ namespace OctoVersion.Core
         readonly int? _overriddenMajorVersion;
         readonly int? _overriddenMinorVersion;
         readonly int? _overriddenPatchVersion;
+        readonly string? _overriddenPreReleaseTag;
+        readonly int? _overriddenBuild;
 
         public StructuredOutputFactory(string[] nonPreReleaseTags,
             string nonPreReleaseTagsRegex,
             int? overriddenMajorVersion,
             int? overriddenMinorVersion,
             int? overriddenPatchVersion,
+            string? overriddenPreReleaseTag,
+            int? overriddenBuild,
             string currentBranch,
             string currentSha,
-            string? overriddenBuildMetadata)
+            string? overriddenBuildMetadata,
+            VersionParser versionParser)
         {
             _currentBranch = currentBranch;
             _currentSha = currentSha;
+            _versionParser = versionParser;
             _nonPreReleaseTags = nonPreReleaseTags;
             _nonPreReleaseTagsRegex = nonPreReleaseTagsRegex;
             _overriddenMajorVersion = overriddenMajorVersion;
             _overriddenMinorVersion = overriddenMinorVersion;
             _overriddenPatchVersion = overriddenPatchVersion;
+            _overriddenPreReleaseTag = overriddenPreReleaseTag;
+            _overriddenBuild = overriddenBuild;
             _overriddenBuildMetadata = overriddenBuildMetadata ?? string.Empty;
         }
 
@@ -71,6 +81,15 @@ namespace OctoVersion.Core
                 patch = _overriddenPatchVersion.Value;
             }
 
+            var build = version.Build;
+            if (_overriddenBuild.HasValue)
+            {
+                _logger.Debug("Overriding derived build number {DerivedBuild} with {OverriddenBuild}",
+                    version.Build,
+                    _overriddenBuild.Value);
+                build = _overriddenBuild.Value;
+            }
+
             var buildMetadata = DeriveBuildMetadata();
             if (!string.IsNullOrEmpty(_overriddenBuildMetadata))
             {
@@ -85,12 +104,22 @@ namespace OctoVersion.Core
                 minor,
                 patch,
                 preReleaseTag,
-                buildMetadata);
+                build,
+                buildMetadata,
+                _versionParser);
             return result;
         }
 
         string DerivePreReleaseTag()
         {
+            if (_overriddenPreReleaseTag != null && !string.IsNullOrWhiteSpace(_overriddenPreReleaseTag))
+            {
+                _logger.Debug(
+                    "Prerelease tag has been explicitly set, using the provided value '{@OverriddenPreReleaseTag}'.",
+                    _overriddenPreReleaseTag);
+                return _overriddenPreReleaseTag;
+            }
+
             if (_nonPreReleaseTags.Any(t => t.Equals(_currentBranch, StringComparison.OrdinalIgnoreCase)))
             {
                 _logger.Debug(
