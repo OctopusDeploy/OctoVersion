@@ -1,18 +1,17 @@
 ﻿using System;
 
-namespace OctoVersion.Core
-{
-    public class FullyQualifiedBranchFlattener
-    {
-        public string Flatten(string potentiallyFullyQualifiedBranchName)
-        {
-            var flattenedBranchName = potentiallyFullyQualifiedBranchName
-                    .Replace("refs/heads/", string.Empty)
-                    .Replace("refs/tags/", string.Empty)
-                    .Replace("refs/pull/", "pull/")
-                ;
+namespace OctoVersion.Core;
 
-            return flattenedBranchName;
-        }
+public class FullyQualifiedBranchFlattener
+{
+    public string Flatten(string potentiallyFullyQualifiedBranchName)
+    {
+        var flattenedBranchName = potentiallyFullyQualifiedBranchName
+                .Replace("refs/heads/", string.Empty)
+                .Replace("refs/tags/", string.Empty)
+                .Replace("refs/pull/", "pull/")
+            ;
+
+        return flattenedBranchName;
     }
 }

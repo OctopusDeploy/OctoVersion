@@ -1,4 +1,5 @@
 // ReSharper disable RedundantUsingDirective - prevent PrettyBot from getting confused about unused code.
+
 using System;
 using Nuke.Common;
 using Nuke.Common.CI;
@@ -23,15 +24,13 @@ class Build : NukeBuild
     [Parameter("Test filter expression", Name = "where")] readonly string TestFilter = string.Empty;
 
     [Solution] readonly Solution Solution;
-    
-    [Parameter("Whether to auto-detect the branch name - this is okay for a local build, but should not be used under CI.")] 
-    readonly bool AutoDetectBranch = IsLocalBuild;
-    
+
+    [Parameter("Whether to auto-detect the branch name - this is okay for a local build, but should not be used under CI.")] readonly bool AutoDetectBranch = IsLocalBuild;
+
+    [OctoVersion(BranchParameter = nameof(BranchName), AutoDetectBranchParameter = nameof(AutoDetectBranch))] public OctoVersionInfo OctoVersionInfo;
+
     [Parameter("Branch name for OctoVersion to use to calculate the version number. Can be set via the environment variable " + CiBranchNameEnvVariable + ".", Name = CiBranchNameEnvVariable)]
     string BranchName { get; set; }
-
-    [OctoVersion(BranchParameter = nameof(BranchName), AutoDetectBranchParameter = nameof(AutoDetectBranch))] 
-    public OctoVersionInfo OctoVersionInfo;
 
     AbsolutePath SourceDirectory => RootDirectory / "source";
     AbsolutePath ArtifactsDirectory => RootDirectory / "artifacts";
