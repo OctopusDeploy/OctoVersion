@@ -43,7 +43,7 @@ namespace OctoVersion.Core.Configuration
                 NonPreReleaseTags = new[] { "main", "master" };
         }
 
-        /// <param name="strings"></param>
+        /// <param name="args"></param>
         /// <remarks>
         /// dotnet core doesn't allow multiple args of the same name
         /// for array types, it expects you to pass them like "--OutputFormats:0 Json"
