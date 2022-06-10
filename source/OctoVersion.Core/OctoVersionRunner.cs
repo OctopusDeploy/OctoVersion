@@ -52,13 +52,16 @@ namespace OctoVersion.Core
             if (!string.IsNullOrWhiteSpace(appSettings.FullSemVer))
             {
                 Log.Information("Adopting previously-provided version information {FullSemVer}. Not calculating a new version number.", appSettings.FullSemVer);
-                var semanticVersion = SemanticVersion.TryParse(appSettings.FullSemVer);
+                var semanticVersion = SemanticVersion.TryParse(appSettings.FullSemVer!);
                 if (semanticVersion == null) throw new Exception("Failed to parse semantic version string");
 
                 versionInfo = new OctoVersionInfo(semanticVersion);
             }
             else
             {
+                //this should never happen - the AppSettings Validator makes sure that either appSettings.FullSemVer or appSettings.CurrentBranch is set 
+                if (string.IsNullOrEmpty(appSettings.CurrentBranch))
+                    throw new Exception("CurrentBranch was not set; this should never happen");  
                 using (Log.Logger.BeginTimedOperation("Calculating version"))
                 {
                     var repositorySearchPath = string.IsNullOrWhiteSpace(appSettings.RepositoryPath)
@@ -74,7 +77,7 @@ namespace OctoVersion.Core
                             appSettings.Major,
                             appSettings.Minor,
                             appSettings.Patch,
-                            appSettings.CurrentBranch,
+                            appSettings.CurrentBranch!,
                             currentSha,
                             appSettings.BuildMetadata)
                         .Create(version);
