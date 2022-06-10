@@ -51,7 +51,7 @@ namespace OctoVersion.Core
 
             if (!string.IsNullOrWhiteSpace(appSettings.FullSemVer))
             {
-                Log.Information("Adopting previously-provided version information {FullSemVer}. Not calculating a new version number.", appSettings.FullSemVer);
+                Log.Information("Adopting previously-provided version information {FullSemVer}; not calculating a new version number;", appSettings.FullSemVer);
                 var semanticVersion = SemanticVersion.TryParse(appSettings.FullSemVer);
                 if (semanticVersion == null) throw new Exception("Failed to parse semantic version string");
 
