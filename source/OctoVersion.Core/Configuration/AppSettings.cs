@@ -13,7 +13,7 @@ namespace OctoVersion.Core.Configuration
 
     public class AppSettings : IAppSettings, IValidatableObject
     {
-        public string CurrentBranch { get; set; }
+        public string? CurrentBranch { get; set; }
 
         [Required]
         public string[] NonPreReleaseTags { get; set; } = Array.Empty<string>();
@@ -25,17 +25,17 @@ namespace OctoVersion.Core.Configuration
         public int? Major { get; set; }
         public int? Minor { get; set; }
         public int? Patch { get; set; }
-        public string PreReleaseTag { get; set; }
-        public string BuildMetadata { get; set; }
+        public string? PreReleaseTag { get; set; }
+        public string? BuildMetadata { get; set; }
 
         // If this is set, it will override all of the other values and OctoVersion will just adopt it wholesale.
-        public string FullSemVer { get; set; }
+        public string? FullSemVer { get; set; }
 
         public string[] OutputFormats { get; set; } = Array.Empty<string>();
 
         public bool DetectEnvironment { get; set; }
 
-        public string OutputJsonFile { get; set; }
+        public string? OutputJsonFile { get; set; }
 
         public void ApplyDefaultsIfRequired()
         {
