@@ -35,146 +35,73 @@ namespace OctoVersion.Tests
 
         static IEnumerable<SampleData> TestCases()
         {
-            SampleData ForDefaultScenario()
+            SampleDataBuilder ForDefaultScenario()
             {
-                return new SampleData
-                {
-                    NonPreReleaseTags = new[] { "refs/heads/main" },
-                    NonPreReleaseTagsRegex = string.Empty,
-                    OverriddenMajorVersion = null,
-                    OverriddenMinorVersion = null,
-                    OverriddenPatchVersion = null,
-                    CurrentBranch = "refs/heads/main",
-                    CurrentSha = "a1b2c3d4e5",
-                    OverriddenBuildMetadata = null,
-                    Version = new SimpleVersion(1, 2, 3),
-                    ExpectedInformationalVersion = "1.2.3+Branch.main.Sha.a1b2c3d4e5"
-                };
+                return new SampleDataBuilder()
+                    .WithNonPreReleaseTags(new[] { "refs/heads/main" })
+                    .WithNonPreReleaseTagsRegex(string.Empty)
+                    .WithOverriddenMajorVersion(null)
+                    .WithOverriddenMinorVersion(null)
+                    .WithOverriddenPatchVersion(null)
+                    .WithCurrentBranch("refs/heads/main")
+                    .WithCurrentSha("a1b2c3d4e5")
+                    .WithOverriddenBuildMetadata(null)
+                    .WithVersion(new SimpleVersion(1, 2, 3))
+                    .WithExpectedInformationalVersion("1.2.3+Branch.main.Sha.a1b2c3d4e5");
             }
 
             yield return ForDefaultScenario()
                 .ExpectAnInformationalVersionOf("1.2.3+Branch.main.Sha.a1b2c3d4e5")
-                .ExpectAFullSemVerOf("1.2.3");
+                .ExpectAFullSemVerOf("1.2.3")
+                .Build();
             yield return ForDefaultScenario()
                 .WithOverriddenMajorVersion(9)
                 .ExpectAnInformationalVersionOf("9.2.3+Branch.main.Sha.a1b2c3d4e5")
-                .ExpectAFullSemVerOf("9.2.3");
+                .ExpectAFullSemVerOf("9.2.3")
+                .Build();
             yield return ForDefaultScenario()
                 .WithOverriddenMinorVersion(9)
                 .ExpectAnInformationalVersionOf("1.9.3+Branch.main.Sha.a1b2c3d4e5")
-                .ExpectAFullSemVerOf("1.9.3");
+                .ExpectAFullSemVerOf("1.9.3")
+                .Build();
             yield return ForDefaultScenario()
                 .WithOverriddenPatchVersion(9)
                 .ExpectAnInformationalVersionOf("1.2.9+Branch.main.Sha.a1b2c3d4e5")
-                .ExpectAFullSemVerOf("1.2.9");
+                .ExpectAFullSemVerOf("1.2.9")
+                .Build();
             yield return ForDefaultScenario()
                 .WithOverriddenBuildMetadata("custom build meta/data")
                 .ExpectAnInformationalVersionOf("1.2.3+custom-build-meta-data")
-                .ExpectAFullSemVerOf("1.2.3");
+                .ExpectAFullSemVerOf("1.2.3")
+                .Build();
             yield return ForDefaultScenario()
                 .WithCurrentSha("aaabbbccc")
                 .ExpectAnInformationalVersionOf("1.2.3+Branch.main.Sha.aaabbbccc")
-                .ExpectAFullSemVerOf("1.2.3");
+                .ExpectAFullSemVerOf("1.2.3")
+                .Build();
             yield return ForDefaultScenario()
                 .WithVersion(new SimpleVersion(9, 8, 7))
                 .ExpectAnInformationalVersionOf("9.8.7+Branch.main.Sha.a1b2c3d4e5")
-                .ExpectAFullSemVerOf("9.8.7");
+                .ExpectAFullSemVerOf("9.8.7")
+                .Build();
             yield return ForDefaultScenario()
                 .WithNonPreReleaseTags(new[] { "refs/heads/trunk" })
                 .ExpectAnInformationalVersionOf("1.2.3-main+Branch.main.Sha.a1b2c3d4e5")
-                .ExpectAFullSemVerOf("1.2.3-main");
+                .ExpectAFullSemVerOf("1.2.3-main")
+                .Build();
             yield return ForDefaultScenario()
-                .WithNonPreReleaseTags(new string[0])
+                .WithNonPreReleaseTags(Array.Empty<string>())
                 .WithNonPreReleaseTagsRegex("refs/heads/m.*")
                 .ExpectAnInformationalVersionOf("1.2.3+Branch.main.Sha.a1b2c3d4e5")
-                .ExpectAFullSemVerOf("1.2.3");
+                .ExpectAFullSemVerOf("1.2.3")
+                .Build();
             yield return ForDefaultScenario()
-                .WithNonPreReleaseTags(new string[0])
+                .WithNonPreReleaseTags(Array.Empty<string>())
                 .WithNonPreReleaseTagsRegex("refs/heads/m.*")
                 .WithCurrentBranch("refs/heads/feature/versioning")
                 .ExpectAnInformationalVersionOf("1.2.3-feature-versioning+Branch.feature-versioning.Sha.a1b2c3d4e5")
-                .ExpectAFullSemVerOf("1.2.3-feature-versioning");
-        }
-    }
-
-    public class SampleData
-    {
-        public string[] NonPreReleaseTags { get; set; }
-        public string NonPreReleaseTagsRegex { get; set; }
-        public int? OverriddenMajorVersion { get; set; }
-        public int? OverriddenMinorVersion { get; set; }
-        public int? OverriddenPatchVersion { get; set; }
-        public string CurrentBranch { get; set; }
-        public string CurrentSha { get; set; }
-        public string OverriddenBuildMetadata { get; set; }
-        public string ExpectedInformationalVersion { get; set; }
-        public string ExpectedFullSemVer { get; set; }
-        public SimpleVersion Version { get; set; }
-
-        public SampleData WithNonPreReleaseTags(string[] nonPreReleaseTags)
-        {
-            NonPreReleaseTags = nonPreReleaseTags;
-            return this;
-        }
-
-        public SampleData WithNonPreReleaseTagsRegex(string nonPreReleaseTagsRegex)
-        {
-            NonPreReleaseTagsRegex = nonPreReleaseTagsRegex;
-            return this;
-        }
-
-        public SampleData WithOverriddenMajorVersion(int? overriddenMajorVersion)
-        {
-            OverriddenMajorVersion = overriddenMajorVersion;
-            return this;
-        }
-
-        public SampleData WithOverriddenMinorVersion(int? overriddenMinorVersion)
-        {
-            OverriddenMinorVersion = overriddenMinorVersion;
-            return this;
-        }
-
-        public SampleData WithOverriddenPatchVersion(int? overriddenPatchVersion)
-        {
-            OverriddenPatchVersion = overriddenPatchVersion;
-            return this;
-        }
-
-        public SampleData WithCurrentBranch(string currentBranch)
-        {
-            CurrentBranch = currentBranch;
-            return this;
-        }
-
-        public SampleData WithCurrentSha(string currentSha)
-        {
-            CurrentSha = currentSha;
-            return this;
-        }
-
-        public SampleData WithOverriddenBuildMetadata(string overriddenBuildMetadata)
-        {
-            OverriddenBuildMetadata = overriddenBuildMetadata;
-            return this;
-        }
-
-        public SampleData WithVersion(SimpleVersion version)
-        {
-            Version = version;
-            return this;
-        }
-
-        public SampleData ExpectAnInformationalVersionOf(string expected)
-        {
-            ExpectedInformationalVersion = expected;
-            return this;
-        }
-
-        public SampleData ExpectAFullSemVerOf(string expected)
-        {
-            ExpectedFullSemVer = expected;
-            return this;
+                .ExpectAFullSemVerOf("1.2.3-feature-versioning")
+                .Build();
         }
     }
 }

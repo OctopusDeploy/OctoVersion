@@ -15,12 +15,15 @@ namespace OctoVersion.Tests
     {
         public void Dispose()
         {
-            foreach (DictionaryEntry environmentVariable in Environment.GetEnvironmentVariables())
-            {
-                var key = (string)environmentVariable.Key;
-                if (key.StartsWith(ConfigurationBootstrapper.EnvironmentVariablePrefix))
-                    Environment.SetEnvironmentVariable(key, "");
-            }
+            var envVars = Environment.GetEnvironmentVariables()
+                .Cast<object?>()
+                .Where(environmentVariable => environmentVariable != null)
+                .Select(environmentVariable => (DictionaryEntry)environmentVariable!)
+                .Select(envVar => (string)envVar.Key)
+                .Where(key => key.StartsWith(ConfigurationBootstrapper.EnvironmentVariablePrefix));
+
+            foreach (var key in envVars)
+                Environment.SetEnvironmentVariable(key, "");
         }
 
         [Fact]
