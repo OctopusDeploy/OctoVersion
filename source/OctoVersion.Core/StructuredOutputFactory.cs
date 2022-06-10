@@ -94,7 +94,7 @@ namespace OctoVersion.Core
             if (_nonPreReleaseTags.Any(t => t.Equals(_currentBranch, StringComparison.OrdinalIgnoreCase)))
             {
                 _logger.Debug(
-                    "{CurrentBranch} is contained within the set of non-pre-release branches {@NonPreReleaseBranches}. No pre-release tag is being added.",
+                    "{CurrentBranch} is contained within the set of non-pre-release branches {@NonPreReleaseBranches}; no pre-release tag is being added",
                     _currentBranch,
                     _nonPreReleaseTags);
                 return string.Empty;
@@ -102,12 +102,12 @@ namespace OctoVersion.Core
 
             if (!string.IsNullOrWhiteSpace(_nonPreReleaseTagsRegex))
             {
-                _logger.Debug("A non-pre-release regular expression has been provided. Checking against that.");
+                _logger.Debug("A non-pre-release regular expression has been provided; checking against that");
                 var regex = new Regex(_nonPreReleaseTagsRegex, RegexOptions.Compiled);
                 if (regex.IsMatch(_currentBranch))
                 {
                     _logger.Debug(
-                        "{CurrentBranch} matches the non-pre-release regular expression {NonPreReleaseTagsRegularExpression}. No pre-release tag is being added.",
+                        "{CurrentBranch} matches the non-pre-release regular expression {NonPreReleaseTagsRegularExpression}; no pre-release tag is being added",
                         _currentBranch,
                         _nonPreReleaseTagsRegex);
                     return string.Empty;
