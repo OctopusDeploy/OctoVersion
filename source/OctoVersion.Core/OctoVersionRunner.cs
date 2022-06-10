@@ -18,7 +18,7 @@ namespace OctoVersion.Core
         readonly Action<LoggerConfiguration> additionalLogConfiguration;
 
         public OctoVersionRunner(AppSettings appSettings, IConfigurationRoot configuration)
-            : this(appSettings, configuration, _ => { })
+            : this(appSettings, configuration, loggerConfiguration => { })
         {
         }
 
