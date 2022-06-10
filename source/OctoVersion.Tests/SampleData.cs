@@ -25,7 +25,7 @@ public class SampleData
         OverriddenPatchVersion = overriddenPatchVersion;
         CurrentBranch = currentBranch ?? throw new ArgumentNullException(nameof(currentBranch));
         CurrentSha = currentSha ?? throw new ArgumentNullException(nameof(currentSha));
-        OverriddenBuildMetadata = overriddenBuildMetadata ?? throw new ArgumentNullException(nameof(overriddenBuildMetadata));
+        OverriddenBuildMetadata = overriddenBuildMetadata;
         Version = version ?? throw new ArgumentNullException(nameof(version));
         ExpectedInformationalVersion = expectedInformationalVersion ?? throw new ArgumentNullException(nameof(expectedInformationalVersion));
         ExpectedFullSemVer = expectedFullSemVer ?? throw new ArgumentNullException(nameof(expectedFullSemVer));
@@ -38,7 +38,7 @@ public class SampleData
     public int? OverriddenPatchVersion { get; }
     public string CurrentBranch { get; }
     public string CurrentSha { get; }
-    public string OverriddenBuildMetadata { get; }
+    public string? OverriddenBuildMetadata { get; }
     public string ExpectedInformationalVersion { get; }
     public string ExpectedFullSemVer { get; }
     public SimpleVersion Version { get; }
