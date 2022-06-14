@@ -23,12 +23,12 @@ namespace OctoVersion.Tests
 
         public static IEnumerable<object[]> TestCases()
         {
-            yield return new object[] { "", null };
-            yield return new object[] { "spit.spot", null };
-            yield return new object[] { "1.2.x", null };
-            yield return new object[] { "1.x.3", null };
-            yield return new object[] { "x.2.3", null };
-            yield return new object[] { "1..2", null };
+            yield return new object[] { "", null! };
+            yield return new object[] { "spit.spot", null! };
+            yield return new object[] { "1.2.x", null! };
+            yield return new object[] { "1.x.3", null! };
+            yield return new object[] { "x.2.3", null! };
+            yield return new object[] { "1..2", null! };
             yield return new object[]
             {
                 "0.0.0", new SemanticVersion(0,
