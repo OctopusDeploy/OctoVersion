@@ -19,73 +19,73 @@ public class SampleDataBuilder
 
     public SampleDataBuilder WithNonPreReleaseTags(string[] tags)
     {
-        this.nonPreReleaseTags = tags;
+        nonPreReleaseTags = tags;
         return this;
     }
 
     public SampleDataBuilder WithNonPreReleaseTagsRegex(string regex)
     {
-        this.nonPreReleaseTagsRegex = regex;
+        nonPreReleaseTagsRegex = regex;
         return this;
     }
 
     public SampleDataBuilder WithOverriddenMajorVersion(int? majorVersion)
     {
-        this.overriddenMajorVersion = majorVersion;
+        overriddenMajorVersion = majorVersion;
         return this;
     }
 
     public SampleDataBuilder WithOverriddenMinorVersion(int? minorVersion)
     {
-        this.overriddenMinorVersion = minorVersion;
+        overriddenMinorVersion = minorVersion;
         return this;
     }
 
     public SampleDataBuilder WithOverriddenPatchVersion(int? patchVersion)
     {
-        this.overriddenPatchVersion = patchVersion;
+        overriddenPatchVersion = patchVersion;
         return this;
     }
 
     public SampleDataBuilder WithCurrentBranch(string branch)
     {
-        this.currentBranch = branch;
+        currentBranch = branch;
         return this;
     }
 
     public SampleDataBuilder WithCurrentSha(string sha)
     {
-        this.currentSha = sha;
+        currentSha = sha;
         return this;
     }
 
     public SampleDataBuilder WithOverriddenBuildMetadata(string? buildMetadata)
     {
-        this.overriddenBuildMetadata = buildMetadata;
+        overriddenBuildMetadata = buildMetadata;
         return this;
     }
 
     public SampleDataBuilder WithVersion(SimpleVersion newVersion)
     {
-        this.version = newVersion;
+        version = newVersion;
         return this;
     }
 
     public SampleDataBuilder WithExpectedInformationalVersion(string expected)
     {
-        this.expectedInformationalVersion = expected;
+        expectedInformationalVersion = expected;
         return this;
     }
-        
+
     public SampleDataBuilder ExpectAnInformationalVersionOf(string expected)
     {
-        this.expectedInformationalVersion = expected;
+        expectedInformationalVersion = expected;
         return this;
     }
 
     public SampleDataBuilder ExpectAFullSemVerOf(string expected)
     {
-        this.expectedFullSemVer = expected;
+        expectedFullSemVer = expected;
         return this;
     }
 

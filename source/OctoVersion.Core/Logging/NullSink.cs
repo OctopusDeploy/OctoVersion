@@ -2,12 +2,11 @@
 using Serilog.Core;
 using Serilog.Events;
 
-namespace OctoVersion.Core.Logging
+namespace OctoVersion.Core.Logging;
+
+class NullSink : ILogEventSink
 {
-    class NullSink : ILogEventSink
+    public void Emit(LogEvent logEvent)
     {
-        public void Emit(LogEvent logEvent)
-        {
-        }
     }
 }
