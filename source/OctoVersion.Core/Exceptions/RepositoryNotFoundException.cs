@@ -1,15 +1,14 @@
 using System;
 
-namespace OctoVersion.Core.Exceptions
-{
-    public class RepositoryNotFoundException : ControlledFailureException
-    {
-        public RepositoryNotFoundException(string message) : base(message)
-        {
-        }
+namespace OctoVersion.Core.Exceptions;
 
-        public RepositoryNotFoundException(string message, Exception innerException) : base(message, innerException)
-        {
-        }
+public class RepositoryNotFoundException : ControlledFailureException
+{
+    public RepositoryNotFoundException(string message) : base(message)
+    {
+    }
+
+    public RepositoryNotFoundException(string message, Exception innerException) : base(message, innerException)
+    {
     }
 }

@@ -5,57 +5,56 @@ using Microsoft.Extensions.Configuration;
 using OctoVersion.Core.Configuration;
 using OctoVersion.Core.ExtensionMethods;
 
-namespace OctoVersion.Core
+namespace OctoVersion.Core;
+
+public static class ConfigurationBootstrapper
 {
-    public static class ConfigurationBootstrapper
+    // ReSharper disable once StringLiteralTypo
+    public const string EnvironmentVariablePrefix = "OCTOVERSION_";
+
+    public static (T, IConfigurationRoot) Bootstrap<T>(params string[] args) where T : IAppSettings, new()
     {
-        // ReSharper disable once StringLiteralTypo
-        public const string EnvironmentVariablePrefix = "OCTOVERSION_";
+        var (appSettings, configuration) = BootstrapWithoutValidation<T>(args);
 
-        public static (T, IConfigurationRoot) Bootstrap<T>(params string[] args) where T : IAppSettings, new()
-        {
-            var (appSettings, configuration) = BootstrapWithoutValidation<T>(args);
+        var validationContext = new ValidationContext(appSettings);
+        Validator.ValidateObject(appSettings, validationContext);
 
-            var validationContext = new ValidationContext(appSettings);
-            Validator.ValidateObject(appSettings, validationContext);
+        return (appSettings, configuration);
+    }
 
-            return (appSettings, configuration);
-        }
+    public static (T, IConfigurationRoot) BootstrapWithoutValidation<T>(params string[] args) where T : IAppSettings, new()
+    {
+        var configFilePath = BestEffortConfigFilePath();
 
-        public static (T, IConfigurationRoot) BootstrapWithoutValidation<T>(params string[] args) where T : IAppSettings, new()
-        {
-            var configFilePath = BestEffortConfigFilePath();
-
-            var configuration = new ConfigurationBuilder()
-                .Apply(configurationBuilder =>
-                {
-                    if (configFilePath != null) configurationBuilder.AddJsonFile(configFilePath.FullName);
-                })
-                .AddEnvironmentVariables(EnvironmentVariablePrefix)
-                .AddCommandLine(args)
-                .Build();
-
-            var appSettings = new T();
-            configuration.Bind(appSettings);
-
-            appSettings.ContributeSaneArrayArgs(args);
-            appSettings.ApplyDefaultsIfRequired();
-
-            return (appSettings, configuration);
-        }
-
-        static FileInfo? BestEffortConfigFilePath()
-        {
-            var directory = new DirectoryInfo(Directory.GetCurrentDirectory());
-            while (directory != null)
+        var configuration = new ConfigurationBuilder()
+            .Apply(configurationBuilder =>
             {
-                var configFilePath = new FileInfo(Path.Combine(directory.FullName, "octoversion.json"));
-                if (configFilePath.Exists) return configFilePath;
+                if (configFilePath != null) configurationBuilder.AddJsonFile(configFilePath.FullName);
+            })
+            .AddEnvironmentVariables(EnvironmentVariablePrefix)
+            .AddCommandLine(args)
+            .Build();
 
-                directory = directory.Parent;
-            }
+        var appSettings = new T();
+        configuration.Bind(appSettings);
 
-            return null;
+        appSettings.ContributeSaneArrayArgs(args);
+        appSettings.ApplyDefaultsIfRequired();
+
+        return (appSettings, configuration);
+    }
+
+    static FileInfo? BestEffortConfigFilePath()
+    {
+        var directory = new DirectoryInfo(Directory.GetCurrentDirectory());
+        while (directory != null)
+        {
+            var configFilePath = new FileInfo(Path.Combine(directory.FullName, "octoversion.json"));
+            if (configFilePath.Exists) return configFilePath;
+
+            directory = directory.Parent;
         }
+
+        return null;
     }
 }
