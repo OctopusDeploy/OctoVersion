@@ -6,43 +6,42 @@ using OctoVersion.Core.Logging;
 using Serilog;
 using Serilog.Core;
 
-namespace OctoVersion.Core.OutputFormatting.Json
+namespace OctoVersion.Core.OutputFormatting.Json;
+
+public class JsonFileOutputFormatter : IOutputFormatter
 {
-    public class JsonFileOutputFormatter : IOutputFormatter
+    static readonly JsonSerializerSettings Settings = new()
     {
-        static readonly JsonSerializerSettings Settings = new JsonSerializerSettings
-        {
-            Formatting = Formatting.Indented
-        };
+        Formatting = Formatting.Indented
+    };
 
-        readonly AppSettings appSettings;
+    readonly AppSettings appSettings;
 
-        public JsonFileOutputFormatter(AppSettings appSettings)
+    public JsonFileOutputFormatter(AppSettings appSettings)
+    {
+        this.appSettings = appSettings;
+    }
+
+    public ILogEventSink LogSink { get; } = new NullSink();
+    public string Name => "JsonFile";
+
+    public bool SuppressDefaultConsoleOutput => false; //we'd still like to keep the standard console output logging
+
+    public void Write(OctoVersionInfo octoVersionInfo)
+    {
+        if (string.IsNullOrEmpty(appSettings.OutputJsonFile))
         {
-            this.appSettings = appSettings;
+            Log.Warning($"{Name} output requested, but no {nameof(appSettings.OutputJsonFile)} provided");
+            return;
         }
 
-        public ILogEventSink LogSink { get; } = new NullSink();
-        public string Name => "JsonFile";
+        Log.Information("Writing version info to {outputJsonFile}", appSettings.OutputJsonFile);
+        var json = JsonConvert.SerializeObject(octoVersionInfo, Settings);
+        File.WriteAllText(appSettings.OutputJsonFile, json);
+    }
 
-        public bool SuppressDefaultConsoleOutput => false; //we'd still like to keep the standard console output logging
-
-        public void Write(OctoVersionInfo octoVersionInfo)
-        {
-            if (string.IsNullOrEmpty(appSettings.OutputJsonFile))
-            {
-                Log.Warning($"{Name} output requested, but no {nameof(appSettings.OutputJsonFile)} provided");
-                return;
-            }
-
-            Log.Information("Writing version info to {outputJsonFile}", appSettings.OutputJsonFile);
-            var json = JsonConvert.SerializeObject(octoVersionInfo, Settings);
-            File.WriteAllText(appSettings.OutputJsonFile, json);
-        }
-
-        public bool MatchesRuntimeEnvironment()
-        {
-            return !string.IsNullOrEmpty(appSettings.OutputJsonFile);
-        }
+    public bool MatchesRuntimeEnvironment()
+    {
+        return !string.IsNullOrEmpty(appSettings.OutputJsonFile);
     }
 }

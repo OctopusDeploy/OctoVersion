@@ -11,7 +11,7 @@ public class SampleData
         int? overriddenMajorVersion,
         int? overriddenMinorVersion,
         int? overriddenPatchVersion,
-        string?currentBranch,
+        string? currentBranch,
         string? currentSha,
         string? overriddenBuildMetadata,
         SimpleVersion? version,
@@ -30,7 +30,7 @@ public class SampleData
         ExpectedInformationalVersion = expectedInformationalVersion ?? throw new ArgumentNullException(nameof(expectedInformationalVersion));
         ExpectedFullSemVer = expectedFullSemVer ?? throw new ArgumentNullException(nameof(expectedFullSemVer));
     }
-        
+
     public string[] NonPreReleaseTags { get; }
     public string NonPreReleaseTagsRegex { get; }
     public int? OverriddenMajorVersion { get; }
