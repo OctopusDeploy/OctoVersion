@@ -44,25 +44,38 @@ Add a reference to `OctoVersion.Tool` in your Nuke `_build` project. This can be
 nuke :add-package OctoVersion.Tool --version X.X.X
 ```
 
-Add a parameter marked with `[OctoVersion]` and it will be auto-populated:
+Add a field marked with `[OctoVersion]` and it will be auto-populated:
 
 ```c#
-[Parameter("Branch name for OctoVersion to use to calculate the version number.")] 
-readonly string BranchName;
+using Nuke.Common
+using Nuke.Common.Git;
+using Nuke.Common.Tools.OctoVersion;
+using Serilog;
+...
+...
+...
 
-[Parameter("Whether to auto-detect the branch name - this is okay for a local " + 
-           "build, but should not be used under CI.")] 
-readonly bool AutoDetectBranch = IsLocalBuild;
+class Build : NukeBuild
+{
+           [GitRepository]
+           readonly GitRepository GitRepository;
 
-// The Required Attribute will automatically throw an exception if the 
-// OctoVersionInfo parameter is not set due to an error or misconfiguration in Nuke.
-[Required]
-// 'Framework = "net6.0"' is only required for net6.0 apps.
-[OctoVersion(UpdateBuildNumber = true, 
-             BranchParameter = nameof(BranchName), 
-             AutoDetectBranchParameter = nameof(AutoDetectBranch), 
-             Framework = "net6.0")] 
-readonly OctoVersionInfo? OctoVersionInfo;
+           string Branch => GitRepository.Branch;
+
+           // The Required Attribute will automatically throw an exception if the 
+           // OctoVersionInfo parameter is not set due to an error or misconfiguration in Nuke.
+           [Required]
+           // 'Framework = "net6.0"' is only required for net6.0 apps.
+           [OctoVersion(UpdateBuildNumber = true, 
+                        BranchParameter = nameof(Branch),
+                        Framework = "net6.0")]
+           readonly OctoVersionInfo OctoVersionInfo;
+           
+           Target PrintVersion => _ => _
+           .Executes(() => {
+                      Log.Information($"The version is {OctoVersion.MajorMinorBuild}");
+           });
+}
 ```
 
 Take a look at the Nuke [OctoVersionAttribute](https://github.com/nuke-build/nuke/blob/master/source/Nuke.Common/Tools/OctoVersion/OctoVersionAttribute.cs) for all available attribute properties. 
