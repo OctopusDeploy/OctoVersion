@@ -11,13 +11,13 @@ OctoVersion is a dotnet tool for deriving a SemVer 2.0 version number based on a
 Install the tool into the global tool registry:
 
 ```
-dotnet tool install --global OctoVersion.Tool
+dotnet tool install --global Octopus.OctoVersion.Tool
 ```
 
 or into the local project's tool manifest:
 
 ```
-dotnet tool install OctoVersion.Tool
+dotnet tool install Octopus.OctoVersion.Tool
 ```
 
 Run it against a local Git repository:
@@ -41,7 +41,7 @@ You should see output that looks something like this:
 Add a reference to `OctoVersion.Tool` in your Nuke `_build` project. This can be done using the nuke command:
 
 ```
-nuke :add-package OctoVersion.Tool --version X.X.X
+nuke :add-package Octopus.OctoVersion.Tool --version X.X.X
 ```
 
 Add a field marked with `[OctoVersion]` and it will be auto-populated:

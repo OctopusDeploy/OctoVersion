@@ -9,7 +9,7 @@
 		<AssemblyVersion>0.0.0.0</AssemblyVersion>
 		<FileVersion>0.0.0.0</FileVersion>
 		<AssemblyName>OctoVersion.Tool</AssemblyName>
-		<PackageId>OctoVersion.Tool</PackageId>
+		<PackageId>Octopus.OctoVersion.Tool</PackageId>
 		<StartupObject>OctoVersion.Tool.Program</StartupObject>
 		<Version>0.0.0</Version>
 		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
