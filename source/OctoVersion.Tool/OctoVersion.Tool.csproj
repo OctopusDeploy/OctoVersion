@@ -16,7 +16,7 @@
 		<Authors>Octopus Deploy Pty. Ltd.</Authors>
 		<PackageProjectUrl>https://github.com/OctopusDeploy/OctoVersion</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/OctopusDeploy/OctoVersion</RepositoryUrl>
-		<LangVersion>10</LangVersion>
+		<LangVersion>11</LangVersion>
 	</PropertyGroup>
 
 	<ItemGroup>
