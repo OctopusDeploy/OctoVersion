@@ -51,30 +51,27 @@ using Nuke.Common
 using Nuke.Common.Git;
 using Nuke.Common.Tools.OctoVersion;
 using Serilog;
-...
-...
-...
 
 class Build : NukeBuild
 {
-           [GitRepository]
-           readonly GitRepository GitRepository;
+     [GitRepository]
+     readonly GitRepository GitRepository;
 
-           string Branch => GitRepository.Branch;
+     string Branch => GitRepository.Branch;
 
-           // The Required Attribute will automatically throw an exception if the 
-           // OctoVersionInfo parameter is not set due to an error or misconfiguration in Nuke.
-           [Required]
-           // 'Framework = "net6.0"' is only required for net6.0 apps.
-           [OctoVersion(UpdateBuildNumber = true, 
-                        BranchParameter = nameof(Branch),
-                        Framework = "net6.0")]
-           readonly OctoVersionInfo OctoVersionInfo;
-           
-           Target PrintVersion => _ => _
-           .Executes(() => {
-                      Log.Information($"The version is {OctoVersion.MajorMinorBuild}");
-           });
+     // The Required Attribute will automatically throw an exception if the 
+     // OctoVersionInfo parameter is not set due to an error or misconfiguration in Nuke.
+     [Required]
+     // 'Framework = "net6.0"' is only required for net6.0 apps.
+     [OctoVersion(UpdateBuildNumber = true, 
+                  BranchParameter = nameof(Branch),
+                  Framework = "net6.0")]
+     readonly OctoVersionInfo OctoVersionInfo;
+     
+     Target PrintVersion => _ => _
+     .Executes(() => {
+                Log.Information($"The version is {OctoVersion.MajorMinorBuild}");
+     });
 }
 ```
 
@@ -82,8 +79,69 @@ Take a look at the Nuke [OctoVersionAttribute](https://github.com/nuke-build/nuk
 
 ### Cake
 
-See the [build.cake](build.cake) file.
+```csharp
+#module nuget:?package=Cake.DotNetTool.Module&version=0.4.0
+#addin "nuget:?package=Cake.OctoVersion&version=0.3.63"
 
+// The list below is to manually resolve NuGet dependencies to work around a bug in Cake's dependency loader.
+// Our intention is to remove this list again once the Cake bug is fixed.
+//
+// What we want:
+// #addin "nuget:?package=Cake.OctoVersion&version=0.0.138&loaddependencies=true"
+// (Note the loaddependencies=true parameter.)
+//
+// Our workaround:
+#addin "nuget:?package=LibGit2Sharp&version=0.26.2"
+#addin "nuget:?package=Serilog&version=2.8.0.0"
+#addin "nuget:?package=Serilog.Settings.Configuration&version=3.1.0.0"
+#addin "nuget:?package=Serilog.Sinks.Console&version=3.0.1.0"
+#addin "nuget:?package=Serilog.Sinks.Literate&version=3.0.0.0"
+#addin "nuget:?package=SerilogMetrics&version=2.1.0.0"
+#addin "nuget:?package=Octopus.OctoVersion.Core&version=0.3.63"
+#addin "nuget:?package=Cake.OctoVersion&version=0.0.138"
+#addin "nuget:?package=Microsoft.Extensions.Primitives&version=3.1.7"
+#addin "nuget:?package=Microsoft.Extensions.Configuration&version=3.1.7.0"
+#addin "nuget:?package=Microsoft.Extensions.Configuration.Abstractions&version=3.1.7.0"
+#addin "nuget:?package=Microsoft.Extensions.Configuration.Binder&version=3.1.7.0"
+#addin "nuget:?package=Microsoft.Extensions.Configuration.CommandLine&version=3.1.7.0"
+#addin "nuget:?package=Microsoft.Extensions.Configuration.EnvironmentVariables&version=3.1.7.0"
+#addin "nuget:?package=Microsoft.Extensions.Configuration.FileExtensions&version=3.1.0.0"
+#addin "nuget:?package=Microsoft.Extensions.Configuration.Json&version=3.1.7"
+#addin "nuget:?package=Microsoft.Extensions.DependencyModel&version=2.0.4.0"
+#addin "nuget:?package=Microsoft.Extensions.FileProviders.Abstractions&version=3.1.0.0"
+#addin "nuget:?package=Microsoft.Extensions.FileProviders.Physical&version=3.1.0.0"
+
+using Path = System.IO.Path;
+using IO = System.IO;
+using Cake.Common.Tools;
+
+var target = Argument("target", "Default");
+var configuration = Argument("configuration", "Release");
+
+if (!BuildSystem.IsRunningOnTeamCity) OctoVersionDiscoverLocalGitBranch(out _);
+OctoVersion(out var versionInfo);
+
+Task("Default")
+    .IsDependentOn("Build");
+
+Task("Build")
+    .IsDependentOn("Restore")
+    .Does(() =>
+    {
+        DotNetCoreBuild("./source", new DotNetCoreBuildSettings
+        {
+            Configuration = configuration,
+            NoRestore = true,
+            ArgumentCustomization = args => args.Append($"/p:Version={versionInfo.FullSemVer} /p:InformationalVersion={versionInfo.FullSemVer}"),
+            MSBuildSettings = new DotNetCoreMSBuildSettings
+            {
+                ArgumentCustomization = args => args.Append($"/p:Version={versionInfo.FullSemVer} /p:InformationalVersion={versionInfo.FullSemVer}")
+            }
+        });
+    });
+
+RunTarget(target);
+```
 ### TeamCity
 
 ```bash
