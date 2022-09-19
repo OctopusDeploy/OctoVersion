@@ -20,7 +20,7 @@
 		<PackageReference Include="NewtonSoft.Json" Version="13.0.1" />
 		<PackageReference Include="Octopus.Shellfish" Version="0.2.805" />
 		<PackageReference Include="Serilog" Version="2.11.0" />
-		<PackageReference Include="Serilog.Settings.Configuration" Version="3.3.0" />
+		<PackageReference Include="Serilog.Settings.Configuration" Version="3.4.0" />
 		<PackageReference Include="Serilog.Sinks.Literate" Version="3.0.0" />
 		<PackageReference Include="SerilogMetrics" Version="2.1.0" />
 		<PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
