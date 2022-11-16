@@ -16,7 +16,7 @@ public class SimpleVersion : IComparable
     public int Minor { get; }
     public int Patch { get; }
 
-    public int CompareTo(object obj)
+    public int CompareTo(object? obj)
     {
         if (!(obj is SimpleVersion other)) return -1;
 
