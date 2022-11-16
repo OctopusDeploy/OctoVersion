@@ -14,7 +14,7 @@ public static class LogBootstrapper
             .ReadFrom.Configuration(configuration)
             .Enrich.FromLogContext()
             .Enrich.WithProperty("Application", "OctoVersion")
-            .Enrich.WithProperty("ApplicationVersion", typeof(LogBootstrapper).Assembly.GetName().Version)
+            .Enrich.WithProperty("ApplicationVersion", typeof(LogBootstrapper).Assembly.GetName().Version!)
             .Apply(additionalConfiguration)
             .CreateLogger();
     }

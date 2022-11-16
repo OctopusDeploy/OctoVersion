@@ -42,6 +42,7 @@ class Build : NukeBuild
         {
             SourceDirectory.GlobDirectories("**/bin", "**/obj", "**/TestResults").ForEach(DeleteDirectory);
             EnsureCleanDirectory(ArtifactsDirectory);
+            EnsureCleanDirectory(LocalPackagesDirectory);
         });
 
     Target Restore => _ => _

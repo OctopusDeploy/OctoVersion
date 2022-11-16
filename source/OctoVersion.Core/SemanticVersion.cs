@@ -86,7 +86,7 @@ public class SemanticVersion : IComparable
         }
     }
 
-    public int CompareTo(object obj)
+    public int CompareTo(object? obj)
     {
         if (!(obj is SemanticVersion other)) return -1;
 
