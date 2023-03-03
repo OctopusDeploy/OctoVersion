@@ -60,8 +60,8 @@ public class GitHubActionsOutputFormatter : IOutputFormatter
         {
             GitHubActionsLogSink.Log(LogEventLevel.Warning, $"Unable to write output parameters because the environment variable ${GitHubActionsOutputFileEnvironmentVariableName} is not set.");
         }
-
     }
+
     static void WriteEnvironmentVariables(OctoVersionInfo octoVersionInfo)
     {
         // OCTOVERSION_ddd=fff
