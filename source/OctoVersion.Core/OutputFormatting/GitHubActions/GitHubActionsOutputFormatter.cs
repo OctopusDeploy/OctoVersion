@@ -12,6 +12,7 @@ public class GitHubActionsOutputFormatter : IOutputFormatter
     // https://docs.github.com/en/actions/reference/environment-variables#default-environment-variables
     public const string GitHubActionsEnvironmentVariableName = "GITHUB_ACTIONS";
     public const string GitHubActionsEnvTempFileEnvironmentVariableName = "GITHUB_ENV";
+    public const string GitHubActionsOutputFileEnvironmentVariableName = "GITHUB_OUTPUT";
 
     public GitHubActionsOutputFormatter(AppSettings appSettings)
     {
@@ -36,21 +37,31 @@ public class GitHubActionsOutputFormatter : IOutputFormatter
 
     static void WriteOutputVariables(OctoVersionInfo octoVersionInfo)
     {
-        // ::set-output name='octoversion_ddd'::'fff']
-
         var properties = octoVersionInfo.GetType()
             .GetProperties(BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.Instance);
-        foreach (var property in properties)
+
+        // https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#setting-an-output-parameter
+        // The outgoing parameters must be written to a temporary file (identified by the $GITHUB_OUTPUT environment
+        // variable, which changes for every step in a workflow) which is then parsed. That file must also be UTF-8 or it will fail.
+        var gitHubOutputFilePath = System.Environment.GetEnvironmentVariable(GitHubActionsOutputFileEnvironmentVariableName);
+
+        if (gitHubOutputFilePath != null)
         {
-            var configurationVariableKey = $"octoversion_{property.Name.ToLowerInvariant()}";
-
-            var value = property.GetValue(octoVersionInfo)?.ToString() ?? string.Empty;
-
-            var configurationVariableMessage = $"::set-output name={configurationVariableKey}::{value}";
-            System.Console.WriteLine(configurationVariableMessage);
+            GitHubActionsLogSink.Log(LogEventLevel.Information, $"Writing version variables to {GitHubActionsOutputFileEnvironmentVariableName} file ({gitHubOutputFilePath}) for '{nameof(GitHubActionsOutputFormatter)}'.");
+            using var streamWriter = File.AppendText(gitHubOutputFilePath);
+            foreach (var property in properties)
+            {
+                var configurationVariableKey = $"octoversion_{property.Name.ToLowerInvariant()}";
+                var value = property.GetValue(octoVersionInfo)?.ToString() ?? string.Empty;
+                streamWriter.WriteLine($"{configurationVariableKey}={value}");
+            }
         }
-    }
+        else
+        {
+            GitHubActionsLogSink.Log(LogEventLevel.Warning, $"Unable to write output parameters because the environment variable ${GitHubActionsOutputFileEnvironmentVariableName} is not set.");
+        }
 
+    }
     static void WriteEnvironmentVariables(OctoVersionInfo octoVersionInfo)
     {
         // OCTOVERSION_ddd=fff
