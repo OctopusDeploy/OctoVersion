@@ -58,7 +58,7 @@ public class GitHubActionsOutputFormatter : IOutputFormatter
         }
         else
         {
-            GitHubActionsLogSink.Log(LogEventLevel.Warning, $"Unable to write output parameters to ${GitHubActionsOutputFileEnvironmentVariableName} because the environment variable is not set.");
+            GitHubActionsLogSink.Log(LogEventLevel.Warning, $"Unable to write output parameters because the environment variable ${GitHubActionsOutputFileEnvironmentVariableName} is not set.");
         }
 
     }
