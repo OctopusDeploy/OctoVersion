@@ -41,7 +41,7 @@ echo "Installing net7"
 echo "Installed net7"
 export DOTNET_EXE="$TEMP_DIRECTORY/dotnet/dotnet"
 
-DOTNET_EXE --list-sdks
+$DOTNET_EXE --list-sdks
 
 echo "Microsoft (R) .NET SDK version $("$DOTNET_EXE" --version)"
 
