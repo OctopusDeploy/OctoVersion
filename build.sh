@@ -47,12 +47,12 @@ done
 
 if ! $has_net_6; then
     echo "Installing net6"
-    "$DOTNET_INSTALL_FILE" --install-dir "$DOTNET_DIRECTORY" --version "6.0" --no-path
+    "$DOTNET_INSTALL_FILE" --install-dir "$TEMP_DIRECTORY/net6" --version "6.0" --no-path
     echo "Installed net6"
 fi
 if ! $has_net_7; then
     echo "Installing net7"
-    "$DOTNET_INSTALL_FILE" --install-dir "$DOTNET_DIRECTORY" --version "7.0" --no-path
+    "$DOTNET_INSTALL_FILE" --install-dir "$TEMP_DIRECTORY/net7" --version "7.0" --no-path
     echo "Installed net7"
 fi
 
