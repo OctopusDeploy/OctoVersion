@@ -56,7 +56,7 @@ if ! $has_net_7; then
     echo "Installed net7"
 fi
 
-export DOTNET_EXE="$DOTNET_DIRECTORY/dotnet"
+export DOTNET_EXE="$TEMP_DIRECTORY/dotnet"
 
 echo "Microsoft (R) .NET SDK version $("$DOTNET_EXE" --version)"
 
