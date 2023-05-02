@@ -37,17 +37,23 @@ has_net_6=false
 has_net_7=false
 for sdk_version in $(dotnet --list-sdks | awk '{print $1}'); do
     if [[ "$sdk_version" == 6.* ]]; then
+        echo "Found net6"
         has_net_6=true
     elif [[ "$sdk_version" == 7.* ]]; then
+        echo "Found net7"
         has_net_7=true
     fi
 done
 
 if ! $has_net_6; then
+    echo "Installing net6"
     "$DOTNET_INSTALL_FILE" --install-dir "$DOTNET_DIRECTORY" --version "6.0" --no-path
+    echo "Installed net6"
 fi
 if ! $has_net_7; then
+    echo "Installing net7"
     "$DOTNET_INSTALL_FILE" --install-dir "$DOTNET_DIRECTORY" --version "7.0" --no-path
+    echo "Installed net7"
 fi
 
 export DOTNET_EXE="$DOTNET_DIRECTORY/dotnet"
