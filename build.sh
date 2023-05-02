@@ -34,18 +34,20 @@ chmod +x "$DOTNET_INSTALL_FILE"
 
 echo "Installing net6"
 "$DOTNET_INSTALL_FILE" --install-dir "$TEMP_DIRECTORY/dotnet" --channel "6.0" --no-path
-echo "Installed net6"
 
 echo "Installing net7"
 "$DOTNET_INSTALL_FILE" --install-dir "$TEMP_DIRECTORY/dotnet" --channel "7.0" --no-path
-echo "Installed net7"
 export DOTNET_EXE="$TEMP_DIRECTORY/dotnet/dotnet"
 
+echo "Installing .NET SDK versions:"
 $DOTNET_EXE --list-sdks
 
-echo "Microsoft (R) .NET SDK version $("$DOTNET_EXE" --version)"
+echo "Running with .NET SDK version $("$DOTNET_EXE" --version)"
 
+echo "Building $project"
 "$DOTNET_EXE" build "$BUILD_PROJECT_FILE" /nodeReuse:false /p:UseSharedCompilation=false -nologo -clp:NoSummary --verbosity quiet
+
+echo "Running $project"
 "$DOTNET_EXE" run --project "$BUILD_PROJECT_FILE" --no-build -- "$@"
 
 exit $?
