@@ -43,10 +43,10 @@ for sdk_version in $(dotnet --list-sdks | awk '{print $1}'); do
     fi
 done
 
-if ! has_net_6; then
+if ! $has_net_6; then
     "$DOTNET_INSTALL_FILE" --install-dir "$DOTNET_DIRECTORY" --version "6.0" --no-path
 fi
-if ! has_net_7; then
+if ! $has_net_7; then
     "$DOTNET_INSTALL_FILE" --install-dir "$DOTNET_DIRECTORY" --version "7.0" --no-path
 fi
 
