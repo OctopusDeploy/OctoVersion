@@ -39,7 +39,9 @@ echo "Installed net6"
 echo "Installing net7"
 "$DOTNET_INSTALL_FILE" --install-dir "$TEMP_DIRECTORY/dotnet" --channel "7.0" --no-path
 echo "Installed net7"
-export DOTNET_EXE="$TEMP_DIRECTORY/dotnet"
+export DOTNET_EXE="$TEMP_DIRECTORY/dotnet/dotnet"
+
+DOTNET_EXE --list-sdks
 
 echo "Microsoft (R) .NET SDK version $("$DOTNET_EXE" --version)"
 
