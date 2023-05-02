@@ -10,9 +10,9 @@ SCRIPT_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)
 ###########################################################################
 
 BUILD_PROJECT_FILE="$SCRIPT_DIR/build/_build.csproj"
-TEMP_DIRECTORY="$SCRIPT_DIR//.nuke/temp"
+TEMP_DIRECTORY="$SCRIPT_DIR/.nuke/temp"
 
-DOTNET_GLOBAL_FILE="$SCRIPT_DIR//global.json"
+DOTNET_GLOBAL_FILE="$SCRIPT_DIR/global.json"
 DOTNET_INSTALL_URL="https://dot.net/v1/dotnet-install.sh"
 DOTNET_CHANNEL="Current"
 
@@ -32,30 +32,13 @@ mkdir -p "$TEMP_DIRECTORY"
 curl -Lsfo "$DOTNET_INSTALL_FILE" "$DOTNET_INSTALL_URL"
 chmod +x "$DOTNET_INSTALL_FILE"
 
-# check if we've got the versions we expect
-has_net_6=false
-has_net_7=false
-for sdk_version in $(dotnet --list-sdks | awk '{print $1}'); do
-    if [[ "$sdk_version" == 6.* ]]; then
-        echo "Found net6"
-        has_net_6=true
-    elif [[ "$sdk_version" == 7.* ]]; then
-        echo "Found net7"
-        has_net_7=true
-    fi
-done
+echo "Installing net6"
+"$DOTNET_INSTALL_FILE" --install-dir "$TEMP_DIRECTORY/dotnet" --channel "6.0" --no-path
+echo "Installed net6"
 
-if ! $has_net_6; then
-    echo "Installing net6"
-    "$DOTNET_INSTALL_FILE" --install-dir "$TEMP_DIRECTORY/net6" --channel "6.0" --no-path
-    echo "Installed net6"
-fi
-if ! $has_net_7; then
-    echo "Installing net7"
-    "$DOTNET_INSTALL_FILE" --install-dir "$TEMP_DIRECTORY/net7" --channel "7.0" --no-path
-    echo "Installed net7"
-fi
-
+echo "Installing net7"
+"$DOTNET_INSTALL_FILE" --install-dir "$TEMP_DIRECTORY/dotnet" --channel "7.0" --no-path
+echo "Installed net7"
 export DOTNET_EXE="$TEMP_DIRECTORY/dotnet"
 
 echo "Microsoft (R) .NET SDK version $("$DOTNET_EXE" --version)"
