@@ -40,9 +40,9 @@ class Build : NukeBuild
         .Before(Restore)
         .Executes(() =>
         {
-            SourceDirectory.GlobDirectories("**/bin", "**/obj", "**/TestResults").ForEach(DeleteDirectory);
-            EnsureCleanDirectory(ArtifactsDirectory);
-            EnsureCleanDirectory(LocalPackagesDirectory);
+            SourceDirectory.GlobDirectories("**/bin", "**/obj", "**/TestResults").ForEach(x => x.DeleteDirectory());
+            ArtifactsDirectory.CreateOrCleanDirectory();
+            LocalPackagesDirectory.CreateOrCleanDirectory();
         });
 
     Target Restore => _ => _
@@ -77,7 +77,7 @@ class Build : NukeBuild
                 .SetFilter(TestFilter)
                 .EnableNoBuild()
                 .EnableNoRestore());
-            GlobFiles(SourceDirectory, "**/*.trx").ForEach(x => CopyFileToDirectory(x, ArtifactsDirectory));
+            SourceDirectory.GlobFiles( "**/*.trx").ForEach(x => CopyFileToDirectory(x, ArtifactsDirectory));
         });
 
     Target Pack => _ => _
@@ -99,8 +99,8 @@ class Build : NukeBuild
         .TriggeredBy(Pack)
         .Executes(() =>
         {
-            EnsureExistingDirectory(LocalPackagesDirectory);
-            GlobFiles(ArtifactsDirectory, $"*.{OctoVersionInfo.FullSemVer}.nupkg").ForEach(x => CopyFileToDirectory(x, LocalPackagesDirectory));
+            LocalPackagesDirectory.CreateOrCleanDirectory();
+            ArtifactsDirectory.GlobFiles($"*.{OctoVersionInfo.FullSemVer}.nupkg").ForEach(x => CopyFileToDirectory(x, LocalPackagesDirectory));
         });
 
     /// Support plugins are available for:
