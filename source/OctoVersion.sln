@@ -18,6 +18,7 @@ ProjectSection(SolutionItems) = preProject
 	..\NuGet.Config = ..\NuGet.Config
 	..\octoversion.json = ..\octoversion.json
 	..\README.md = ..\README.md
+	..\global.json = ..\global.json
 EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "_build", "..\build\_build.csproj", "{3F53A37E-23D1-4202-8A99-17BAA6480321}"
