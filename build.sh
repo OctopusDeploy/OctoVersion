@@ -44,7 +44,7 @@ $DOTNET_EXE --list-sdks
 
 echo "Running with .NET SDK version $("$DOTNET_EXE" --version)"
 
-echo "Building $project"
+echo "Building $BUILD_PROJECT_FILE"
 "$DOTNET_EXE" build "$BUILD_PROJECT_FILE" /nodeReuse:false /p:UseSharedCompilation=false -nologo -clp:NoSummary --verbosity quiet
 
 echo "Running $project"
