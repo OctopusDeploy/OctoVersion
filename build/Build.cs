@@ -77,7 +77,7 @@ class Build : NukeBuild
                 .SetFilter(TestFilter)
                 .EnableNoBuild()
                 .EnableNoRestore());
-            SourceDirectory.GlobFiles("**/*.trx").ForEach(x => CopyFileToDirectory(x, ArtifactsDirectory));
+            SourceDirectory.GlobFiles( "**/*.trx").ForEach(x => CopyFileToDirectory(x, ArtifactsDirectory));
         });
 
     Target Pack => _ => _
