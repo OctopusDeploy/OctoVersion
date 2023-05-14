@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Reflection;
 using System.Text.RegularExpressions;
 
 namespace OctoVersion.Core;
@@ -44,5 +46,16 @@ public class OctoVersionInfo : SemanticVersion
     public override string ToString()
     {
         return FullSemVer;
+    }
+
+    internal IEnumerable<(string Name, string Value)> GetProperties()
+    {
+        var properties = GetType().GetProperties(BindingFlags.Public | BindingFlags.FlattenHierarchy | BindingFlags.Instance);
+        
+        foreach (var property in properties)
+        {
+            var value = property.GetValue(this)?.ToString() ?? string.Empty;
+            yield return (property.Name, value);
+        }
     }
 }

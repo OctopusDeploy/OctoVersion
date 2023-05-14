@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 using OctoVersion.Core.Configuration;
 using OctoVersion.Core.Logging;
@@ -19,18 +20,25 @@ public class EnvironmentOutputFormatter : IOutputFormatter
 
     public void Write(OctoVersionInfo octoVersionInfo)
     {
-        const string prefix = ConfigurationBootstrapper.EnvironmentVariablePrefix;
-
-        var properties = octoVersionInfo.GetType()
-            .GetProperties(BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.Instance);
-        foreach (var property in properties)
+        foreach (var line in GetPropertiesToWrite(octoVersionInfo))
         {
-            var key = $"{prefix}{property.Name}";
-            var value = property.GetValue(octoVersionInfo)?.ToString() ?? string.Empty;
-            var line = $"{key}={value}";
             System.Console.WriteLine(line);
         }
     }
+
+    internal static IEnumerable<string> GetPropertiesToWrite(OctoVersionInfo octoVersionInfo)
+    {
+        const string prefix = ConfigurationBootstrapper.EnvironmentVariablePrefix;
+
+        var properties = octoVersionInfo.GetProperties();
+        foreach (var property in properties)
+        {
+            var key = $"{prefix}{property.Name}";
+            var line = $"{key}={property.Value}";
+            yield return line;
+        }
+    }
+
 
     public bool MatchesRuntimeEnvironment()
     {

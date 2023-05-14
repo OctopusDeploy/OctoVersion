@@ -1,4 +1,5 @@
 using System;
+using OctoVersion.Core;
 using OctoVersion.Core.VersionNumberCalculation;
 
 namespace OctoVersion.Tests;
@@ -27,8 +28,8 @@ public class SampleData
         CurrentSha = currentSha ?? throw new ArgumentNullException(nameof(currentSha));
         OverriddenBuildMetadata = overriddenBuildMetadata;
         Version = version ?? throw new ArgumentNullException(nameof(version));
-        ExpectedInformationalVersion = expectedInformationalVersion ?? throw new ArgumentNullException(nameof(expectedInformationalVersion));
-        ExpectedFullSemVer = expectedFullSemVer ?? throw new ArgumentNullException(nameof(expectedFullSemVer));
+        ExpectedInformationalVersion = expectedInformationalVersion;
+        ExpectedFullSemVer = expectedFullSemVer;
     }
 
     public string[] NonPreReleaseTags { get; }
@@ -39,7 +40,20 @@ public class SampleData
     public string CurrentBranch { get; }
     public string CurrentSha { get; }
     public string? OverriddenBuildMetadata { get; }
-    public string ExpectedInformationalVersion { get; }
-    public string ExpectedFullSemVer { get; }
+    public string? ExpectedInformationalVersion { get; }
+    public string? ExpectedFullSemVer { get; }
     public SimpleVersion Version { get; }
+
+    public OctoVersionInfo ToOctoVersion()
+    {
+        var factory = new StructuredOutputFactory(NonPreReleaseTags,
+            NonPreReleaseTagsRegex,
+            OverriddenMajorVersion,
+            OverriddenMinorVersion,
+            OverriddenPatchVersion,
+            CurrentBranch,
+            CurrentSha,
+            OverriddenBuildMetadata);
+        return factory.Create(Version);
+    }
 }

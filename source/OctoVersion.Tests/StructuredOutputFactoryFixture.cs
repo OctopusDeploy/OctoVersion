@@ -14,15 +14,7 @@ public class StructuredOutputFactoryFixture
     [MemberData(nameof(XUnitFormattedTestCases))]
     public void CalculatesOctoVersionCorrectly(SampleData sampleData)
     {
-        var factory = new StructuredOutputFactory(sampleData.NonPreReleaseTags,
-            sampleData.NonPreReleaseTagsRegex,
-            sampleData.OverriddenMajorVersion,
-            sampleData.OverriddenMinorVersion,
-            sampleData.OverriddenPatchVersion,
-            sampleData.CurrentBranch,
-            sampleData.CurrentSha,
-            sampleData.OverriddenBuildMetadata);
-        var result = factory.Create(sampleData.Version);
+        var result = sampleData.ToOctoVersion();
         result.InformationalVersion.ShouldBe(sampleData.ExpectedInformationalVersion);
         result.FullSemVer.ShouldBe(sampleData.ExpectedFullSemVer);
     }
