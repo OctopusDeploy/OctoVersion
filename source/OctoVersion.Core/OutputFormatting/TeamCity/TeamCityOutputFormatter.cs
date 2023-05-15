@@ -39,19 +39,16 @@ public class TeamCityOutputFormatter : IOutputFormatter
         // ##teamcity[setParameter name='ddd' value='fff']
 
         const string prefix = ConfigurationBootstrapper.EnvironmentVariablePrefix;
-        var properties = octoVersionInfo.GetType()
-            .GetProperties(BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.Instance);
+        var properties = octoVersionInfo.GetProperties();
         foreach (var property in properties)
         {
             var environmentVariableKey = $"env.{prefix}{property.Name}";
             var configurationVariableKey = $"OctoVersion.{property.Name}";
 
-            var value = property.GetValue(octoVersionInfo)?.ToString() ?? string.Empty;
-
-            var environmentVariableMessage = $"##teamcity[setParameter name='{environmentVariableKey}' value='{value}']";
+            var environmentVariableMessage = $"##teamcity[setParameter name='{environmentVariableKey}' value='{property.Value}']";
             System.Console.WriteLine(environmentVariableMessage);
 
-            var configurationVariableMessage = $"##teamcity[setParameter name='{configurationVariableKey}' value='{value}']";
+            var configurationVariableMessage = $"##teamcity[setParameter name='{configurationVariableKey}' value='{property.Value}']";
             System.Console.WriteLine(configurationVariableMessage);
         }
     }
