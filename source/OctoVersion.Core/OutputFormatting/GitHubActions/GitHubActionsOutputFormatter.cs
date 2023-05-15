@@ -37,8 +37,7 @@ public class GitHubActionsOutputFormatter : IOutputFormatter
 
     static void WriteOutputVariables(OctoVersionInfo octoVersionInfo)
     {
-        var properties = octoVersionInfo.GetType()
-            .GetProperties(BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.Instance);
+        var properties = octoVersionInfo.GetProperties();
 
         // https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#setting-an-output-parameter
         // The outgoing parameters must be written to a temporary file (identified by the $GITHUB_OUTPUT environment
@@ -52,8 +51,7 @@ public class GitHubActionsOutputFormatter : IOutputFormatter
             foreach (var property in properties)
             {
                 var configurationVariableKey = $"octoversion_{property.Name.ToLowerInvariant()}";
-                var value = property.GetValue(octoVersionInfo)?.ToString() ?? string.Empty;
-                streamWriter.WriteLine($"{configurationVariableKey}={value}");
+                streamWriter.WriteLine($"{configurationVariableKey}={property.Value}");
             }
         }
         else
