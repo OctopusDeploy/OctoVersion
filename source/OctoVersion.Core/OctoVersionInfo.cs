@@ -51,7 +51,7 @@ public class OctoVersionInfo : SemanticVersion
     internal IEnumerable<(string Name, string Value)> GetProperties()
     {
         var properties = GetType().GetProperties(BindingFlags.Public | BindingFlags.FlattenHierarchy | BindingFlags.Instance);
-        
+
         foreach (var property in properties)
         {
             var value = property.GetValue(this)?.ToString() ?? string.Empty;

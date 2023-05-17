@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using OctoVersion.Core.OutputFormatting.Environment;
 using OctoVersion.Core.VersionNumberCalculation;
@@ -21,15 +22,16 @@ public class EnvironmentOutputFormatterFixture
             .WithCurrentSha("a1b2c3d4e5")
             .WithVersion(new SimpleVersion(1, 2, 3))
             .Build();
-        
+
         var octoVersionInfo = sampleData.ToOctoVersion();
-        
+
         var propertiesToWrite = EnvironmentOutputFormatter
             .GetPropertiesToWrite(octoVersionInfo)
             .OrderBy(x => x)
             .ToArray();
-        
-        propertiesToWrite.ShouldBeEquivalentTo(new [] {
+
+        propertiesToWrite.ShouldBeEquivalentTo(new[]
+        {
             "OCTOVERSION_BuildMetadata=Branch.main.Sha.a1b2c3d4e5",
             "OCTOVERSION_BuildMetadataWithPlus=+Branch.main.Sha.a1b2c3d4e5",
             "OCTOVERSION_FullSemVer=1.2.3",
@@ -40,7 +42,7 @@ public class EnvironmentOutputFormatterFixture
             "OCTOVERSION_NuGetVersion=1.2.3",
             "OCTOVERSION_Patch=3",
             "OCTOVERSION_PreReleaseTag=",
-            "OCTOVERSION_PreReleaseTagWithDash=",
+            "OCTOVERSION_PreReleaseTagWithDash="
         });
     }
 }
