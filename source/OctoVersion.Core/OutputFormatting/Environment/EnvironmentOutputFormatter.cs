@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection;
 using OctoVersion.Core.Configuration;
 using OctoVersion.Core.Logging;
 using Serilog.Core;
@@ -21,9 +20,7 @@ public class EnvironmentOutputFormatter : IOutputFormatter
     public void Write(OctoVersionInfo octoVersionInfo)
     {
         foreach (var line in GetPropertiesToWrite(octoVersionInfo))
-        {
             System.Console.WriteLine(line);
-        }
     }
 
     internal static IEnumerable<string> GetPropertiesToWrite(OctoVersionInfo octoVersionInfo)
@@ -38,7 +35,6 @@ public class EnvironmentOutputFormatter : IOutputFormatter
             yield return line;
         }
     }
-
 
     public bool MatchesRuntimeEnvironment()
     {
