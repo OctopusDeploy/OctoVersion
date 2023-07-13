@@ -18,7 +18,7 @@
 		<PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="7.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" />
 		<PackageReference Include="NewtonSoft.Json" Version="13.0.3" />
-		<PackageReference Include="Octopus.Shellfish" Version="0.2.1146" />
+		<PackageReference Include="Octopus.Shellfish" Version="0.2.1180" />
 		<PackageReference Include="Serilog" Version="3.0.1" />
 		<PackageReference Include="Serilog.Settings.Configuration" Version="7.0.0" />
 		<PackageReference Include="Serilog.Sinks.Literate" Version="3.0.0" />
