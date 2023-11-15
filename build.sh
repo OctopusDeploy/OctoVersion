@@ -22,8 +22,8 @@ export DOTNET_MULTILEVEL_LOOKUP=0
 
 #### START CUSTOM CODE ####
 # This file is an odd one. `nuke :update` wants to make edits to it, so we want to keep it similar to the default 
-# as we can. But, we want to do some tricky stuff, and make sure both dotnet 6 and dotnet 7 are installed, so we
-# can compile for both versions. So... We've got our "custom code" block here, which we want to keep, and the 
+# as we can. But, we want to do some tricky stuff, and make sure dotnet 6, 7 and 8 are installed, so we
+# can compile for all versions. So... We've got our "custom code" block here, which we want to keep, and the 
 # default code down below so we can see what changes are made upstream, and apply them to ours if we need to.
 
 # Download install script
@@ -32,11 +32,16 @@ mkdir -p "$TEMP_DIRECTORY"
 curl -Lsfo "$DOTNET_INSTALL_FILE" "$DOTNET_INSTALL_URL"
 chmod +x "$DOTNET_INSTALL_FILE"
 
+# I think we just need to install the net6/7 runtimes so the net8 publisher can bundle them,
+# rather than the full net6/7 SDK's. Experiment with this later
 echo "Installing net6"
 "$DOTNET_INSTALL_FILE" --install-dir "$TEMP_DIRECTORY/dotnet" --channel "6.0" --no-path
 
 echo "Installing net7"
 "$DOTNET_INSTALL_FILE" --install-dir "$TEMP_DIRECTORY/dotnet" --channel "7.0" --no-path
+
+echo "Installing net8"
+"$DOTNET_INSTALL_FILE" --install-dir "$TEMP_DIRECTORY/dotnet" --channel "8.0" --no-path
 export DOTNET_EXE="$TEMP_DIRECTORY/dotnet/dotnet"
 
 echo "Installing .NET SDK versions:"
