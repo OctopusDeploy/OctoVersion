@@ -1,0 +1,10 @@
+release_notes_template = "#{OctopusReleaseNotesTemplate}"
+
+connectivity_policy {}
+
+versioning_strategy {
+    donor_package {
+        package = "Octopus.OctoVersion.Tool"
+        step = "push"
+    }
+}
