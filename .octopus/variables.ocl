@@ -1,0 +1,25 @@
+variable "FeedApiKey" {
+    value "#{InternalFeedApiKey}" {
+        environment = ["components-internal"]
+    }
+
+    value "#{ExternalFeedApiKey}" {
+        description = ""
+        environment = ["components-external"]
+    }
+}
+
+variable "FeedUrl" {
+    value "#{InternalFeedUrl}" {
+        environment = ["components-internal"]
+    }
+
+    value "#{ExternalFeedUrl}" {
+        description = ""
+        environment = ["components-external"]
+    }
+}
+
+variable "Slack.DeploymentNotificationChannel" {
+    value "#feed-build-platform-alerts" {}
+}
