@@ -8,10 +8,16 @@ on:
     branches:
       - main
 
+env:
+  PACKAGE_NAME: 'Octopus.OctoVersion'
+  OCTOPUS_SPACE: ${{ secrets.OCTOPUS_SPACE }}
+  OCTOPUS_PROJECT: ${{ secrets.OCTOPUS_PROJECT }} 
+  
 jobs:
-  build:
+  build-test-and-pack:
     runs-on: ubuntu-latest
-
+    permissions:
+      id-token: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -22,3 +28,34 @@ jobs:
         env:
           OCTOVERSION_CurrentBranch: ${{ github.head_ref || github.ref_name }}
         run: ./build.sh
+        
+      - name: Set PACKAGE_VERSION Environment Variable
+        run: echo "PACKAGE_VERSION=${{ env.OCTOVERSION_MajorMinorPatch }}" >> $GITHUB_ENV
+      
+      - name: Login to Octopus
+        uses: OctopusDeploy/login@v1
+        with:
+          server: ${{ secrets.OCTOPUS_URL }}
+          service_account_id: ${{ secrets.OCTOPUS_SERVICE_ACCOUNT_ID }}
+
+      - name: Push build information to Octopus Deploy
+        uses: OctopusDeploy/push-build-information-action@v3
+        with:
+          packages: |
+            ${{ env.PACKAGE_NAME }}
+          version: ${{ env.PACKAGE_VERSION }}
+
+      - name: Push a package to Octopus Deploy
+        uses: OctopusDeploy/push-package-action@v3
+        with:
+          packages: |
+            **/*.${{ env.PACKAGE_VERSION }}.nupkg
+
+      - name: Create a release in Octopus
+        uses: OctopusDeploy/create-release-action@v3
+        with:
+          space: ${{ env.OCTOPUS_SPACE }}
+          project: ${{ env.OCTOPUS_PROJECT }}
+          channel: ${{ github.event_name == 'push' && 'Default' || 'Pre-release' }} #sends to pre-release if it is a PR
+          git_ref: ${{ github.ref }}
+          git_commit: ${{ github.event.after || github.event.pull_request.head.sha }}
