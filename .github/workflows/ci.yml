@@ -28,9 +28,6 @@ jobs:
         env:
           OCTOVERSION_CurrentBranch: ${{ github.head_ref || github.ref_name }}
         run: ./build.sh
-        
-      - name: Set PACKAGE_VERSION Environment Variable
-        run: echo "PACKAGE_VERSION=${{ env.OCTOVERSION_MajorMinorPatch }}" >> $GITHUB_ENV
       
       - name: Login to Octopus
         uses: OctopusDeploy/login@v1
@@ -43,19 +40,18 @@ jobs:
         with:
           packages: |
             ${{ env.PACKAGE_NAME }}
-          version: ${{ env.PACKAGE_VERSION }}
+          version: ${{ env.OCTOVERSION_FullSemVer }}
 
       - name: Push a package to Octopus Deploy
         uses: OctopusDeploy/push-package-action@v3
         with:
           packages: |
-            **/*.${{ env.PACKAGE_VERSION }}.nupkg
+            **/*.${{ env.OCTOVERSION_FullSemVer }}.nupkg
 
       - name: Create a release in Octopus
         uses: OctopusDeploy/create-release-action@v3
         with:
           space: ${{ env.OCTOPUS_SPACE }}
           project: ${{ env.OCTOPUS_PROJECT }}
-          channel: ${{ github.event_name == 'push' && 'Default' || 'Pre-release' }} #sends to pre-release if it is a PR
           git_ref: ${{ github.ref }}
           git_commit: ${{ github.event.after || github.event.pull_request.head.sha }}
