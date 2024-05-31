@@ -10,8 +10,8 @@ on:
 
 env:
   PACKAGE_NAME: 'Octopus.OctoVersion'
-  OCTOPUS_SPACE: ${{ secrets.OCTOPUS_SPACE }}
-  OCTOPUS_PROJECT: ${{ secrets.OCTOPUS_PROJECT }} 
+  OCTOPUS_SPACE: Build Platform
+  OCTOPUS_PROJECT: OctoVersion
   
 jobs:
   build-test-and-pack:
@@ -33,7 +33,7 @@ jobs:
         uses: OctopusDeploy/login@v1
         with:
           server: ${{ secrets.OCTOPUS_URL }}
-          service_account_id: ${{ secrets.OCTOPUS_SERVICE_ACCOUNT_ID }}
+          service_account_id: e53e33e5-5352-40c2-a4cd-8d5c43987129
 
       - name: Push build information to Octopus Deploy
         uses: OctopusDeploy/push-build-information-action@v3
