@@ -41,10 +41,11 @@ jobs:
           packages: |
             ${{ env.PACKAGE_NAME }}
           version: ${{ env.OCTOVERSION_FullSemVer }}
-
+        
       - name: Push a package to Octopus Deploy
         uses: OctopusDeploy/push-package-action@v3
         with:
+          overwrite_mode: IgnoreIfExists
           packages: |
             **/*.${{ env.OCTOVERSION_FullSemVer }}.nupkg
 
