@@ -54,7 +54,7 @@ jobs:
         with:
           space: ${{ env.OCTOPUS_SPACE }}
           project: ${{ env.OCTOPUS_PROJECT }}
-          git_ref: ${{ github.ref }}
+          git_ref: ${{ github.head_ref || github.ref_name }}
           git_commit: ${{ github.event.after || github.event.pull_request.head.sha }}
           release_number: ${{ env.OCTOVERSION_FullSemVer }}
           package_version: ${{ env.OCTOVERSION_FullSemVer }}
