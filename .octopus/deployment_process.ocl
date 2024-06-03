@@ -20,7 +20,7 @@ step "push" {
             Octopus.Action.Script.Syntax = "PowerShell"
             OctopusUseBundledTooling = "False"
         }
-        worker_pool = "hosted-windows"
+        worker_pool = "hosted-ubuntu"
 
         container {
             feed = "docker-hub"
