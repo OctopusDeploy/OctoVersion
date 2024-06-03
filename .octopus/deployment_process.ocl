@@ -6,29 +6,25 @@ step "push" {
         properties = {
             Octopus.Action.Script.ScriptBody = <<-EOT
                 # Build the path to nuget.exe
-                $nugetPackagePath = $OctopusParameters["Octopus.Action.Package[NuGet.CommandLine].ExtractedPath"]
-                $nugetExe = Join-Path -Path $nugetPackagePath -ChildPath "Tools\nuget.exe"
+                
                 
                 # nuget push
-                . $nugetExe push "$($OctopusParameters["Octopus.Action.Package[Octopus.OctoVersion.Core].PackageFileName"])" -source $FeedUrl -apikey $FeedApiKey -SkipDuplicate
-                . $nugetExe push "$($OctopusParameters["Octopus.Action.Package[Octopus.OctoVersion.Tool].PackageFileName"])" -source $FeedUrl -apikey $FeedApiKey -SkipDuplicate
-                . $nugetExe push "$($OctopusParameters["Octopus.Action.Package[Cake.OctoVersion].PackageFileName"])" -source $FeedUrl -apikey $FeedApiKey -SkipDuplicate
+                dotnet nuget push "$($OctopusParameters["Octopus.Action.Package[Octopus.OctoVersion.Core].PackageFileName"])" --source $FeedUrl --api-key $FeedApiKey --skip-duplicate
+                dotnet nuget push "$($OctopusParameters["Octopus.Action.Package[Octopus.OctoVersion.Tool].PackageFileName"])" --source $FeedUrl --api-key $FeedApiKey --skip-duplicate
+                dotnet nuget push "$($OctopusParameters["Octopus.Action.Package[Cake.OctoVersion].PackageFileName"])" --source $FeedUrl --api-key $FeedApiKey --skip-duplicate
                 
                 
                 
                 EOT
             Octopus.Action.Script.ScriptSource = "Inline"
             Octopus.Action.Script.Syntax = "PowerShell"
+            OctopusUseBundledTooling = "False"
         }
-        worker_pool = "hosted-windows"
+        worker_pool = "hosted-ubuntu"
 
-        packages "NuGet.CommandLine" {
-            acquisition_location = "Server"
-            feed = "nuget"
-            package_id = "NuGet.CommandLine"
-            properties = {
-                Extract = "True"
-            }
+        container {
+            feed = "docker-hub"
+            image = "octopusdeploy/worker-tools:6-ubuntu.22.04"
         }
 
         packages "Octopus.OctoVersion.Tool" {
