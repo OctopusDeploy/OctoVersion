@@ -12,6 +12,7 @@ public class SanitizerFixture
     [MemberData(nameof(TestCases))]
     public void OutputsShouldBeAsExpected(string input, string expected)
     {
+        var foo = expected;
         new Sanitizer().Sanitize(input).ShouldBe(string.Empty);
     }
 
