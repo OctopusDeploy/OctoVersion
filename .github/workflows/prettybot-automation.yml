@@ -41,8 +41,7 @@ jobs:
             
             - name: Run Cleanup Code
               run: |
-                  docker run ${{ secrets.INTERNAL_DOCKER_REGISTRY_URL }}/octopusdeploy/tool-containers/tool-resharper-cli /scripts/prettybot.sh
-
+                docker run -v ${{ github.workspace }}:/src ${{ secrets.INTERNAL_DOCKER_REGISTRY_URL }}/octopusdeploy/tool-containers/tool-resharper-cli "/scripts/prettybot.sh"
             - name: Git Check for file changes
               id: git-check
               run: |
@@ -62,9 +61,3 @@ jobs:
               if: steps.git-check.outputs.changed == 'true'
               run: |
                   gh pr create --base main --head ${{ env.BRANCH_NAME }} --title "Automated PR for Prettybot" --body "This is an automated PR."
-
-#       Commented out for now, as it won't be able to auto-merge without another user 
-#      - name: Approve a PrettyBot created PR
-#        if: steps.git-check.outputs.changed == 'true' && startsWith(github.head_ref, 'prettybot/') && github.actor == 'Octobob'
-#        run: gh pr review --approve "$PR_URL"
-
