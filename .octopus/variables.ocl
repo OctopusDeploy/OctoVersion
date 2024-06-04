@@ -23,7 +23,3 @@ variable "FeedUrl" {
 variable "Slack.DeploymentNotificationChannel" {
     value "#feed-build-platform-alerts" {}
 }
-
-variable "Octopus.Acquire.DeltaCompressionEnabled" {
-    value "false" {}
-}
