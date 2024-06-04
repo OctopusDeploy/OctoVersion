@@ -47,7 +47,7 @@ jobs:
         with:
           overwrite_mode: IgnoreIfExists
           packages: |
-            **/*.${{ env.OCTOVERSION_FullSemVer }}.nupkg
+            artifacts/*.${{ env.OCTOVERSION_FullSemVer }}.nupkg
 
       - name: Create a release in Octopus
         uses: OctopusDeploy/create-release-action@v3
