@@ -59,7 +59,7 @@ jobs:
             - name: Commit and push changes
               if: steps.git-check.outputs.changed == 'true'
               run: |
-                git config user.email "builds@octopus.com"
+                git config user.email "bob@octopus.com"
                 git config user.name "Github Actions"
                 git commit -am "Run ReSharper code cleanup"
                 git push origin ${{ env.BRANCH_NAME }}
