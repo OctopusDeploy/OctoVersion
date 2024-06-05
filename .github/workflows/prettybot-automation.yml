@@ -36,7 +36,7 @@ jobs:
                   git checkout -b ${{ env.BRANCH_NAME }}
 
             - name: Log in to Docker Registry
-              uses: docker/login-action@v2
+              uses: docker/login-action@v3
               with:
                   registry: ${{ secrets.INTERNAL_DOCKER_REGISTRY_URL }}
                   username: ${{ secrets.INTERNAL_DOCKER_READ_ONLY_USER_NAME }}
