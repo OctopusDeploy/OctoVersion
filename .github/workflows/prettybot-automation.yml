@@ -1,10 +1,13 @@
 name: "Prettybot Automation"
 
 on:
-    push:
-        branches:
-            - main
-      
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
 # Increase the access for the GITHUB_TOKEN
 permissions:
     # This Allows the GITHUB_TOKEN to approve pull requests
@@ -39,6 +42,7 @@ jobs:
                   username: ${{ secrets.INTERNAL_DOCKER_READ_ONLY_USER_NAME }}
                   password: ${{ secrets.INTERNAL_DOCKER_READ_ONLY_ACCESS_TOKEN }}
             - name: Run Cleanup Code
+              # Make the workspace writable to github actions runner user
               run: |
                 chmod -R a+w ${{ github.workspace }}
                 docker run -v ${{ github.workspace }}:/src ${{ secrets.INTERNAL_DOCKER_REGISTRY_URL }}/octopusdeploy/tool-containers/tool-resharper-cli:latest /scripts/prettybot.sh
@@ -47,15 +51,15 @@ jobs:
               id: git-check
               run: |
                 if git status --porcelain ; then
-                   echo "changed=true" >> $GITHUB_OUTPUT
-                  else
-                    echo "changed=false" >> $GITHUB_OUTPUT
-                  fi
+                  echo "changed=true" >> $GITHUB_OUTPUT
+                else
+                  echo "changed=false" >> $GITHUB_OUTPUT
+                fi
 
             - name: Commit and push changes
               if: steps.git-check.outputs.changed == 'true'
               run: |
-                git config user.email "bob@octopus.com"
+                git config user.email "edlyn@octopus.com"
                 git config user.name "Github Actions"
                 git commit -am "Run ReSharper code cleanup"
                 git push origin ${{ env.BRANCH_NAME }}
