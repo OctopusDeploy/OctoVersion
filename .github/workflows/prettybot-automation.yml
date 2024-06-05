@@ -43,7 +43,7 @@ jobs:
                   password: ${{ secrets.INTERNAL_DOCKER_READ_ONLY_ACCESS_TOKEN }}
             - name: Run Cleanup Code
               run: |
-                docker pull ${{ secrets.INTERNAL_DOCKER_REGISTRY_URL }}/octopusdeploy/tool-containers/tool-resharper-cli:latest
+                docker pull nginx:latest
                 docker run -v ${{ github.workspace }}:/src ${{ secrets.INTERNAL_DOCKER_REGISTRY_URL }}/octopusdeploy/tool-containers/tool-resharper-cli:latest "/scripts/prettybot.sh"
             - name: Git Check for file changes
               id: git-check
