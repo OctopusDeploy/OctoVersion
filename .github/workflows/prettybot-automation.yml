@@ -42,6 +42,7 @@ jobs:
               run: |
                 chmod -R a+w ${{ github.workspace }}
                 docker run -v ${{ github.workspace }}:/src ${{ secrets.INTERNAL_DOCKER_REGISTRY_URL }}/octopusdeploy/tool-containers/tool-resharper-cli:latest /scripts/prettybot.sh
+            
             - name: Git Check for file changes
               id: git-check
               run: |
