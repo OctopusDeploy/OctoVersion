@@ -42,7 +42,6 @@ jobs:
                   username: ${{ secrets.INTERNAL_DOCKER_READ_ONLY_USER_NAME }}
                   password: ${{ secrets.INTERNAL_DOCKER_READ_ONLY_ACCESS_TOKEN }}
             - name: Run Cleanup Code
-              shell: bash
               run: |
                 docker pull ${{ secrets.INTERNAL_DOCKER_REGISTRY_URL }}/octopusdeploy/tool-containers/tool-resharper-cli
                 docker run -v ${{ github.workspace }}:/src ${{ secrets.INTERNAL_DOCKER_REGISTRY_URL }}/octopusdeploy/tool-containers/tool-resharper-cli "/scripts/prettybot.sh"
