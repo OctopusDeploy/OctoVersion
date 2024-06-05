@@ -48,6 +48,7 @@ jobs:
             - name: Git Check for file changes
               id: git-check
               run: |
+                git status --porcelain
                 if [ -z $(git status --porcelain) ] ; then
                    echo "changed=true" >> $GITHUB_OUTPUT
                   else
