@@ -4,7 +4,10 @@ on:
     push:
         branches:
             - main
-
+    pull_request:
+      branches:
+        - main
+      
 # Increase the access for the GITHUB_TOKEN
 permissions:
     # This Allows the GITHUB_TOKEN to approve pull requests
@@ -38,7 +41,6 @@ jobs:
                   registry: ${{ secrets.INTERNAL_DOCKER_REGISTRY_URL }}
                   username: ${{ secrets.INTERNAL_DOCKER_READ_ONLY_USER_NAME }}
                   password: ${{ secrets.INTERNAL_DOCKER_READ_ONLY_ACCESS_TOKEN }}
-            
             - name: Run Cleanup Code
               run: |
                 docker run -v ${{ github.workspace }}:/src ${{ secrets.INTERNAL_DOCKER_REGISTRY_URL }}/octopusdeploy/tool-containers/tool-resharper-cli "/scripts/prettybot.sh"
