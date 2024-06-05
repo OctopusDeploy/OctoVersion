@@ -49,7 +49,7 @@ jobs:
               id: git-check
               run: |
                 git status --porcelain
-                if [ -z "$(git status --porcelain)" ] ; then
+                if git status --porcelain ; then
                    echo "changed=true" >> $GITHUB_OUTPUT
                   else
                     echo "changed=false" >> $GITHUB_OUTPUT
