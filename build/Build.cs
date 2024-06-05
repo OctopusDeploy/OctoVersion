@@ -99,7 +99,7 @@ class Build : NukeBuild
         .TriggeredBy(Pack)
         .Executes(() =>
         {
-              LocalPackagesDirectory.CreateOrCleanDirectory();
+            LocalPackagesDirectory.CreateOrCleanDirectory();
             ArtifactsDirectory.GlobFiles($"*.{OctoVersionInfo.FullSemVer}.nupkg").ForEach(x => CopyFileToDirectory(x, LocalPackagesDirectory));
         });
 
