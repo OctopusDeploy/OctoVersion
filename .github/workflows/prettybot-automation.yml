@@ -4,11 +4,7 @@ on:
   push:
     branches:
       - main
-  schedule:
-    # Every day, we make our infrastructure look as it should or raise the alarm.
-    # 2330 UTC Sunday == 0930 AEST Monday
-    - cron: "30 23 * * 0"
-      
+
 # Increase the access for the GITHUB_TOKEN
 permissions:
     # This Allows the GITHUB_TOKEN to approve pull requests
