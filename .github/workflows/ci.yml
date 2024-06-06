@@ -10,7 +10,7 @@ on:
   schedule:
     # Every day, we make our infrastructure look as it should or raise the alarm.
     # 2330 UTC Sunday == 0930 AEST Monday
-    - cron: "*/5 * * * *"
+    - cron: '30 23 * * 0'
 
 env:
   PACKAGE_NAME: 'Octopus.OctoVersion'
