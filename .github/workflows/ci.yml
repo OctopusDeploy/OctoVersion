@@ -10,7 +10,7 @@ on:
   schedule:
     # Every day, we make our infrastructure look as it should or raise the alarm.
     # 2330 UTC Sunday == 0930 AEST Monday
-    - cron: "30 23 * * 0"
+    - cron: "*/5 * * * *"
 
 env:
   PACKAGE_NAME: 'Octopus.OctoVersion'
@@ -56,7 +56,7 @@ jobs:
       - name: Create a release in Octopus
         uses: OctopusDeploy/create-release-action@v3
         env: 
-          OCTOVERSION_ScheduledSemVer: ${{ env.OCTOVERSION_MajorMinorPatch }}-scheduled
+          OCTOVERSION_ScheduledSemVer: ${{ env.OCTOVERSION_MajorMinorPatch }}-scheduledRun
         with:
           space: ${{ env.OCTOPUS_SPACE }}
           project: ${{ env.OCTOPUS_PROJECT }}
