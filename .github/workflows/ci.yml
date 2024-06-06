@@ -64,3 +64,4 @@ jobs:
           git_commit: ${{ github.event.after || github.event.pull_request.head.sha }}
           release_number: ${{ github.event_name == 'schedule' &&  env.OCTOVERSION_ScheduledSemVer || env.OCTOVERSION_FullSemVer }}
           package_version: ${{ env.OCTOVERSION_FullSemVer }}
+          channel: ${{ github.event_name == 'schedule' &&  'Pre-release' }}
