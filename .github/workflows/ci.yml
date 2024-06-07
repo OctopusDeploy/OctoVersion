@@ -7,6 +7,10 @@ on:
   pull_request:
     branches:
       - main
+  schedule:
+    # Every week we check the pipeline
+    # 2330 UTC Sunday == 0930 AEST Monday
+    - cron: '30 23 * * 0'
 
 env:
   PACKAGE_NAME: 'Octopus.OctoVersion'
@@ -51,10 +55,13 @@ jobs:
 
       - name: Create a release in Octopus
         uses: OctopusDeploy/create-release-action@v3
+        env: 
+          OCTOVERSION_ScheduledSemVer: ${{ env.OCTOVERSION_MajorMinorPatch }}-scheduledRun
         with:
           space: ${{ env.OCTOPUS_SPACE }}
           project: ${{ env.OCTOPUS_PROJECT }}
           git_ref: ${{ github.head_ref || github.ref_name }}
           git_commit: ${{ github.event.after || github.event.pull_request.head.sha }}
-          release_number: ${{ env.OCTOVERSION_FullSemVer }}
+          release_number: ${{ github.event_name == 'schedule' &&  env.OCTOVERSION_ScheduledSemVer || env.OCTOVERSION_FullSemVer }}
           package_version: ${{ env.OCTOVERSION_FullSemVer }}
+          channel: ${{ github.event_name == 'schedule' &&  'Pre-release' || ''}}
