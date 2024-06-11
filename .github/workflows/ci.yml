@@ -36,7 +36,21 @@ jobs:
           
       - name: Run Nuke
         run: ./build.sh
-      
+
+      - name: Git Tag (when not pre-release)
+        id: github-tag
+        if: ${{ !contains( env.OCTOVERSION_FullSemVer, '-' ) }}
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            github.rest.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: "refs/tags/${{ env.OCTOVERSION_FullSemVer }}",
+              sha: context.sha
+            })
+
       - name: Login to Octopus
         uses: OctopusDeploy/login@v1
         with:
