@@ -64,4 +64,9 @@ jobs:
             - name: Create Pull Request
               if: steps.git-check.outputs.changed == 'true'
               run: |
-                  gh pr create --base main --head ${{ env.BRANCH_NAME }} --title "Automated PR for Prettybot" --body "This is an automated PR."
+                EXISTING_PRS=$(gh pr list --author "github-actions[bot]" --state open --head "prettybot" --json number,title --template '{{range .}}{{.number}}{{ "\n" }}{{end}}')  
+                NEW_PR=$(gh pr create --base main --head ${{ env.BRANCH_NAME }} --title "Automated PR for Prettybot" --body "This is an automated PR.")
+                for pr in $EXISTING_PRS; do
+                  gh pr close "$pr" --comment "Superseded by #$NEW_PR."
+                done
+
