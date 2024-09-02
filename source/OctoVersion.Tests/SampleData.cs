@@ -6,6 +6,9 @@ namespace OctoVersion.Tests;
 
 public class SampleData
 {
+
+
+    
     public SampleData(
         string[]? nonPreReleaseTags,
         string? nonPreReleaseTagsRegex,
