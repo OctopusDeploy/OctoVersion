@@ -25,6 +25,7 @@ jobs:
     permissions:
       id-token: write # Required to obtain the ID token from GitHub Actions
       contents: write # Read Required to check out code, Write to create Git Tags
+      statuses: write # Required to send commit status checks
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
