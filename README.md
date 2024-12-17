@@ -238,3 +238,21 @@ For local versioning, it's always possible to set up a `bash`/`zsh` alias along 
 ```bash
 alias ov="octoversion --CurrentBranch=`git branch --show-current`"
 ```
+
+## Bumping Versions
+
+You can bump major and minor version numbers using conventional commit messages.
+
+Major bumps can be achieved using either of the following within one of the commits in your PR:
+```
++semver: breaking
++semver: major
+```
+
+Minor bumps can be achieved using either of the following within one of the commits in your PR:
+```
++semver: feature
++semver: minor
+```
+
+Patch bumps occur per-commit, and do not require specific messages to occur.
