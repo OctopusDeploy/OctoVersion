@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Serilog;
 
 namespace OctoVersion.Core.VersionNumberCalculation;
 
 public class VersionCalculator
 {
+    readonly ILogger _logger = Log.ForContext<VersionCalculator>();
     readonly Dictionary<SimpleCommit, SimpleVersion> _calculatedVersions = new();
 
     readonly SimpleCommit[] _commits;
@@ -55,7 +57,11 @@ public class VersionCalculator
             .OrderByDescending(v => v)
             .FirstOrDefault();
 
-        if (taggedVersion != null) return taggedVersion;
+        if (taggedVersion != null)
+        {
+            _logger.Debug("Setting version for {Commit} using tag {Tag}", commit, taggedVersion);
+            return taggedVersion;
+        }
 
         var maxParentVersion = commit.Parents
                 .Select(GetVersionInternal)
@@ -65,13 +71,23 @@ public class VersionCalculator
 
         SimpleVersion version;
         if (commit.BumpsMajorVersion)
+        {
             version = new SimpleVersion(maxParentVersion.Major + 1, 0, 0);
+            _logger.Debug("Setting version for {Commit} to bump major version from {MaxParentVersion} to {NewVersion}", commit, maxParentVersion, version);
+        }
         else if (commit.BumpsMinorVersion)
+        {
             version = new SimpleVersion(maxParentVersion.Major, maxParentVersion.Minor + 1, 0);
+            _logger.Debug("Setting version for {Commit} to bump minor version from {MaxParentVersion} to {NewVersion}", commit,  maxParentVersion, version);
+        }
         else
+        {
             version = new SimpleVersion(maxParentVersion.Major,
                 maxParentVersion.Minor,
                 maxParentVersion.Patch + 1);
+            _logger.Debug("Setting version for {Commit} to increment patch version from {MaxParentVersion} to {NewVersion}", commit, maxParentVersion, version);
+        }
+        
         _calculatedVersions[commit] = version;
 
         return version;
