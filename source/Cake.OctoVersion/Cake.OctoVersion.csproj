@@ -9,8 +9,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Cake.Common" Version="4.0.0" />
-		<PackageReference Include="NUnit" Version="4.1.0" />
+		<PackageReference Include="Cake.Common" Version="5.0.0" />
+		<PackageReference Include="NUnit" Version="4.3.2" />
 	</ItemGroup>
 
 	<ItemGroup>
