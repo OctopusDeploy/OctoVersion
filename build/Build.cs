@@ -13,6 +13,9 @@ using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.IO.PathConstruction;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
+// The nuke convention is to use underscores for target lambda's
+// ReSharper disable AllUnderscoreLocalParameterName
+
 [ShutdownDotNetAfterServerBuild]
 class Build : NukeBuild
 {
@@ -77,7 +80,11 @@ class Build : NukeBuild
                 .SetFilter(TestFilter)
                 .EnableNoBuild()
                 .EnableNoRestore());
-            SourceDirectory.GlobFiles("**/*.trx").ForEach(x => CopyFileToDirectory(x, ArtifactsDirectory));
+
+            foreach (var file in SourceDirectory.GlobFiles("**/*.trx"))
+            {
+                file.CopyToDirectory(ArtifactsDirectory);
+            }
         });
 
     Target Pack => _ => _
@@ -100,7 +107,10 @@ class Build : NukeBuild
         .Executes(() =>
         {
             LocalPackagesDirectory.CreateOrCleanDirectory();
-            ArtifactsDirectory.GlobFiles($"*.{OctoVersionInfo.FullSemVer}.nupkg").ForEach(x => CopyFileToDirectory(x, LocalPackagesDirectory));
+            foreach (var file in ArtifactsDirectory.GlobFiles($"*.{OctoVersionInfo.FullSemVer}.nupkg"))
+            {
+                file.CopyToDirectory(LocalPackagesDirectory);
+            }
         });
 
     /// Support plugins are available for:
