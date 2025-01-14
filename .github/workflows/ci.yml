@@ -27,15 +27,22 @@ jobs:
       contents: write # Read Required to check out code, Write to create Git Tags
       statuses: write # Required to send commit status checks
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      
+
       - name: Append OCTOVERSION_CurrentBranch with -nightly-<timestamp> (for scheduled)
         if: github.event_name == 'schedule'
         run: |
           echo "OCTOVERSION_CurrentBranch=${{ env.OCTOVERSION_CurrentBranch }}-nightly-$(date +'%Y%m%d%H%M%S')" >> $GITHUB_ENV
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            8.0.x
+            9.0.x
           
       - name: Run Nuke
         run: ./build.sh
