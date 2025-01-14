@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageDownload Include="NuGet.CommandLine" Version="[5.8.1]" />
-    <PackageDownload Include="Octopus.OctoVersion.Tool" Version="[0.3.169]" />
+    <PackageDownload Include="NuGet.CommandLine" Version="[6.12.2]" />
+    <PackageDownload Include="Octopus.OctoVersion.Tool" Version="[1.0.6]" />
   </ItemGroup>
 </Project>
