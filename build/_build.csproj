@@ -9,7 +9,15 @@
     <NukeScriptDirectory>..</NukeScriptDirectory>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <NukeTelemetryVersion>1</NukeTelemetryVersion>
+    <!-- NET8/9: Nuke 8.x uses BinaryFormatter which is blocked without this flag.
+     see https://github.com/nuke-build/nuke/issues/1282 -->
+    <EnableUnsafeBinaryFormatterSerialization>true</EnableUnsafeBinaryFormatterSerialization>
   </PropertyGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net9.0'">
+    <!-- Restore insecure BinaryFormatter package until we can move to Nuke 9 which doesn't need it -->
+    <PackageReference Include="System.Runtime.Serialization.Formatters" Version="9.0.0" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Nuke.Common" Version="8.1.4" />
