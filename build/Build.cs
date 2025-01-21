@@ -82,9 +82,7 @@ class Build : NukeBuild
                 .EnableNoRestore());
 
             foreach (var file in SourceDirectory.GlobFiles("**/*.trx"))
-            {
                 file.CopyToDirectory(ArtifactsDirectory);
-            }
         });
 
     Target Pack => _ => _
@@ -108,9 +106,7 @@ class Build : NukeBuild
         {
             LocalPackagesDirectory.CreateOrCleanDirectory();
             foreach (var file in ArtifactsDirectory.GlobFiles($"*.{OctoVersionInfo.FullSemVer}.nupkg"))
-            {
                 file.CopyToDirectory(LocalPackagesDirectory);
-            }
         });
 
     /// Support plugins are available for:
