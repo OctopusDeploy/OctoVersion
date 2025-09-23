@@ -41,7 +41,7 @@ public class TeamCityOutputFormatter : IOutputFormatter
         const string prefix = ConfigurationBootstrapper.EnvironmentVariablePrefix;
         var properties = octoVersionInfo
             .GetProperties()
-            .Where(property => !string.IsNullOrEmpty(property.Value)); // TeamCity doesn't like empty values
+            .Where(property => !string.IsNullOrEmpty(property.Value)); // TeamCity complains about empty values
         foreach (var property in properties)
         {
             var environmentVariableKey = $"env.{prefix}{property.Name}";
