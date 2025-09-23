@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using OctoVersion.Core.Configuration;
 using Serilog.Core;
 
@@ -38,7 +39,9 @@ public class TeamCityOutputFormatter : IOutputFormatter
         // ##teamcity[setParameter name='ddd' value='fff']
 
         const string prefix = ConfigurationBootstrapper.EnvironmentVariablePrefix;
-        var properties = octoVersionInfo.GetProperties();
+        var properties = octoVersionInfo
+            .GetProperties()
+            .Where(property => !string.IsNullOrEmpty(property.Value)); // TeamCity complains about empty values
         foreach (var property in properties)
         {
             var environmentVariableKey = $"env.{prefix}{property.Name}";
