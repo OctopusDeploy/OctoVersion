@@ -1,6 +1,7 @@
 // ReSharper disable RedundantUsingDirective - prevent PrettyBot from getting confused about unused code.
 
 using System;
+using JetBrains.Annotations;
 using Nuke.Common;
 using Nuke.Common.CI;
 using Nuke.Common.Execution;
@@ -9,7 +10,6 @@ using Nuke.Common.ProjectModel;
 using Nuke.Common.Tools.DotNet;
 using Nuke.Common.Tools.OctoVersion;
 using Nuke.Common.Utilities.Collections;
-using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.IO.PathConstruction;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
@@ -99,6 +99,7 @@ class Build : NukeBuild
             );
         });
 
+    [PublicAPI]
     Target CopyToLocalPackages => _ => _
         .OnlyWhenStatic(() => IsLocalBuild)
         .TriggeredBy(Pack)
