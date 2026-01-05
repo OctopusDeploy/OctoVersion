@@ -63,19 +63,22 @@ jobs:
             })
 
       - name: Login to Octopus
+        if: github.actor != 'dependabot[bot]'
         uses: OctopusDeploy/login@v1
         with:
           server: ${{ secrets.OCTOPUS_URL }}
           service_account_id: e53e33e5-5352-40c2-a4cd-8d5c43987129
 
       - name: Push build information to Octopus Deploy
+        if: github.actor != 'dependabot[bot]'
         uses: OctopusDeploy/push-build-information-action@v3
         with:
           packages: |
             ${{ env.PACKAGE_NAME }}
           version: ${{ env.OCTOVERSION_FullSemVer }}
-        
+
       - name: Push a package to Octopus Deploy
+        if: github.actor != 'dependabot[bot]'
         uses: OctopusDeploy/push-package-action@v3
         with:
           overwrite_mode: IgnoreIfExists
@@ -83,6 +86,7 @@ jobs:
             artifacts/*.${{ env.OCTOVERSION_FullSemVer }}.nupkg
 
       - name: Create a release in Octopus
+        if: github.actor != 'dependabot[bot]'
         uses: OctopusDeploy/create-release-action@v3
         with:
           space: ${{ env.OCTOPUS_SPACE }}
