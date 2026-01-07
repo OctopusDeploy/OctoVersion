@@ -38,7 +38,7 @@ class Build : NukeBuild
     AbsolutePath SourceDirectory => RootDirectory / "source";
     AbsolutePath ArtifactsDirectory => RootDirectory / "artifacts";
     AbsolutePath LocalPackagesDirectory => RootDirectory / ".." / "LocalPackages";
-    
+
     string FullSemVer => OctoVersionInfo.FullSemVer.Length <= 35
         ? OctoVersionInfo.FullSemVer
         : OctoVersionInfo.FullSemVer[..35];
