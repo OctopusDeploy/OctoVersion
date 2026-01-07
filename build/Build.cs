@@ -1,6 +1,7 @@
 // ReSharper disable RedundantUsingDirective - prevent PrettyBot from getting confused about unused code.
 
 using System;
+using System.IO;
 using JetBrains.Annotations;
 using Nuke.Common;
 using Nuke.Common.CI;
@@ -47,10 +48,22 @@ class Build : NukeBuild
         .Before(Restore)
         .Executes(() =>
         {
+            OverrideGitHubSemVer();
+
             SourceDirectory.GlobDirectories("**/bin", "**/obj", "**/TestResults").ForEach(x => x.DeleteDirectory());
             ArtifactsDirectory.CreateOrCleanDirectory();
             LocalPackagesDirectory.CreateOrCleanDirectory();
         });
+
+    void OverrideGitHubSemVer()
+    {
+        var gitHubSetEnvFilePath = Environment.GetEnvironmentVariable("GITHUB_ENV");
+        if (gitHubSetEnvFilePath != null)
+        {
+            using var streamWriter = File.AppendText(gitHubSetEnvFilePath);
+            streamWriter.WriteLine($"OCTOVERSION_FullSemVer={FullSemVer}");
+        }
+    }
 
     Target Restore => _ => _
         .DependsOn(Clean)
