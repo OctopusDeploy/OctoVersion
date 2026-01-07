@@ -15,7 +15,7 @@
 	<ItemGroup>
 		<PackageReference Include="LibGit2Sharp" Version="0.31.0" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="10.0.1" />
-		<PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="9.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="10.0.1" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<PackageReference Include="Octopus.Shellfish" Version="0.2.2130" />
