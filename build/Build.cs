@@ -38,6 +38,10 @@ class Build : NukeBuild
     AbsolutePath SourceDirectory => RootDirectory / "source";
     AbsolutePath ArtifactsDirectory => RootDirectory / "artifacts";
     AbsolutePath LocalPackagesDirectory => RootDirectory / ".." / "LocalPackages";
+    
+    string FullSemVer => OctoVersionInfo.FullSemVer.Length <= 35
+        ? OctoVersionInfo.FullSemVer
+        : OctoVersionInfo.FullSemVer[..35];
 
     Target Clean => _ => _
         .Before(Restore)
@@ -64,7 +68,7 @@ class Build : NukeBuild
                 .SetProjectFile(Solution)
                 .SetConfiguration(Configuration)
                 .EnableNoRestore()
-                .SetVersion(OctoVersionInfo.FullSemVer)
+                .SetVersion(FullSemVer)
                 .SetInformationalVersion(OctoVersionInfo.InformationalVersion));
         });
 
@@ -95,7 +99,7 @@ class Build : NukeBuild
                 .SetConfiguration(Configuration)
                 .SetOutputDirectory(ArtifactsDirectory)
                 .EnableNoBuild()
-                .AddProperty("Version", OctoVersionInfo.FullSemVer)
+                .AddProperty("Version", FullSemVer)
             );
         });
 
@@ -106,7 +110,7 @@ class Build : NukeBuild
         .Executes(() =>
         {
             LocalPackagesDirectory.CreateOrCleanDirectory();
-            foreach (var file in ArtifactsDirectory.GlobFiles($"*.{OctoVersionInfo.FullSemVer}.nupkg"))
+            foreach (var file in ArtifactsDirectory.GlobFiles($"*.{FullSemVer}.nupkg"))
                 file.CopyToDirectory(LocalPackagesDirectory);
         });
 
