@@ -39,7 +39,7 @@ class Build : NukeBuild
     AbsolutePath SourceDirectory => RootDirectory / "source";
     AbsolutePath ArtifactsDirectory => RootDirectory / "artifacts";
     AbsolutePath LocalPackagesDirectory => RootDirectory / ".." / "LocalPackages";
-    
+
     string FullSemVer => OctoVersionInfo.FullSemVer.Length <= 35
         ? OctoVersionInfo.FullSemVer
         : OctoVersionInfo.FullSemVer[..35];
@@ -54,16 +54,6 @@ class Build : NukeBuild
             ArtifactsDirectory.CreateOrCleanDirectory();
             LocalPackagesDirectory.CreateOrCleanDirectory();
         });
-
-    void OverrideGitHubSemVer()
-    {
-        var gitHubSetEnvFilePath = Environment.GetEnvironmentVariable("GITHUB_ENV");
-        if (gitHubSetEnvFilePath != null)
-        {
-            using var streamWriter = File.AppendText(gitHubSetEnvFilePath);
-            streamWriter.WriteLine($"OCTOVERSION_FullSemVer={FullSemVer}");
-        }
-    }
 
     Target Restore => _ => _
         .DependsOn(Clean)
@@ -126,6 +116,16 @@ class Build : NukeBuild
             foreach (var file in ArtifactsDirectory.GlobFiles($"*.{FullSemVer}.nupkg"))
                 file.CopyToDirectory(LocalPackagesDirectory);
         });
+
+    void OverrideGitHubSemVer()
+    {
+        var gitHubSetEnvFilePath = Environment.GetEnvironmentVariable("GITHUB_ENV");
+        if (gitHubSetEnvFilePath != null)
+        {
+            using var streamWriter = File.AppendText(gitHubSetEnvFilePath);
+            streamWriter.WriteLine($"OCTOVERSION_FullSemVer={FullSemVer}");
+        }
+    }
 
     /// Support plugins are available for:
     /// - JetBrains ReSharper        https://nuke.build/resharper
