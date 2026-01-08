@@ -42,7 +42,7 @@ class Build : NukeBuild
 
     string FullSemVer => OctoVersionInfo.FullSemVer.Length <= 35
         ? OctoVersionInfo.FullSemVer
-        : OctoVersionInfo.FullSemVer[..35];
+        : OctoVersionInfo.FullSemVer[..35].TrimEnd('.');
 
     Target Clean => _ => _
         .Before(Restore)
