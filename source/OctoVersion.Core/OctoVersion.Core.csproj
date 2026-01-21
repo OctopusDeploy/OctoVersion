@@ -19,8 +19,8 @@
 		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="10.0.2" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<PackageReference Include="Octopus.Shellfish" Version="0.2.2426" />
-		<PackageReference Include="Serilog" Version="4.2.0" />
-		<PackageReference Include="Serilog.Settings.Configuration" Version="9.0.0" />
+		<PackageReference Include="Serilog" Version="4.3.0" />
+		<PackageReference Include="Serilog.Settings.Configuration" Version="10.0.0" />
 		<PackageReference Include="Serilog.Sinks.Literate" Version="3.0.0" />
 		<PackageReference Include="SerilogMetrics" Version="2.1.0" />
 		<PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
