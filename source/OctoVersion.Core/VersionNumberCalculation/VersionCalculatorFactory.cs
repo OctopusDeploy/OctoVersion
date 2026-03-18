@@ -12,20 +12,27 @@ public class VersionCalculatorFactory
 {
     readonly ILogger _logger = Log.ForContext<VersionCalculatorFactory>();
     readonly Repository _repository;
+    readonly bool _allowShallowClone;
 
-    public VersionCalculatorFactory(string repositorySearchPath)
+    public VersionCalculatorFactory(string repositorySearchPath, bool allowShallowClone = false)
     {
         var gitRepositoryPath = Repository.Discover(repositorySearchPath);
         if (gitRepositoryPath == null)
             throw new RepositoryNotFoundException("Unable to resolve Git repository path.");
         _logger.Debug("Located Git repository in {GitRepositoryPath}", gitRepositoryPath);
         _repository = new Repository(gitRepositoryPath);
+        _allowShallowClone = allowShallowClone;
     }
 
     public VersionCalculator Create()
     {
         if (_repository.Info.IsShallow)
-            throw new RepositoryIsShallowCloneException("This repository is a shallow clone; it does not contain enough history to resolve the version correctly.");
+        {
+            if (_allowShallowClone)
+                _logger.Warning("This repository is a shallow clone. Version calculation may be inaccurate if the commit history does not reach a commit containing version information.");
+            else
+                throw new RepositoryIsShallowCloneException("This repository is a shallow clone; it does not contain enough history to resolve the version correctly.");
+        }
 
         Commit[] allCommits;
         using (_logger.BeginTimedOperation("Loading commits"))
@@ -52,7 +59,19 @@ public class VersionCalculatorFactory
                 var simpleCommit = commits[commit.Sha];
                 foreach (var parent in commit.Parents)
                 {
-                    var simpleParent = commits[parent.Sha];
+                    if (!commits.TryGetValue(parent.Sha, out var simpleParent))
+                    {
+                        if (_allowShallowClone)
+                        {
+                            // In a shallow clone, boundary commits may reference parents outside the available history. Skip them rather than blowing up with a KeyNotFoundException.
+                            continue;
+                        }
+                        else
+                        {
+                            throw new KeyNotFoundException("Unable to find parent commit with hash " + parent.Sha);
+                        }
+                    }
+                    
                     simpleCommit.AddParent(simpleParent);
                 }
             }

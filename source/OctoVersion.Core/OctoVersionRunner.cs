@@ -68,7 +68,7 @@ public class OctoVersionRunner
                     ? currentDirectory
                     : appSettings.RepositoryPath;
 
-                var versionCalculatorFactory = new VersionCalculatorFactory(repositorySearchPath);
+                var versionCalculatorFactory = new VersionCalculatorFactory(repositorySearchPath, appSettings.AllowShallowClone);
                 var calculator = versionCalculatorFactory.Create();
                 var version = calculator.GetVersion();
                 var currentSha = calculator.CurrentCommitHash;

@@ -37,6 +37,8 @@ public class AppSettings : IAppSettings, IValidatableObject
 
     public string? OutputJsonFile { get; set; }
 
+    public bool AllowShallowClone { get; set; }
+
     public void ApplyDefaultsIfRequired()
     {
         if (!NonPreReleaseTags.Any())
