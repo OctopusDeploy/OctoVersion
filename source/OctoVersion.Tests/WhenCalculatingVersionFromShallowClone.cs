@@ -12,14 +12,32 @@ namespace OctoVersion.Tests;
 /// </summary>
 public class WhenCalculatingVersionFromShallowClone
 {
-    static SimpleCommit MakeCommit(string hash, DateTimeOffset timestamp, string message = "normal commit") 
-        => new(hash, message, timestamp, false, false);
+    static SimpleCommit MakeCommit(string hash, DateTimeOffset timestamp, string message = "normal commit")
+    {
+        return new SimpleCommit(hash,
+            message,
+            timestamp,
+            false,
+            false);
+    }
 
-    static SimpleCommit MakeMajorBumpCommit(string hash, DateTimeOffset timestamp) 
-        => new(hash, "+semver: major", timestamp, true, false);
+    static SimpleCommit MakeMajorBumpCommit(string hash, DateTimeOffset timestamp)
+    {
+        return new SimpleCommit(hash,
+            "+semver: major",
+            timestamp,
+            true,
+            false);
+    }
 
-    static SimpleCommit MakeMinorBumpCommit(string hash, DateTimeOffset timestamp) 
-        => new(hash, "+semver: minor", timestamp, false, true);
+    static SimpleCommit MakeMinorBumpCommit(string hash, DateTimeOffset timestamp)
+    {
+        return new SimpleCommit(hash,
+            "+semver: minor",
+            timestamp,
+            false,
+            true);
+    }
 
     [Fact]
     public void WhenShallowBoundaryHasVersionTag_VersionIsCalculatedRelativeToTag()
@@ -30,7 +48,13 @@ public class WhenCalculatingVersionFromShallowClone
         //   A  (parent: B)  ← HEAD
         // Expected: HEAD = 2.0.2
 
-        var baseTime = new DateTimeOffset(2024, 1, 1, 0, 0, 0, TimeSpan.Zero);
+        var baseTime = new DateTimeOffset(2024,
+            1,
+            1,
+            0,
+            0,
+            0,
+            TimeSpan.Zero);
 
         var commitC = MakeCommit("ccc", baseTime);
         var commitB = MakeCommit("bbb", baseTime.AddMinutes(1));
@@ -56,7 +80,13 @@ public class WhenCalculatingVersionFromShallowClone
         //   A  (parent: B)  ← HEAD
         // The shallow boundary commit itself counts as 0.0.1, so HEAD = 0.0.2
 
-        var baseTime = new DateTimeOffset(2024, 1, 1, 0, 0, 0, TimeSpan.Zero);
+        var baseTime = new DateTimeOffset(2024,
+            1,
+            1,
+            0,
+            0,
+            0,
+            TimeSpan.Zero);
 
         var commitB = MakeCommit("bbb", baseTime);
         var commitA = MakeCommit("aaa", baseTime.AddMinutes(1));
@@ -78,7 +108,14 @@ public class WhenCalculatingVersionFromShallowClone
         //   A  (no parents — shallow boundary)  ← HEAD
         // Expected: 0.0.1
 
-        var commitA = MakeCommit("aaa", new DateTimeOffset(2024, 1, 1, 0, 0, 0, TimeSpan.Zero));
+        var commitA = MakeCommit("aaa",
+            new DateTimeOffset(2024,
+                1,
+                1,
+                0,
+                0,
+                0,
+                TimeSpan.Zero));
 
         var calculator = new VersionCalculator([commitA], commitA.Hash);
         var version = calculator.GetVersion();
@@ -98,7 +135,13 @@ public class WhenCalculatingVersionFromShallowClone
         //   B  (parent: C)
         //   A  (parent: B — the other merge parent was outside shallow history)  ← HEAD
 
-        var baseTime = new DateTimeOffset(2024, 1, 1, 0, 0, 0, TimeSpan.Zero);
+        var baseTime = new DateTimeOffset(2024,
+            1,
+            1,
+            0,
+            0,
+            0,
+            TimeSpan.Zero);
 
         var commitC = MakeCommit("ccc", baseTime);
         var commitB = MakeCommit("bbb", baseTime.AddMinutes(1));
@@ -130,7 +173,13 @@ public class WhenCalculatingVersionFromShallowClone
         //   A  (parent: B)  ← HEAD
         // Expected: HEAD = 1.5.2
 
-        var baseTime = new DateTimeOffset(2024, 1, 1, 0, 0, 0, TimeSpan.Zero);
+        var baseTime = new DateTimeOffset(2024,
+            1,
+            1,
+            0,
+            0,
+            0,
+            TimeSpan.Zero);
 
         var commitD = MakeCommit("ddd", baseTime);
         var commitC = MakeCommit("ccc", baseTime.AddMinutes(1));
@@ -161,7 +210,13 @@ public class WhenCalculatingVersionFromShallowClone
         //   A  (parent: B)  ← HEAD
         // Expected: B = 2.0.0, HEAD = 2.0.1
 
-        var baseTime = new DateTimeOffset(2024, 1, 1, 0, 0, 0, TimeSpan.Zero);
+        var baseTime = new DateTimeOffset(2024,
+            1,
+            1,
+            0,
+            0,
+            0,
+            TimeSpan.Zero);
 
         var commitC = MakeCommit("ccc", baseTime);
         var commitB = MakeMajorBumpCommit("bbb", baseTime.AddMinutes(1));
@@ -190,7 +245,13 @@ public class WhenCalculatingVersionFromShallowClone
         //   A  (parent: B)  ← HEAD
         // Expected: B = 1.1.0, HEAD = 1.1.1
 
-        var baseTime = new DateTimeOffset(2024, 1, 1, 0, 0, 0, TimeSpan.Zero);
+        var baseTime = new DateTimeOffset(2024,
+            1,
+            1,
+            0,
+            0,
+            0,
+            TimeSpan.Zero);
 
         var commitC = MakeCommit("ccc", baseTime);
         var commitB = MakeMinorBumpCommit("bbb", baseTime.AddMinutes(1));

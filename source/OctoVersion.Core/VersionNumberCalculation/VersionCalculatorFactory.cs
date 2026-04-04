@@ -15,7 +15,7 @@ public class VersionCalculatorFactory
     readonly bool _allowShallowClone;
 
     public VersionCalculatorFactory(string repositorySearchPath)
-        : this(repositorySearchPath, allowShallowClone: false)
+        : this(repositorySearchPath, false)
     {
     }
 
@@ -67,12 +67,12 @@ public class VersionCalculatorFactory
                     if (!commits.TryGetValue(parent.Sha, out var simpleParent))
                     {
                         // In a shallow clone, boundary commits may reference parents outside the available history. Skip them rather than blowing up with a KeyNotFoundException.
-                        if (_allowShallowClone) 
+                        if (_allowShallowClone)
                             continue;
 
                         throw new KeyNotFoundException("Unable to find parent commit with hash " + parent.Sha);
                     }
-                    
+
                     simpleCommit.AddParent(simpleParent);
                 }
             }
