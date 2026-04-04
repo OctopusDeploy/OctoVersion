@@ -12,20 +12,14 @@ namespace OctoVersion.Tests;
 /// </summary>
 public class WhenCalculatingVersionFromShallowClone
 {
-    static SimpleCommit MakeCommit(string hash, DateTimeOffset timestamp, string message = "normal commit")
-    {
-        return new SimpleCommit(hash, message, timestamp, false, false);
-    }
+    static SimpleCommit MakeCommit(string hash, DateTimeOffset timestamp, string message = "normal commit") 
+        => new(hash, message, timestamp, false, false);
 
-    static SimpleCommit MakeMajorBumpCommit(string hash, DateTimeOffset timestamp)
-    {
-        return new SimpleCommit(hash, "+semver: major", timestamp, true, false);
-    }
+    static SimpleCommit MakeMajorBumpCommit(string hash, DateTimeOffset timestamp) 
+        => new(hash, "+semver: major", timestamp, true, false);
 
-    static SimpleCommit MakeMinorBumpCommit(string hash, DateTimeOffset timestamp)
-    {
-        return new SimpleCommit(hash, "+semver: minor", timestamp, false, true);
-    }
+    static SimpleCommit MakeMinorBumpCommit(string hash, DateTimeOffset timestamp) 
+        => new(hash, "+semver: minor", timestamp, false, true);
 
     [Fact]
     public void WhenShallowBoundaryHasVersionTag_VersionIsCalculatedRelativeToTag()
@@ -46,7 +40,7 @@ public class WhenCalculatingVersionFromShallowClone
         commitB.AddParent(commitC);
         commitA.AddParent(commitB);
 
-        var calculator = new VersionCalculator(new[] { commitA, commitB, commitC }, commitA.Hash);
+        var calculator = new VersionCalculator([commitA, commitB, commitC], commitA.Hash);
         var version = calculator.GetVersion();
 
         version.Major.ShouldBe(2);
@@ -69,7 +63,7 @@ public class WhenCalculatingVersionFromShallowClone
 
         commitA.AddParent(commitB);
 
-        var calculator = new VersionCalculator(new[] { commitA, commitB }, commitA.Hash);
+        var calculator = new VersionCalculator([commitA, commitB], commitA.Hash);
         var version = calculator.GetVersion();
 
         version.Major.ShouldBe(0);
@@ -86,7 +80,7 @@ public class WhenCalculatingVersionFromShallowClone
 
         var commitA = MakeCommit("aaa", new DateTimeOffset(2024, 1, 1, 0, 0, 0, TimeSpan.Zero));
 
-        var calculator = new VersionCalculator(new[] { commitA }, commitA.Hash);
+        var calculator = new VersionCalculator([commitA], commitA.Hash);
         var version = calculator.GetVersion();
 
         version.Major.ShouldBe(0);
@@ -116,7 +110,7 @@ public class WhenCalculatingVersionFromShallowClone
         // shallow history so the factory skipped it — only commitB is linked.
         commitA.AddParent(commitB);
 
-        var calculator = new VersionCalculator(new[] { commitA, commitB, commitC }, commitA.Hash);
+        var calculator = new VersionCalculator([commitA, commitB, commitC], commitA.Hash);
         var version = calculator.GetVersion();
 
         version.Major.ShouldBe(3);
@@ -148,7 +142,7 @@ public class WhenCalculatingVersionFromShallowClone
         commitB.AddParent(commitC);
         commitA.AddParent(commitB);
 
-        var calculator = new VersionCalculator(new[] { commitA, commitB, commitC, commitD }, commitA.Hash);
+        var calculator = new VersionCalculator([commitA, commitB, commitC, commitD], commitA.Hash);
         var version = calculator.GetVersion();
 
         version.Major.ShouldBe(1);
@@ -177,7 +171,7 @@ public class WhenCalculatingVersionFromShallowClone
         commitB.AddParent(commitC);
         commitA.AddParent(commitB);
 
-        var calculator = new VersionCalculator(new[] { commitA, commitB, commitC }, commitA.Hash);
+        var calculator = new VersionCalculator([commitA, commitB, commitC], commitA.Hash);
         var version = calculator.GetVersion();
 
         version.Major.ShouldBe(2);
@@ -206,7 +200,7 @@ public class WhenCalculatingVersionFromShallowClone
         commitB.AddParent(commitC);
         commitA.AddParent(commitB);
 
-        var calculator = new VersionCalculator(new[] { commitA, commitB, commitC }, commitA.Hash);
+        var calculator = new VersionCalculator([commitA, commitB, commitC], commitA.Hash);
         var version = calculator.GetVersion();
 
         version.Major.ShouldBe(1);

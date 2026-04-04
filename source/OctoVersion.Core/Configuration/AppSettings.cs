@@ -37,6 +37,7 @@ public class AppSettings : IAppSettings, IValidatableObject
 
     public string? OutputJsonFile { get; set; }
 
+    // defaults to false - throw an exception if a shallow clone is detected
     public bool AllowShallowClone { get; set; }
 
     public void ApplyDefaultsIfRequired()

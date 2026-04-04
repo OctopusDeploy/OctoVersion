@@ -257,12 +257,23 @@ Minor bumps can be achieved using either of the following within one of the comm
 
 Patch bumps occur per-commit, and do not require specific messages to occur.
 
-## Using Shallow Clones
+## Advanced Use Cases
 
-For very large repositories with long histories it is often desirable to be able to use shallow clones.  This is supported via the `--AllowShallowClone=true` argument, however it is critical to understand that there must be enough commits to find a previous version to use as the base.  In a scenario where the tags for the previous version are always on your main branch's `HEAD` and you always branch from there, you can use something like the following:
+### Using Shallow Clones
+
+For very large repositories with long histories it is often desirable to be able to use shallow clones. 
+This is supported via the `--AllowShallowClone=true` argument, however it is critical to understand that there must be enough commits to find a previous version to use as the base. 
+In a scenario where the tags for the previous version are always on your main branch's `HEAD` and you always branch from there.
+
+> [!WARNING]
+> if you cannot guarantee that the tags will be present, the generated version is likely to be incorrect.
+
+<details>                                                                                                                                                                                                                                                                                                                                                                                                                      
+  <summary>Example: Bash</summary>
 
 ```bash
-# Optionally, also use sparse checkout to only fetch some static, known, file that is small since the contents of the repo are unimportant for octoversion to run.   (only in cases where you don't need to checkout the whole repo)
+# Optionally, also use sparse checkout to only fetch some static, known, file that is small since the contents of the repo are unimportant for octoversion to run. 
+# Only for cases where you don't need to checkout the whole repo
 git sparse-checkout set reporoot
 
 DEPTH=20
@@ -278,8 +289,10 @@ if [ $DEPTH -gt 1000 ]; then
 fi
 done
 ```
+</details>
 
-If using Github Actions, an example usage would look something like this:
+<details>                                                                                                                                                                                                                                                                                                                                                                                                                      
+  <summary>Example: GitHub Actions</summary>
 
 ```yaml
 - name: checkout repo source code with fast checkout
@@ -306,3 +319,4 @@ If using Github Actions, an example usage would look something like this:
     done
 
 ```
+</details>
