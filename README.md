@@ -268,7 +268,7 @@ In a scenario where the tags for the previous version are always on your main br
 > [!WARNING]
 > if you cannot guarantee that the tags will be present, the generated version is likely to be incorrect.
 
-<details>                                                                                                                                                                                                                                                                                                                                                                                                                      
+<details>
   <summary>Example: Bash</summary>
 
 ```bash
@@ -291,7 +291,7 @@ done
 ```
 </details>
 
-<details>                                                                                                                                                                                                                                                                                                                                                                                                                      
+<details>
   <summary>Example: GitHub Actions</summary>
 
 ```yaml
