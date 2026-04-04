@@ -154,4 +154,33 @@ public class ConfigurationBootstrapperFixture : IDisposable
             new[] { "main", "release" }
         };
     }
+
+    [Fact]
+    public void AllowShallowClone_DefaultsToFalse()
+    {
+        var args = new[] { "--CurrentBranch", "main" };
+        var (appSettings, _) = ConfigurationBootstrapper.Bootstrap<AppSettings>(args);
+        appSettings.AllowShallowClone.ShouldBe(false);
+    }
+
+    [Theory]
+    [InlineData("true", true)]
+    [InlineData("false", false)]
+    public void WhenAllowShallowCloneIsPassedViaCommandLine(string argValue, bool expectedValue)
+    {
+        var args = new[] { "--CurrentBranch", "main", "--AllowShallowClone", argValue };
+        var (appSettings, _) = ConfigurationBootstrapper.Bootstrap<AppSettings>(args);
+        appSettings.AllowShallowClone.ShouldBe(expectedValue);
+    }
+
+    [Theory]
+    [InlineData("true", true)]
+    [InlineData("false", false)]
+    public void WhenAllowShallowCloneIsPassedViaEnvironmentVariable(string envValue, bool expectedValue)
+    {
+        Environment.SetEnvironmentVariable("OCTOVERSION_CurrentBranch", "main");
+        Environment.SetEnvironmentVariable("OCTOVERSION_AllowShallowClone", envValue);
+        var (appSettings, _) = ConfigurationBootstrapper.Bootstrap<AppSettings>();
+        appSettings.AllowShallowClone.ShouldBe(expectedValue);
+    }
 }

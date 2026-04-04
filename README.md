@@ -256,3 +256,67 @@ Minor bumps can be achieved using either of the following within one of the comm
 ```
 
 Patch bumps occur per-commit, and do not require specific messages to occur.
+
+## Advanced Use Cases
+
+### Using Shallow Clones
+
+For very large repositories with long histories it is often desirable to be able to use shallow clones. 
+This is supported via the `--AllowShallowClone=true` argument, however it is critical to understand that there must be enough commits to find a previous version to use as the base. 
+In a scenario where the tags for the previous version are always on your main branch's `HEAD` and you always branch from there.
+
+> [!WARNING]
+> if you cannot guarantee that the tags will be present, the generated version is likely to be incorrect.
+
+<details>
+  <summary>Example: Bash</summary>
+
+```bash
+# Optionally, also use sparse checkout to only fetch some static, known, file that is small since the contents of the repo are unimportant for octoversion to run. 
+# Only for cases where you don't need to checkout the whole repo
+git sparse-checkout set reporoot
+
+DEPTH=20
+while true; do
+git fetch --depth=$DEPTH --tags origin main featureBranch
+if git describe --tags --abbrev=0 featureBranch 2>/dev/null; then
+    break
+fi
+DEPTH=$((DEPTH * 2))
+if [ $DEPTH -gt 1000 ]; then
+    echo "Reached maximum depth without finding a tag, stopping fetch"
+    exit 1
+fi
+done
+```
+</details>
+
+<details>
+  <summary>Example: GitHub Actions</summary>
+
+```yaml
+- name: checkout repo source code with fast checkout
+  uses: actions/checkout@v6
+  with:
+    fetch-depth: 1
+    persist-credentials: true
+    token: ${{ secrets.GITHUB_TOKEN }}
+    sparse-checkout: reporoot
+
+- name: fast-checkout checking out default branch to find common history
+  run: |
+    DEPTH=20
+    while true; do
+     git fetch --depth=$DEPTH --tags origin ${{ github.event.repository.default_branch }} +${{ github.sha }}:${{ github.ref }}
+      if git describe --tags --abbrev=0 ${{ github.ref }} 2>/dev/null; then
+        break
+      fi
+      DEPTH=$((DEPTH * 2))
+      if [ $DEPTH -gt 1000 ]; then
+        echo "Reached maximum depth without finding a tag, stopping fetch"
+        exit 1
+      fi
+    done
+
+```
+</details>
