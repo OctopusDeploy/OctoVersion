@@ -10,7 +10,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="Cake.Common" Version="6.1.0" />
-		<PackageReference Include="NUnit" Version="4.6.0" />
+		<PackageReference Include="NUnit" Version="4.6.1" />
 	</ItemGroup>
 
 	<ItemGroup>
