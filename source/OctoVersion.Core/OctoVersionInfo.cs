@@ -40,8 +40,18 @@ public class OctoVersionInfo : SemanticVersion
     public string BuildMetadataWithPlus => string.IsNullOrWhiteSpace(BuildMetadata) ? string.Empty : $"+{InvalidBuildMetadataCharacters.Replace(BuildMetadata, "-")}";
     public string FullSemVer => $"{MajorMinorPatch}{PreReleaseTagWithDash}";
     public string InformationalVersion => $"{MajorMinorPatch}{PreReleaseTagWithDash}{BuildMetadataWithPlus}";
-    string NuGetCompatiblePreReleaseWithDash => PreReleaseTagWithDash.Substring(0, Math.Min(PreReleaseTagWithDash.Length, 20));
     public string NuGetVersion => $"{MajorMinorPatch}{NuGetCompatiblePreReleaseWithDash}";
+
+    string NuGetCompatiblePreReleaseWithDash
+    {
+        get
+        {
+            var truncated = PreReleaseTagWithDash.Substring(0, Math.Min(PreReleaseTagWithDash.Length, 20));
+
+            //a trailing dot is an empty pre-release identifier, which is not a valid version
+            return truncated.TrimEnd('.');
+        }
+    }
 
     public override string ToString()
     {
