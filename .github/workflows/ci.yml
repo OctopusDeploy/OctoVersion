@@ -51,7 +51,7 @@ jobs:
       - name: Git Tag (when not pre-release)
         id: github-tag
         if: ${{ !contains( env.OCTOVERSION_FullSemVer, '-' ) }}
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
