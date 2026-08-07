@@ -87,7 +87,7 @@ jobs:
 
       - name: Create a release in Octopus
         if: github.actor != 'dependabot[bot]'
-        uses: OctopusDeploy/create-release-action@v3
+        uses: OctopusDeploy/create-release-action@v4
         with:
           space: ${{ env.OCTOPUS_SPACE }}
           project: ${{ env.OCTOPUS_PROJECT }}
