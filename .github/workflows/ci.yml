@@ -64,7 +64,7 @@ jobs:
 
       - name: Login to Octopus
         if: github.actor != 'dependabot[bot]'
-        uses: OctopusDeploy/login@v1
+        uses: OctopusDeploy/login@v2
         with:
           server: ${{ secrets.OCTOPUS_URL }}
           service_account_id: e53e33e5-5352-40c2-a4cd-8d5c43987129
