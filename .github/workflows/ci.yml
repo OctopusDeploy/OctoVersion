@@ -71,7 +71,7 @@ jobs:
 
       - name: Push build information to Octopus Deploy
         if: github.actor != 'dependabot[bot]'
-        uses: OctopusDeploy/push-build-information-action@v3
+        uses: OctopusDeploy/push-build-information-action@v4
         with:
           packages: |
             ${{ env.PACKAGE_NAME }}
