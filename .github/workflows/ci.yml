@@ -79,7 +79,7 @@ jobs:
 
       - name: Push a package to Octopus Deploy
         if: github.actor != 'dependabot[bot]'
-        uses: OctopusDeploy/push-package-action@v3
+        uses: OctopusDeploy/push-package-action@v4
         with:
           overwrite_mode: IgnoreIfExists
           packages: |
