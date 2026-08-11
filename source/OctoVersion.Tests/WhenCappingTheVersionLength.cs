@@ -8,9 +8,9 @@ namespace OctoVersion.Tests;
 
 public class WhenCappingTheVersionLength
 {
-    //the branch that broke Octopus Server: 78 characters of pre-release tag, for a 91 character version
-    const string LongBranchPreReleaseTag = "mattrichardson-dsn-111-infrastructure-detail-pages-hang-on-the-loading-spinner";
-    const string LongBranchBuildMetadata = "Branch.mattrichardson-dsn-111-infrastructure-detail-pages-hang-on-the-loading-spinner.Sha.57ed2ce151a";
+    //78 characters of pre-release tag, for a 91 character version
+    const string LongBranchPreReleaseTag = "feature-2451-retention-policies-for-nested-project-groups-and-shared-tenancies";
+    const string LongBranchBuildMetadata = "Branch.feature-2451-retention-policies-for-nested-project-groups-and-shared-tenancies.Sha.abc1234def5";
 
     static readonly OctoVersionInfo LongVersionWithNoMaxLength = new(2026,
         3,
@@ -75,31 +75,31 @@ public class WhenCappingTheVersionLength
         yield return new object[]
         {
             LongVersionWithNoMaxLength,
-            "2026.3.11281-mattrichardson-dsn-111-infrastructure-detail-pages-hang-on-the-loading-spinner",
+            "2026.3.11281-feature-2451-retention-policies-for-nested-project-groups-and-shared-tenancies",
             "no maximum length was set, so the version is untouched"
         };
         yield return new object[]
         {
             LongVersionWithAMaxLengthLongerThanTheVersion,
-            "2026.3.11281-mattrichardson-dsn-111-infrastructure-detail-pages-hang-on-the-loading-spinner",
+            "2026.3.11281-feature-2451-retention-policies-for-nested-project-groups-and-shared-tenancies",
             "the version already fits within the maximum length"
         };
         yield return new object[]
         {
             LongVersionCappedTo63,
-            "2026.3.11281-mattrichardson-dsn-111-infrastructure-detail-pages",
+            "2026.3.11281-feature-2451-retention-policies-for-nested-project",
             "the pre-release tag should be shortened until the version fits"
         };
         yield return new object[]
         {
             VersionWhereTheCapLandsMidIdentifier,
-            "2026.3.11281-mattrichardson-dsn-111-infr",
+            "2026.3.11281-feature-2451-retention-poli",
             "the whole budget should be used, even part-way through an identifier"
         };
         yield return new object[]
         {
             VersionWhereTheCapLandsOnADash,
-            "2026.3.11281-mattrichardson-dsn-111",
+            "2026.3.11281-feature-2451-retention",
             "a shortened pre-release tag should not end with a dash"
         };
         yield return new object[]
@@ -133,7 +133,7 @@ public class WhenCappingTheVersionLength
     {
         //format is input/output/because
         yield return new object[] { LongVersionWithNoMaxLength, LongBranchPreReleaseTag, "no maximum length was set" };
-        yield return new object[] { LongVersionCappedTo63, "mattrichardson-dsn-111-infrastructure-detail-pages", "the pre-release tag is where the shortening happens" };
+        yield return new object[] { LongVersionCappedTo63, "feature-2451-retention-policies-for-nested-project", "the pre-release tag is where the shortening happens" };
         yield return new object[] { VersionCappedBelowTheNumericComponents, "", "there was no room for a pre-release tag" };
     }
 
@@ -151,13 +151,13 @@ public class WhenCappingTheVersionLength
     {
         //build metadata does not count towards the maximum length; it is not part of the version that consumers constrain
         LongVersionCappedTo63.InformationalVersion
-            .ShouldBe($"2026.3.11281-mattrichardson-dsn-111-infrastructure-detail-pages+{LongBranchBuildMetadata}");
+            .ShouldBe($"2026.3.11281-feature-2451-retention-policies-for-nested-project+{LongBranchBuildMetadata}");
     }
 
     [Fact]
     public void TheNuGetVersionShouldStillBeTruncatedToItsOwnLimit()
     {
         //NuGet's own 20 character truncation of the pre-release tag is unchanged, and applies on top of the shortened tag
-        LongVersionCappedTo63.NuGetVersion.ShouldBe("2026.3.11281-mattrichardson-dsn-");
+        LongVersionCappedTo63.NuGetVersion.ShouldBe("2026.3.11281-feature-2451-retent");
     }
 }
