@@ -37,6 +37,7 @@ public class StructuredOutputFactoryFixture
                 .WithCurrentBranch("refs/heads/main")
                 .WithCurrentSha("a1b2c3d4e5")
                 .WithOverriddenBuildMetadata(null)
+                .WithMaxVersionLength(null)
                 .WithVersion(new SimpleVersion(1, 2, 3))
                 .WithExpectedInformationalVersion("1.2.3+Branch.main.Sha.a1b2c3d4e5");
         }

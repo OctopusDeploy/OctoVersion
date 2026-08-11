@@ -16,7 +16,8 @@ public class WhenCappingTheVersionLength
         3,
         11281,
         LongBranchPreReleaseTag,
-        LongBranchBuildMetadata);
+        LongBranchBuildMetadata,
+        null);
 
     static readonly OctoVersionInfo LongVersionWithAMaxLengthLongerThanTheVersion = new(2026,
         3,

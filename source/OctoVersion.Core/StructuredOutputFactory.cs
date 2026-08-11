@@ -30,7 +30,7 @@ public class StructuredOutputFactory
         string currentBranch,
         string currentSha,
         string? overriddenBuildMetadata,
-        int? maxVersionLength = null)
+        int? maxVersionLength)
     {
         _maxVersionLength = maxVersionLength;
         _currentBranch = currentBranch;

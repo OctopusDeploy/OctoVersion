@@ -19,7 +19,7 @@ public class OctoVersionInfo : SemanticVersion
         int patch,
         string preReleaseTag,
         string buildMetadata,
-        int? maxVersionLength = null) : base(major,
+        int? maxVersionLength) : base(major,
         minor,
         patch,
         CapPreReleaseTag(major, minor, patch, preReleaseTag, maxVersionLength),
@@ -27,7 +27,7 @@ public class OctoVersionInfo : SemanticVersion
     {
     }
 
-    public OctoVersionInfo(SemanticVersion semanticVersion, int? maxVersionLength = null) : this(
+    public OctoVersionInfo(SemanticVersion semanticVersion, int? maxVersionLength) : this(
         semanticVersion.Major,
         semanticVersion.Minor,
         semanticVersion.Patch,

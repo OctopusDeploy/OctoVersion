@@ -18,7 +18,7 @@ public class SampleData
         SimpleVersion? version,
         string? expectedInformationalVersion,
         string? expectedFullSemVer,
-        int? maxVersionLength = null)
+        int? maxVersionLength)
     {
         MaxVersionLength = maxVersionLength;
         NonPreReleaseTags = nonPreReleaseTags ?? throw new ArgumentNullException(nameof(nonPreReleaseTags));
