@@ -17,8 +17,10 @@ public class SampleData
         string? overriddenBuildMetadata,
         SimpleVersion? version,
         string? expectedInformationalVersion,
-        string? expectedFullSemVer)
+        string? expectedFullSemVer,
+        int? maxVersionLength = null)
     {
+        MaxVersionLength = maxVersionLength;
         NonPreReleaseTags = nonPreReleaseTags ?? throw new ArgumentNullException(nameof(nonPreReleaseTags));
         NonPreReleaseTagsRegex = nonPreReleaseTagsRegex ?? throw new ArgumentNullException(nameof(nonPreReleaseTagsRegex));
         OverriddenMajorVersion = overriddenMajorVersion;
@@ -40,6 +42,7 @@ public class SampleData
     public string CurrentBranch { get; }
     public string CurrentSha { get; }
     public string? OverriddenBuildMetadata { get; }
+    public int? MaxVersionLength { get; }
     public string? ExpectedInformationalVersion { get; }
     public string? ExpectedFullSemVer { get; }
     public SimpleVersion Version { get; }
@@ -53,7 +56,8 @@ public class SampleData
             OverriddenPatchVersion,
             CurrentBranch,
             CurrentSha,
-            OverriddenBuildMetadata);
+            OverriddenBuildMetadata,
+            MaxVersionLength);
         return factory.Create(Version);
     }
 }

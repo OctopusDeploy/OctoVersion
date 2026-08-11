@@ -20,6 +20,7 @@ public class StructuredOutputFactory
     readonly int? _overriddenMajorVersion;
     readonly int? _overriddenMinorVersion;
     readonly int? _overriddenPatchVersion;
+    readonly int? _maxVersionLength;
 
     public StructuredOutputFactory(string[] nonPreReleaseTags,
         string nonPreReleaseTagsRegex,
@@ -28,8 +29,10 @@ public class StructuredOutputFactory
         int? overriddenPatchVersion,
         string currentBranch,
         string currentSha,
-        string? overriddenBuildMetadata)
+        string? overriddenBuildMetadata,
+        int? maxVersionLength = null)
     {
+        _maxVersionLength = maxVersionLength;
         _currentBranch = currentBranch;
         _currentSha = currentSha;
         _nonPreReleaseTags = nonPreReleaseTags;
@@ -85,7 +88,8 @@ public class StructuredOutputFactory
             minor,
             patch,
             preReleaseTag,
-            buildMetadata);
+            buildMetadata,
+            _maxVersionLength);
         return result;
     }
 

@@ -93,5 +93,21 @@ public class StructuredOutputFactoryFixture
             .ExpectAnInformationalVersionOf("1.2.3-feature-versioning+Branch.feature-versioning.Sha.a1b2c3d4e5")
             .ExpectAFullSemVerOf("1.2.3-feature-versioning")
             .Build();
+        yield return ForDefaultScenario()
+            .WithNonPreReleaseTags(Array.Empty<string>())
+            .WithNonPreReleaseTagsRegex("refs/heads/m.*")
+            .WithCurrentBranch("refs/heads/feature/versioning")
+            .WithMaxVersionLength(20)
+            .ExpectAnInformationalVersionOf("1.2.3-feature-versio+Branch.feature-versioning.Sha.a1b2c3d4e5")
+            .ExpectAFullSemVerOf("1.2.3-feature-versio")
+            .Build();
+        yield return ForDefaultScenario()
+            .WithNonPreReleaseTags(Array.Empty<string>())
+            .WithNonPreReleaseTagsRegex("refs/heads/m.*")
+            .WithCurrentBranch("refs/heads/feature/versioning")
+            .WithMaxVersionLength(14)
+            .ExpectAnInformationalVersionOf("1.2.3-feature+Branch.feature-versioning.Sha.a1b2c3d4e5")
+            .ExpectAFullSemVerOf("1.2.3-feature")
+            .Build();
     }
 }
