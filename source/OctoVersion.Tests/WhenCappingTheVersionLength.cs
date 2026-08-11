@@ -17,14 +17,14 @@ public class WhenCappingTheVersionLength
         11281,
         LongBranchPreReleaseTag,
         LongBranchBuildMetadata,
-        null);
+        maxVersionLength: null);
 
     static readonly OctoVersionInfo LongVersionWithAMaxLengthLongerThanTheVersion = new(2026,
         3,
         11281,
         LongBranchPreReleaseTag,
         LongBranchBuildMetadata,
-        200);
+        maxVersionLength: 200);
 
     //63 characters is the Kubernetes limit on a metadata label value
     static readonly OctoVersionInfo LongVersionCappedTo63 = new(2026,
@@ -32,42 +32,42 @@ public class WhenCappingTheVersionLength
         11281,
         LongBranchPreReleaseTag,
         LongBranchBuildMetadata,
-        63);
+        maxVersionLength: 63);
 
     static readonly OctoVersionInfo VersionWhereTheCapLandsMidIdentifier = new(2026,
         3,
         11281,
         LongBranchPreReleaseTag,
         LongBranchBuildMetadata,
-        40);
+        maxVersionLength: 40);
 
     static readonly OctoVersionInfo VersionWhereTheCapLandsOnADash = new(2026,
         3,
         11281,
         LongBranchPreReleaseTag,
         LongBranchBuildMetadata,
-        36);
+        maxVersionLength: 36);
 
     static readonly OctoVersionInfo VersionWhereTheCapLandsOnADot = new(1,
         1,
         47,
         "renovate-microsoft.aspnetcore.mvc.newtonsoftjson-10.x",
         "Branch.renovate-microsoft.aspnetcore.mvc.newtonsoftjson-10.x.Sha.72529493c8ccfae2784cd604b7784294b03f388d",
-        26);
+        maxVersionLength: 26);
 
     static readonly OctoVersionInfo VersionWithoutAPreReleaseTag = new(2026,
         3,
         11281,
         "",
         LongBranchBuildMetadata,
-        8);
+        maxVersionLength: 8);
 
     static readonly OctoVersionInfo VersionCappedBelowTheNumericComponents = new(2026,
         3,
         11281,
         LongBranchPreReleaseTag,
         LongBranchBuildMetadata,
-        10);
+        maxVersionLength: 10);
 
     public static IEnumerable<object[]> FullSemVerTestCases()
     {
