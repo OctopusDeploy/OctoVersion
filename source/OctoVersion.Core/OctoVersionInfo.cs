@@ -22,7 +22,11 @@ public class OctoVersionInfo : SemanticVersion
         int? maxVersionLength) : base(major,
         minor,
         patch,
-        CapPreReleaseTag(major, minor, patch, preReleaseTag, maxVersionLength),
+        CapPreReleaseTag(major,
+            minor,
+            patch,
+            preReleaseTag,
+            maxVersionLength),
         buildMetadata)
     {
     }
@@ -44,11 +48,26 @@ public class OctoVersionInfo : SemanticVersion
     public string InformationalVersion => $"{MajorMinorPatch}{PreReleaseTagWithDash}{BuildMetadataWithPlus}";
     public string NuGetVersion => $"{MajorMinorPatch}{NuGetCompatiblePreReleaseWithDash}";
 
+    string NuGetCompatiblePreReleaseWithDash
+    {
+        get
+        {
+            var truncated = PreReleaseTagWithDash.Substring(0, Math.Min(PreReleaseTagWithDash.Length, 20));
+
+            //a trailing dot is an empty pre-release identifier, which is not a valid version
+            return truncated.TrimEnd('.');
+        }
+    }
+
     /// <summary>
     /// Shortens the pre-release tag until <see cref="FullSemVer" /> fits within <paramref name="maxVersionLength" />.
     /// The numeric version components are never shortened; if they alone exceed the maximum then no pre-release tag is emitted.
     /// </summary>
-    static string CapPreReleaseTag(int major, int minor, int patch, string preReleaseTag, int? maxVersionLength)
+    static string CapPreReleaseTag(int major,
+        int minor,
+        int patch,
+        string preReleaseTag,
+        int? maxVersionLength)
     {
         if (maxVersionLength == null || string.IsNullOrWhiteSpace(preReleaseTag)) return preReleaseTag;
 
@@ -59,17 +78,6 @@ public class OctoVersionInfo : SemanticVersion
 
         //a trailing dot is an empty pre-release identifier, which is not a valid version; a trailing dash is just noise
         return preReleaseTag.Substring(0, availableLength).TrimEnd('.', '-');
-    }
-
-    string NuGetCompatiblePreReleaseWithDash
-    {
-        get
-        {
-            var truncated = PreReleaseTagWithDash.Substring(0, Math.Min(PreReleaseTagWithDash.Length, 20));
-
-            //a trailing dot is an empty pre-release identifier, which is not a valid version
-            return truncated.TrimEnd('.');
-        }
     }
 
     public override string ToString()
