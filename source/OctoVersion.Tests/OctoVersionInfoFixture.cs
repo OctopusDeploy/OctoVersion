@@ -17,7 +17,7 @@ public class OctoVersionInfoFixture
             3,
             string.Empty,
             string.Empty,
-            maxVersionLength: null);
+            null);
 
         var properties = octoVersionInfo.GetProperties().ToArray();
 
