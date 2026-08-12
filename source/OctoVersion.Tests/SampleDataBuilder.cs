@@ -16,6 +16,7 @@ public class SampleDataBuilder
     SimpleVersion? version;
     string? expectedInformationalVersion;
     string? expectedFullSemVer;
+    int? maxVersionLength;
 
     public SampleDataBuilder WithNonPreReleaseTags(string[] tags)
     {
@@ -65,6 +66,12 @@ public class SampleDataBuilder
         return this;
     }
 
+    public SampleDataBuilder WithMaxVersionLength(int? length)
+    {
+        maxVersionLength = length;
+        return this;
+    }
+
     public SampleDataBuilder WithVersion(SimpleVersion newVersion)
     {
         version = newVersion;
@@ -102,6 +109,7 @@ public class SampleDataBuilder
             overriddenBuildMetadata,
             version,
             expectedInformationalVersion,
-            expectedFullSemVer);
+            expectedFullSemVer,
+            maxVersionLength);
     }
 }

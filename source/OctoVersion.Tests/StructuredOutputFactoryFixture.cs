@@ -37,6 +37,7 @@ public class StructuredOutputFactoryFixture
                 .WithCurrentBranch("refs/heads/main")
                 .WithCurrentSha("a1b2c3d4e5")
                 .WithOverriddenBuildMetadata(null)
+                .WithMaxVersionLength(null)
                 .WithVersion(new SimpleVersion(1, 2, 3))
                 .WithExpectedInformationalVersion("1.2.3+Branch.main.Sha.a1b2c3d4e5");
         }
@@ -92,6 +93,22 @@ public class StructuredOutputFactoryFixture
             .WithCurrentBranch("refs/heads/feature/versioning")
             .ExpectAnInformationalVersionOf("1.2.3-feature-versioning+Branch.feature-versioning.Sha.a1b2c3d4e5")
             .ExpectAFullSemVerOf("1.2.3-feature-versioning")
+            .Build();
+        yield return ForDefaultScenario()
+            .WithNonPreReleaseTags(Array.Empty<string>())
+            .WithNonPreReleaseTagsRegex("refs/heads/m.*")
+            .WithCurrentBranch("refs/heads/feature/versioning")
+            .WithMaxVersionLength(20)
+            .ExpectAnInformationalVersionOf("1.2.3-feature-versio+Branch.feature-versioning.Sha.a1b2c3d4e5")
+            .ExpectAFullSemVerOf("1.2.3-feature-versio")
+            .Build();
+        yield return ForDefaultScenario()
+            .WithNonPreReleaseTags(Array.Empty<string>())
+            .WithNonPreReleaseTagsRegex("refs/heads/m.*")
+            .WithCurrentBranch("refs/heads/feature/versioning")
+            .WithMaxVersionLength(14)
+            .ExpectAnInformationalVersionOf("1.2.3-feature+Branch.feature-versioning.Sha.a1b2c3d4e5")
+            .ExpectAFullSemVerOf("1.2.3-feature")
             .Build();
     }
 }

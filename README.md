@@ -321,3 +321,19 @@ done
 ```
 </details>
 
+### Limiting the Version Length
+
+The pre-release tag is derived from the branch name, so a long branch name produces a long version. Where something downstream constrains
+the length of the version - for example, Kubernetes caps a metadata label value at 63 characters - set `MaxVersionLength` and the pre-release
+tag will be shortened until the version fits.
+
+```json
+{
+  "MaxVersionLength": 63
+}
+```
+
+This is off by default, and only the pre-release tag is shortened; the major, minor and patch components are never touched, so a maximum
+smaller than those alone leaves you with no pre-release tag. Build metadata is not counted, so `InformationalVersion` can still exceed the
+maximum. Versions remain unique regardless of how much of the tag survives, because the patch component is derived from the commit history.
+

@@ -12,7 +12,7 @@ public class WhenStringifyingASemanticVersion
     [MemberData(nameof(TestCases))]
     public void TheOutputShouldBeCorrect(SemanticVersion version, string expected)
     {
-        new OctoVersionInfo(version).ToString().ShouldBe(expected);
+        new OctoVersionInfo(version, maxVersionLength: null).ToString().ShouldBe(expected);
     }
 
     public static IEnumerable<object[]> TestCases()

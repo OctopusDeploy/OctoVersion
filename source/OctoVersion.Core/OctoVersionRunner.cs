@@ -55,7 +55,7 @@ public class OctoVersionRunner
             var semanticVersion = SemanticVersion.TryParse(appSettings.FullSemVer!);
             if (semanticVersion == null) throw new Exception("Failed to parse semantic version string");
 
-            versionInfo = new OctoVersionInfo(semanticVersion);
+            versionInfo = new OctoVersionInfo(semanticVersion, appSettings.MaxVersionLength);
         }
         else
         {
@@ -79,7 +79,8 @@ public class OctoVersionRunner
                         appSettings.Patch,
                         appSettings.CurrentBranch!,
                         currentSha,
-                        appSettings.BuildMetadata)
+                        appSettings.BuildMetadata,
+                        appSettings.MaxVersionLength)
                     .Create(version);
             }
         }

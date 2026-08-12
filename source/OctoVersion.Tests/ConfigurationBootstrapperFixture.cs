@@ -183,4 +183,29 @@ public class ConfigurationBootstrapperFixture : IDisposable
         var (appSettings, _) = ConfigurationBootstrapper.Bootstrap<AppSettings>();
         appSettings.AllowShallowClone.ShouldBe(expectedValue);
     }
+
+    [Fact]
+    public void MaxVersionLength_DefaultsToUnset()
+    {
+        var args = new[] { "--CurrentBranch", "main" };
+        var (appSettings, _) = ConfigurationBootstrapper.Bootstrap<AppSettings>(args);
+        appSettings.MaxVersionLength.ShouldBeNull();
+    }
+
+    [Fact]
+    public void WhenMaxVersionLengthIsPassedViaCommandLine()
+    {
+        var args = new[] { "--CurrentBranch", "main", "--MaxVersionLength", "63" };
+        var (appSettings, _) = ConfigurationBootstrapper.Bootstrap<AppSettings>(args);
+        appSettings.MaxVersionLength.ShouldBe(63);
+    }
+
+    [Fact]
+    public void WhenMaxVersionLengthIsPassedViaEnvironmentVariable()
+    {
+        Environment.SetEnvironmentVariable("OCTOVERSION_CurrentBranch", "main");
+        Environment.SetEnvironmentVariable("OCTOVERSION_MaxVersionLength", "63");
+        var (appSettings, _) = ConfigurationBootstrapper.Bootstrap<AppSettings>();
+        appSettings.MaxVersionLength.ShouldBe(63);
+    }
 }

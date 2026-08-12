@@ -12,44 +12,51 @@ public class WhenStringifyingAnOctoVersionInfo
         0,
         0,
         "",
-        "");
+        "",
+        maxVersionLength: null);
 
     static readonly OctoVersionInfo AllVersionPartsSetToValues = new(1,
         2,
         3,
         "",
-        "");
+        "",
+        maxVersionLength: null);
 
     static readonly OctoVersionInfo VersionWithPreReleaseTag = new(1,
         2,
         3,
         "pre",
-        "");
+        "",
+        maxVersionLength: null);
 
     static readonly OctoVersionInfo VersionWithPreReleaseTagAndBuildMetadata = new(1,
         2,
         3,
         "pre",
-        "build");
+        "build",
+        maxVersionLength: null);
 
     static readonly OctoVersionInfo VersionWithLongPreReleaseTagAndBuildMetadata = new(2021,
         1,
         3,
         "mark-genericDocumentStore",
-        "Branch.mark-genericDocumentStore.Sha.fb13016f3a21d7c2058fb74ab25f19e5311c6550");
+        "Branch.mark-genericDocumentStore.Sha.fb13016f3a21d7c2058fb74ab25f19e5311c6550",
+        maxVersionLength: null);
 
     static readonly OctoVersionInfo VersionWithLongPreReleaseTagWithSlashesAndBuildMetadata = new(2021,
         1,
         3,
         "dependabot/npm_and_yarn/source/TentacleArmy.Web/ini-1.3.6",
-        "Branch.dependabot/npm_and_yarn/source/TentacleArmy.Web/ini-1.3.6.Sha.069392d9d2d37ddb6009998b92e70963badcc666");
+        "Branch.dependabot/npm_and_yarn/source/TentacleArmy.Web/ini-1.3.6.Sha.069392d9d2d37ddb6009998b92e70963badcc666",
+        maxVersionLength: null);
 
     //the NuGet-compatible pre-release is 20 characters, which lands this one exactly on a dot
     static readonly OctoVersionInfo VersionWhereTheNuGetTruncationLandsOnADot = new(1,
         1,
         47,
         "renovate-microsoft.aspnetcore.mvc.newtonsoftjson-10.x",
-        "Branch.renovate-microsoft.aspnetcore.mvc.newtonsoftjson-10.x.Sha.72529493c8ccfae2784cd604b7784294b03f388d");
+        "Branch.renovate-microsoft.aspnetcore.mvc.newtonsoftjson-10.x.Sha.72529493c8ccfae2784cd604b7784294b03f388d",
+        maxVersionLength: null);
 
     //xunit is blurgh - IEnumerable of object[]? ick.
     public static IEnumerable<object[]> PreReleaseTagWithDashTestCases()

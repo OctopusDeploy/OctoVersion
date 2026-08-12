@@ -31,6 +31,9 @@ public class AppSettings : IAppSettings, IValidatableObject
     // If this is set, it will override all of the other values and OctoVersion will just adopt it wholesale.
     public string? FullSemVer { get; set; }
 
+    // If this is set, the pre-release tag is shortened so that the version fits within this many characters. Unset means unlimited.
+    public int? MaxVersionLength { get; set; }
+
     public string[] OutputFormats { get; set; } = Array.Empty<string>();
 
     public bool DetectEnvironment { get; set; }
