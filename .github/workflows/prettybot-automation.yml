@@ -40,10 +40,13 @@ jobs:
                   username: ${{ secrets.INTERNAL_DOCKER_READ_ONLY_USER_NAME }}
                   password: ${{ secrets.INTERNAL_DOCKER_READ_ONLY_ACCESS_TOKEN }}
             - name: Run Cleanup Code
+              # Invoked directly rather than via the container's /scripts/prettybot.sh, which runs
+              # cleanupcode without --profile and so silently applies ReSharper's built-in Full
+              # Cleanup instead of the profile defined in OctoVersion.sln.DotSettings.
               # Make the workspace writable to github actions runner user
               run: |
                 chmod -R a+w ${{ github.workspace }}
-                docker run -v ${{ github.workspace }}:/src ${{ secrets.INTERNAL_DOCKER_REGISTRY_URL }}/octopusdeploy/tool-containers/tool-resharper-cli:latest /scripts/prettybot.sh
+                docker run -v ${{ github.workspace }}:/src ${{ secrets.INTERNAL_DOCKER_REGISTRY_URL }}/octopusdeploy/tool-containers/tool-resharper-cli:latest -c 'cd /src/source && dotnet restore && jb cleanupcode OctoVersion.sln --profile="Octopus Deploy"'
             
             - name: Git Check for file changes
               id: git-check
@@ -65,8 +68,8 @@ jobs:
             - name: Create Pull Request
               if: steps.git-check.outputs.changed == 'true'
               run: |
-                EXISTING_PRS=$(gh pr list --author "github-actions[bot]" --state open --head "prettybot" --json number --template '{{range .}}{{.number}}{{ "\n" }}{{end}}')
-                NEW_PR=$(gh pr create --base main --head ${{ env.BRANCH_NAME }} --title "Automated PR for Prettybot" --body "This is an automated PR.")
+                EXISTING_PRS=$(gh pr list --author "team-builds-bot" --state open --head "prettybot" --json number --template '{{range .}}{{.number}}{{ "\n" }}{{end}}')
+                NEW_PR=$(gh pr create --base main --head ${{ env.BRANCH_NAME }} --title "Automated PR for Prettybot" --body "This is an automated PR." --label autoapprove)
                 # close existing PRs
                 for pr in $EXISTING_PRS; do
                   gh pr close "$pr" --comment "Superseded by $NEW_PR." --delete-branch
