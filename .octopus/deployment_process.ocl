@@ -24,7 +24,7 @@ step "push" {
 
         container {
             feed = "docker-hub"
-            image = "octopusdeploy/worker-tools:6-ubuntu.22.04"
+            image = "octopusdeploy/worker-tools:6.6.5-ubuntu.24.04"
         }
 
         packages "Octopus.OctoVersion.Tool" {
