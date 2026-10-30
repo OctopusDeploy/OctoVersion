@@ -13,7 +13,7 @@
   "customManagers": [
     {
       "customType": "regex",
-      "description": "Container images Octopus deployment process and runbook steps run in, from the Docker Hub feeds ('docker-hub', or 'docker' in some spaces). Image names in OCL are relative to the feed, so the match is anchored on the feed line, which Octopus writes immediately before the image line. A copy of the rule in OctopusDeploy/team-developer-platform-renovate-config, which this public repo does not extend; keep the two in step.",
+      "description": "Container images Octopus deployment process and runbook steps run in, from the Docker Hub feeds ('docker-hub', or 'docker' in some spaces). Image names in OCL are relative to the feed, so the match is anchored on the feed line, which Octopus writes immediately before the image line.",
       "managerFilePatterns": [".octopus/**/*.ocl"],
       "matchStrings": [
         "feed\\s*=\\s*\"(?:docker-hub|docker)\"\\s*\\n\\s*image\\s*=\\s*\"(?<depName>[^\"\\s:@]+):(?<currentValue>[^\"\\s@]+)(?:@(?<currentDigest>sha256:[a-f0-9]+))?\""
