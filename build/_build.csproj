@@ -17,7 +17,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Octopus.Nuke.Common" Version="11.0.474" />
+    <PackageReference Include="Octopus.Nuke.Common" Version="11.0.476" />
   </ItemGroup>
 
   <ItemGroup>
