@@ -63,7 +63,7 @@ class Build : NukeBuild
      // OctoVersionInfo parameter is not set due to an error or misconfiguration in Nuke.
      [Required]
      // 'Framework' selects which of the tool's targets to run. The tool ships
-     // net10.0 only.
+     // net10.0 and net11.0.
      [OctoVersion(UpdateBuildNumber = true, 
                   BranchParameter = nameof(Branch),
                   Framework = "net10.0")]
